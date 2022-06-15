@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Position">
+	<insert id="insertPosition" parameterType="Position">
+	<![CDATA[
+		insert into position (position_no, position_name, level, upper_position)
+		values (seq_position_no.nextval, #(position_name), #(level), #(upper_position)
+	]]>
+	</insert>
+	<select id="selectListPosition" resultType="Position">
+		select * from position
+	</select>
+</mapper>

@@ -5,12 +5,11 @@
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>	
 	<typeAliases>
-		<!-- <typeAlias type="kh.spring.myweb.member.model.vo.Member" alias="Member"/> -->
-		
+		<typeAlias type="kh.spring.grougle.position.domain.Position" alias="Position"/>
 	</typeAliases>
 	 
 	<mappers>
-		<!-- <mapper resource="mappers/member-mapper.xml"/> -->
+		 <mapper resource="mappers/position-mapper.xml"/> 
 	</mappers>
 
 </configuration>

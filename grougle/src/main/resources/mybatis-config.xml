@@ -6,10 +6,12 @@
 	</settings>	
 	<typeAliases>
 		<typeAlias type="kh.spring.grougle.position.domain.Position" alias="Position"/>
+		<typeAlias type="kh.spring.grougle.chat.domain.Chat" alias="Chat"/>
 	</typeAliases>
 	 
 	<mappers>
 		 <mapper resource="mappers/position-mapper.xml"/> 
+		 <mapper resource="mappers/chat-mapper.xml"/> 
 	</mappers>
 
 </configuration>

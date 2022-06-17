@@ -16,31 +16,38 @@
 	rel="stylesheet">
 <!-- CSS -->
 <link rel="stylesheet" type="text/css"
-	href="resources/vendors/styles/core.css">
+	href="<%=request.getContextPath() %>/resources/vendors/styles/core.css">
 <link rel="stylesheet" type="text/css"
-	href="resources/vendors/styles/icon-font.min.css">
+	href="<%=request.getContextPath() %>/resources/vendors/styles/icon-font.min.css">
 <link rel="stylesheet" type="text/css"
-	href="resources/src/plugins/datatables/css/dataTables.bootstrap4.min.css">
+	href="<%=request.getContextPath() %>/resources/src/plugins/datatables/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" type="text/css"
-	href="resources/src/plugins/datatables/css/responsive.bootstrap4.min.css">
+	href="<%=request.getContextPath() %>/resources/src/plugins/datatables/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" type="text/css"
-	href="resources/vendors/styles/style.css">
+	href="<%=request.getContextPath() %>/resources/vendors/styles/style.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath() %>/resources/css/chat/chat.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath() %>/resources/css/chat/chatstyle.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath() %>/resources/css/chat/chatstyle.min.css">
 
 <!-- js -->
-<script src="resources/vendors/scripts/core.js"></script>
-<script src="resources/vendors/scripts/script.min.js"></script>
-<script src="resources/vendors/scripts/process.js"></script>
-<script src="resources/vendors/scripts/layout-settings.js"></script>
-<script src="resources/src/plugins/apexcharts/apexcharts.min.js"></script>
+<script src="<%=request.getContextPath() %>/resources/vendors/scripts/core.js"></script>
+<script src="<%=request.getContextPath() %>/resources/vendors/scripts/script.min.js"></script>
+<script src="<%=request.getContextPath() %>/resources/vendors/scripts/process.js"></script>
+<script src="<%=request.getContextPath() %>/resources/vendors/scripts/layout-settings.js"></script>
+<script src="<%=request.getContextPath() %>/resources/src/plugins/apexcharts/apexcharts.min.js"></script>
+<script src="<%=request.getContextPath() %>/resources/js/chat-sidebar.js"></script>
 <script
-	src="resources/src/plugins/datatables/js/jquery.dataTables.min.js"></script>
+	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/jquery.dataTables.min.js"></script>
 <script
-	src="resources/src/plugins/datatables/js/dataTables.bootstrap4.min.js"></script>
+	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/dataTables.bootstrap4.min.js"></script>
 <script
-	src="resources/src/plugins/datatables/js/dataTables.responsive.min.js"></script>
+	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/dataTables.responsive.min.js"></script>
 <script
-	src="resources/src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
-<script src="resources/vendors/scripts/dashboard.js"></script>
+	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
+<script src="<%=request.getContextPath() %>/resources/vendors/scripts/dashboard.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async
@@ -57,9 +64,25 @@
 
 </head>
 <body>
-	<%-- <%@ include file="./preloader/preloader.jsp"%> --%>
 	<%@ include file="./header/header.jsp"%>
 	<%@ include file="./sidebar/rightsidebar.jsp"%>
+	<%@ include file="./sidebar/chatsidebar.jsp"%>
 	<%@ include file="./sidebar/leftsidebar.jsp"%>
+	<div class="main-container">
+	dkdkfafeia;efjeaidkfjaeifjfaiefadfjeaikdfjeialkdfajeiadf;aei;fkadjfaiefajdfiaekfjdfiwekfajdfiefadfadf<br>
+	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
+	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
+		 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
+	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
+	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
+	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
+	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
+	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
+	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
+	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
+	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
+	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
+	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
+	</div>
 </body>
 </html>

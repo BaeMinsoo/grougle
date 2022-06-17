@@ -155,15 +155,10 @@
 						</ul>
 					</li>
 					<li>
-						<a href="chat.html" class="dropdown-toggle">
+						<a class="dropdown-toggle no-arrow" href="javascript:;"
+							data-toggle="right-sidebar">
 							<span class="micon dw dw-chat3"></span><span class="mtext">메신저</span>
 						</a>
-						<ul class="submenu">
-							<li><a href="blank.html">Blank</a></li>
-							<li><a href="contact-directory.html">Contact Directory</a></li>
-							<li><a href="blog.html">Blog</a></li>
-							<li><a href="blog-detail.html">Blog Detail</a></li>
-						</ul>
 					</li>
 					<li>
 						<div class="dropdown-divider"></div>
@@ -185,7 +180,7 @@
 					<li>
 						<a href="https://dropways.github.io/deskapp-free-single-page-website-template/" target="_blank" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-paper-plane1"></span>
-							<span class="mtext">Landing Page <img src="vendors/images/coming-soon.png" alt="" width="25"></span>
+							<span class="mtext">Landing Page</span>
 						</a>
 					</li>
 				</ul>

@@ -27,10 +27,6 @@
 	href="<%=request.getContextPath() %>/resources/vendors/styles/style.css">
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath() %>/resources/css/chat/chat.css">
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath() %>/resources/css/chat/chatstyle.css">
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath() %>/resources/css/chat/chatstyle.min.css">
 
 <!-- js -->
 <script src="<%=request.getContextPath() %>/resources/vendors/scripts/core.js"></script>
@@ -68,7 +64,7 @@
 	<%@ include file="./sidebar/rightsidebar.jsp"%>
 	<%@ include file="./sidebar/chatsidebar.jsp"%>
 	<%@ include file="./sidebar/leftsidebar.jsp"%>
-	<div class="main-container">
+	<div id="main" class="main-container">
 	dkdkfafeia;efjeaidkfjaeifjfaiefadfjeaikdfjeialkdfajeiadf;aei;fkadjfaiefajdfiaekfjdfiwekfajdfiefadfadf<br>
 	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
 	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
@@ -84,5 +80,6 @@
 	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
 	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
 	</div>
+
 </body>
 </html>

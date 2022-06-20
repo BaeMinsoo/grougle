@@ -1,48 +1,64 @@
 @charset "UTF-8";
+.chat-sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 70;
+  right: 0;
+  background-color: white;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  border: 1px solid #8cbed6; 
+}
 
-.right-sidebar{
-	position: fixed;
-	right: -315px;
-	top: 0;
-	width: 315px;
-	height: 100%;
-	background: #ffffff;
-	z-index: 123;
-	-webkit-box-shadow: 0px 0px 18px rgba(0, 0, 0, .08);
-	-moz-box-shadow: 0px 0px 18px rgba(0, 0, 0, .08);
-	box-shadow: 0px 0px 18px rgba(0, 0, 0, .08);
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
+
+.chat-sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 15px;
+  font-size: 24px;
+  margin-left: 0px;
 }
-.right-sidebar-visible{
-	right: 0;
+.chat-sidebar .closebtn:hover{
+	color: #8cbed6;
 }
-.right-sidebar .sidebar-title{
-	height: 70px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 5px 15px;
-	border-bottom: 1px solid #d4d4d4;
+/* Style tab links */
+.tablink {
+  background-color: #92a1cf;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 0px;
+  font-size: 17px;
+  text-align: center;
+  width: 33%;
 }
-.right-sidebar .sidebar-title h3{
-	font-weight: 600;
+
+.tablink:hover {
+  background-color: #8cbed6;
 }
-.right-sidebar .sidebar-title h3 span{
-	font-weight: 400;
-	color: #000000;
+
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+  color: #black;
+  display: none;
+  padding: 10px;
+  height: 100%;
 }
-.right-sidebar .close-sidebar{
-	font-size: 18px;
-	color: #888888;
-	cursor: pointer;
+
+#EMP {background-color: white;}
+#PROJECT {background-color: white;}
+#CHAT {background-color: white;}
+
+.main-container {
+  transition: margin-right .5s;
 }
-.right-sidebar .right-sidebar-body{
-	height: calc(100% - 70px);
-	overflow: auto;
-}
-.right-sidebar .right-sidebar-body .right-sidebar-body-content{
-	padding: 20px;
+
+@media screen and (max-height: 450px) {
+  .chat-sidebar {padding-top: 15px;}
+  .chat-sidebar a {font-size: 18px;}
 }

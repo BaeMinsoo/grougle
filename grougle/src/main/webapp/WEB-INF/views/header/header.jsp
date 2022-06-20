@@ -25,8 +25,8 @@
 		</div>
 		<div class="dashboard-setting user-notification">
 			<div class="dropdown">
-				<a class="dropdown-toggle no-arrow" href="javascript:;"
-					data-toggle="right-sidebar"><i class="micon dw dw-chat3"></i>
+				<a class="dropdown-toggle no-arrow" href="javascript:;" 
+					onclick="openNav()"><i class="micon dw dw-chat3"></i>
 				</a>
 			</div>
 		</div>

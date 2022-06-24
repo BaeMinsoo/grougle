@@ -12,12 +12,8 @@
 	 
 	<mappers>
 		 <mapper resource="mappers/position-mapper.xml"/> 
-<<<<<<< HEAD
 		 <mapper resource="mappers/chat-mapper.xml"/> 
-=======
-		 <mapper resource="mappers/chat-mapper.xml"/>
->>>>>>> 83ca9ccbe0b90b522b60e7a44e4007e2ba974c8b
-		 <mapper resource="mappers/Employee-mapper.xml"/>
+		 <mapper resource="mappers/employee-mapper.xml"/>
 	</mappers>
 
 </configuration>

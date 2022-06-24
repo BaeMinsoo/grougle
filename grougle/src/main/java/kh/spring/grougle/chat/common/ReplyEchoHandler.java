@@ -23,8 +23,7 @@ public class ReplyEchoHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		sessionList.add(session);
-		logger.info("{} 연결됨 ", session.getId());
-//		System.out.println("채팅방 입장자 : " + session.getPrincipal().getName());
+		logger.info("{} 연결되었음 ", session.getId());
 		for(WebSocketSession sess : sessionList) {
 			sess.sendMessage(new TextMessage(session.getId() + "님이 입장하였습니다"));
 		}
@@ -32,7 +31,7 @@ public class ReplyEchoHandler extends TextWebSocketHandler {
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		logger.info("{}로 부터 {} 받음", session.getId(), message.getPayload());
+		logger.info("{}로 부터 {} 받았음", session.getId(), message.getPayload());
 		
 		for(WebSocketSession sess : sessionList) {
 			sess.sendMessage(new TextMessage(session.getId() + "|" + message.getPayload()));

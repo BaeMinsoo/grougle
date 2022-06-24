@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+ 
 <div id="chatNav" class="chat-sidebar">
 	<div class="sidebar-title">
 		<div class="header-search">
@@ -21,18 +22,53 @@
 	</div>
 	<div class="customscroll">
 		<div id="EMP" class="tabcontent">
-				<h3>Home</h3>
-				<p>Home is where the heart is..</p>
-			</div>
-
-			<div id="PROJECT" class="tabcontent">
-				<h3>News</h3>
-				<p>Some news this fine day!</p>
-			</div>
-
-			<div id="CHAT" class="tabcontent">
-				<h3>Contact</h3>
-				<p>Get in touch, or swing by for a cup of coffee.</p>
-			</div>
+			<%@ include file="../chat/chat.jsp"%>
+		</div>
+		<div id="PROJECT" class="tabcontent">
+			<%@ include file="../chat/chat.jsp"%>
+		</div>
+		<div id="CHAT" class="tabcontent">
+			<%@ include file="../chat/chat.jsp"%>
+		</div>
 	</div>
 </div>
+
+    <script>
+        var webSocket;
+        var nickname;
+        document.getElementById("name").addEventListener("click", function(){
+            nickname = document.getElementById("nickname").value;
+            document.getElementById("nickname").style.display="none";
+            document.getElementById("name").style.display="none";
+            connect();
+        })
+        document.getElementById("send").addEventListener("click",function(){
+            send();
+        })
+        function connect(){
+            webSocket = new WebSocket("ws://localhost:8080/chat");
+            webSocket.onopen = onOpen;
+            webSocket.onclose = onClose;
+            webSocket.onmessage = onMessage;
+        }
+        function disconnect(){
+            webSocket.send(nickname + "님이 퇴장하셨습니다");
+            webSocket.close();
+        }
+        function send(){
+            msg = document.getElementById("message").value;
+            webSocket.send(nickname + " : " + msg);
+            document.getElementById("message").value = "";
+        }
+        function onOpen(){
+            webSocket.send(nickname + "님이 입장하셨습니다.");
+        }
+        function onMessage(e){
+            data = e.data;
+            chatroom = document.getElementById("chatroom");
+            chatroom.innerHTML = chatroom.innerHTML + "<br>" + data;
+        }
+        function onClose(){
+ 
+        }
+    </script>

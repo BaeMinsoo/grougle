@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kh.spring.grougle.chat.model.service.ChatService;
 
 @Controller
-@RequestMapping("/chat")
+@RequestMapping("/chat.do")
 public class ChatController {
 
 	@Autowired
@@ -18,6 +18,12 @@ public class ChatController {
 	@GetMapping("/chat")
 	public ModelAndView chat(ModelAndView mv) {
 		mv.setViewName("chat/chat");
+// 사용자 정보 출력
+//		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		System.out.println("username : " + user.getUsername());
+//		
+//		System.out.println("normal chat page");
+//		mv.addObject("userid", user.getUsername());
 		
 		return mv;
 	}

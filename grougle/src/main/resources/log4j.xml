@@ -12,7 +12,7 @@
 	
 	<!-- Application Loggers -->
 	<logger name="kh.spring.grougle">
-		<level value="info" />
+		<level value="trace" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->

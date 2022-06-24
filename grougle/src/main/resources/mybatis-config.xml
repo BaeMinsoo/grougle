@@ -7,11 +7,13 @@
 	<typeAliases>
 		<typeAlias type="kh.spring.grougle.position.domain.Position" alias="Position"/>
 		<typeAlias type="kh.spring.grougle.chat.domain.Chat" alias="Chat"/>
+		<typeAlias type="kh.spring.grougle.employee.domain.Employee" alias="Emp"/>
 	</typeAliases>
 	 
 	<mappers>
 		 <mapper resource="mappers/position-mapper.xml"/> 
 		 <mapper resource="mappers/chat-mapper.xml"/> 
+		 <mapper resource="mappers/Employee-mapper.xml"/>
 	</mappers>
 
 </configuration>

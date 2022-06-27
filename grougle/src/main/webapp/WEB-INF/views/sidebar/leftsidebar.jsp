@@ -48,19 +48,13 @@
 						</ul>
 					</li>
 					<li>
-						<a href="calendar.html" class="dropdown-toggle">
+						<a onclick="location.href='<%=request.getContextPath()%>/calendar/calendar'" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-calendar1"></span><span class="mtext">일정관리</span>
 						</a>
-						<ul class="submenu">
-							<li><a href="blank.html">Blank</a></li>
-							<li><a href="contact-directory.html">Contact Directory</a></li>
-							<li><a href="blog.html">Blog</a></li>
-							<li><a href="blog-detail.html">Blog Detail</a></li>
-						</ul>
 					</li>
 					<li class="dropdown">
 						<a href="javascript:;" class="dropdown-toggle">
-							<span class="micon dw dw-apartment"></span><span class="mtext">거래처</span>
+							<span class="micon dw dw-apartment"></span><span class= "mtext">거래처</span>
 						</a>
 						<ul class="submenu">
 							<li><a href="ui-buttons.html">Buttons</a></li>

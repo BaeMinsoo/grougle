@@ -16,7 +16,7 @@ public class CalendarController {
 	private CalendarService service;
 	
 	@GetMapping("/calendar")
-	public ModelAndView calander(ModelAndView mv) {
+	public ModelAndView calendar(ModelAndView mv) {
 		mv.setViewName("calendar/calendar");
 		return mv;
 	}

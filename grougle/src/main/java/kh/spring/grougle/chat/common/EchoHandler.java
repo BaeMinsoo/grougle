@@ -1,11 +1,8 @@
 package kh.spring.grougle.chat.common;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
@@ -13,17 +10,16 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import kh.spring.grougle.employee.domain.Employee;
-
-
-public class ReplyEchoHandler extends TextWebSocketHandler {
-	private static final Logger logger = LoggerFactory.getLogger(ReplyEchoHandler.class);
+public class EchoHandler extends TextWebSocketHandler {
+	
+	private static final Logger logger = LoggerFactory.getLogger(EchoHandler.class);
 	private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		sessionList.add(session);
-		logger.info("{} 연결되었음 ", session.getId());
+		logger.info("{} 연결됨 ", session.getId());
+//		System.out.println("채팅방 입장자 : " + session.getPrincipal().getName());
 		for(WebSocketSession sess : sessionList) {
 			sess.sendMessage(new TextMessage(session.getId() + "님이 입장하였습니다"));
 		}
@@ -31,7 +27,7 @@ public class ReplyEchoHandler extends TextWebSocketHandler {
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		logger.info("{}로 부터 {} 받았음", session.getId(), message.getPayload());
+		logger.info("{}로 부터 {} 받음", session.getId(), message.getPayload());
 		
 		for(WebSocketSession sess : sessionList) {
 			sess.sendMessage(new TextMessage(session.getId() + "|" + message.getPayload()));
@@ -48,4 +44,5 @@ public class ReplyEchoHandler extends TextWebSocketHandler {
 			sess.sendMessage(new TextMessage(session.getId() + "님이 퇴장하였습니다"));
 		}
 	}
+
 }

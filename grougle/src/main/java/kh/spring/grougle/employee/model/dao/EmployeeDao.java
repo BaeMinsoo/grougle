@@ -11,13 +11,23 @@ public class EmployeeDao {
 	@Autowired
 	private SqlSession sqlssesion;
 	
+	// 회원가입
 	public int insertEmployee(Employee emp) {
 		return sqlssesion.insert("Employee.insertEmployee", emp);
 	}
 
+	// ID 중복체크
 	public int empIdcheck(String emp_id) {
 		 int idCount = sqlssesion.selectOne("Employee.empIdcheck", emp_id);
 		 return idCount;
 	}
+	
+	//로그인
+	public Employee empLogin(Employee emp) throws Exception{
+		return sqlssesion.selectOne("Employee.empLogin", emp);
+	}
 
+	
+	
+	
 }

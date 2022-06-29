@@ -54,7 +54,7 @@
 	</li>
 </ul>
 
-	<form action="<%=request.getContextPath()%>/employee/joindo"
+	<form action="<%=request.getContextPath()%>/employee/join"
 		method="post">
 		<table>
 			<tr>
@@ -162,10 +162,21 @@
 
 	<script type="text/javascript">
 		/* 아이디 중복확인 체크 */
+		
+		$("#emp_idck").click(function() {
+		    var id = $("#emp_id").val();
+		    if(id == ""){
+		        alert("아이디를 입력해 주십시오");
+		    }else{
+		    	chenkEmpId(emp_id);
+		    }    
+		})
+		
 		var isCheckId = 0;
 		function chenkEmpId() {
 			var emp_id = $("#emp_id").val();
 			console.log(emp_id);
+			
 			$.ajax({
 				async : false,
 				type : "POST",
@@ -281,7 +292,7 @@
 								$("#emp_check_email").css('display',
 										'inline-block');
 								$("#emp_check_email").text(
-										'Email@example.com 형태로 작성 해주시길 바랍니다.');
+										'grougle@emailAddress.com 형태로 작성 해주십시오.');
 								$("#emp_check_email").css('font-size', '0.8em');
 								$("#emp_check_email").css('color', 'red');
 							} else {

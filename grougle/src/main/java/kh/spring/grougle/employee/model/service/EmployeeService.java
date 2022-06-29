@@ -20,4 +20,8 @@ public class EmployeeService {
 		int idCnt = dao.empIdcheck(emp_id);
 		return idCnt;		
 	}
+
+	public Employee empLogin(Employee emp) throws Exception {
+		return dao.empLogin(emp);
+	}
 }

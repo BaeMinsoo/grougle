@@ -1,4 +1,6 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false"%>
 <html>
 <head>
@@ -27,6 +29,10 @@
 	href="<%=request.getContextPath() %>/resources/vendors/styles/style.css">
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath() %>/resources/css/chat/chat.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath() %>/resources/css/chat/chatstyle.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath() %>/resources/css/chat/chatstyle.min.css">
 
 <!-- js -->
 <script src="<%=request.getContextPath() %>/resources/vendors/scripts/core.js"></script>
@@ -64,7 +70,24 @@
 	<%@ include file="./sidebar/rightsidebar.jsp"%>
 	<%@ include file="./sidebar/chatsidebar.jsp"%>
 	<%@ include file="./sidebar/leftsidebar.jsp"%>
-	<div id="main" class="main-container">
+	<div class="main-container">	
+		<c:if test="${loginSsInfo == null}">
+			<div>
+				<button type="button"onclick="location.href='<%=request.getContextPath()%>/employee/login'">로그인</button>
+				<button type="button" onclick="location.href='<%=request.getContextPath()%>/employee/agreement'">회원가입</button>
+			</div>
+		</c:if>
+		
+		<c:if test="${not empty loginSsInfo}">
+			<div>
+				<p>${employee.emp_id}님환영 합니다.</p>
+				<button id="logoutBtn" type="button" onclick="location.href='<%=request.getContextPath()%>/employee/logout'">로그아웃</button>
+			</div>
+		</c:if>
+		<c:if test="${msg == false}">
+			<p style="color: red;">로그인 실패! 아이디와 비밀번호 확인해주세요.</p>
+		</c:if>
+	
 	dkdkfafeia;efjeaidkfjaeifjfaiefadfjeaikdfjeialkdfajeiadf;aei;fkadjfaiefajdfiaekfjdfiwekfajdfiefadfadf<br>
 	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf
 	 fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf fadfadf

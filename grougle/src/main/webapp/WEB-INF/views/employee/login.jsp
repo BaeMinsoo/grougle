@@ -8,10 +8,37 @@
 <title>로그인</title>
 </head>
 <body>
-<form action="" method="post">
-		아이디:<input type="text" name="id"><br/>
-		비밀번호:<input type="password" name="pw"><br/>
-		<input type="submit" value="로그인"><br/>
+	<form action="<%=request.getContextPath()%>/employee/login" method="post">
+		<c:if test="${employee == null}">
+			<div>
+				<label for="emp_id"></label> <input type="text" id="emp_id"
+					name="emp_id">
+			</div>
+			<div>
+				<label for="emp_pwd"></label> <input type="password" id="emp_pwd"
+					name="emp_pwd">
+			</div>
+			<div>
+				<button type="submit">로그인</button>
+				<button type="button" onclick="location.href='<%=request.getContextPath()%>/employee/agreement'">회원가입</button>
+				<button type="button" id="findId">아이디찾기</button>
+				<button type="button" id="findPwd">비밀번호찾기</button>
+			</div>
+		</c:if>
 	</form>
+	
+	<script>
+		$("#enroll").click(function(){
+			location.href = "enroll";
+		});
+		$("#findId").click(function(){
+			location.href = "findId";
+		});
+		$("#findPwd").click(function(){
+			location.href = "findPwd";
+		});
+	</script>
+	
+	
 </body>
 </html>

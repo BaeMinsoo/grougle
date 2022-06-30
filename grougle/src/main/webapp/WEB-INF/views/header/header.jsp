@@ -25,14 +25,14 @@
 		</div>
 		<div class="dashboard-setting user-notification">
 			<div class="dropdown">
-				<a class="dropdown-toggle no-arrow" href="javascript:;" 
+				<a class="dropdown-toggle no-arrow" href="<%=request.getContextPath() %>/chat/room" 
 					onclick="openNav()"><i class="micon dw dw-chat3"></i>
 				</a>
 			</div>
 		</div>
 		<div class="user-notification">
 			<div class="dropdown">
-				<a class="dropdown-toggle no-arrow" href="#" role="button"
+				<a class="dropdown-toggle no-arrow"  role="button"
 					data-toggle="dropdown"> <i class="icon-copy dw dw-notification"></i>
 					<span class="badge notification-active"></span>
 				</a>

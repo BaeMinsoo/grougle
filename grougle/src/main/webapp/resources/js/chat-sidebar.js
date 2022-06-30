@@ -1,7 +1,7 @@
 //Layout settings visible
 	function openNav() {
-	  document.getElementById("chatNav").style.width = "360px";
-	  document.getElementById("main").style.marginRight = "360px";
+	  document.getElementById("chatNav").style.width = "420px";
+	  document.getElementById("main").style.marginRight = "420px";
 	}
 
 	function closeNav() {

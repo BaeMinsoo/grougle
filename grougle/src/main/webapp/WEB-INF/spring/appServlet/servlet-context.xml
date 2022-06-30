@@ -29,7 +29,7 @@
 	
 	<aop:aspectj-autoproxy/>
 	
-	<!-- Websocket -->
+	<!-- Websocket  -->
 	<websocket:handlers>
 		<websocket:mapping handler="echoHandler" path="/echo"/>
 		<websocket:sockjs />

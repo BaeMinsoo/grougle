@@ -149,7 +149,7 @@
 						</ul>
 					</li>
 					<li>
-						<a class="dropdown-toggle no-arrow" href="javascript:;" 
+						<a class="dropdown-toggle no-arrow" href="<%=request.getContextPath() %>/chat/room" 
 							onclick="openNav()">
 							<span class="micon dw dw-chat3"></span><span class="mtext">메신저</span>
 						</a>

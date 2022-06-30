@@ -50,7 +50,9 @@
 <script
 	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
 <script src="<%=request.getContextPath() %>/resources/vendors/scripts/dashboard.js"></script>
-
+<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async
 	src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>

@@ -7,6 +7,7 @@
 	<typeAliases>
 		<typeAlias type="kh.spring.grougle.position.domain.Position" alias="Position"/>
 		<typeAlias type="kh.spring.grougle.chat.domain.Chat" alias="Chat"/>
+		<typeAlias type="kh.spring.grougle.chat.domain.ChatRoom" alias="ChatRoom"/>
 		<typeAlias type="kh.spring.grougle.employee.domain.Employee" alias="Emp"/>
 	</typeAliases>
 	 

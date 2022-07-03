@@ -3,6 +3,7 @@ package kh.spring.grougle.employee.model.dao;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import kh.spring.grougle.employee.domain.Employee;
 @Repository
@@ -27,7 +28,22 @@ public class EmployeeDao {
 		return sqlssesion.selectOne("Employee.empLogin", emp);
 	}
 
+	// 아이디 찾기
+	public String findId(String emp_email) throws Exception{
+		return sqlssesion.selectOne("Employee.findId", emp_email);
+	}
 	
+	// 비밀번호 변경
+	@Transactional
+	public int updatePwd(Employee emp) throws Exception{
+		return sqlssesion.update("Employee.updatePwd", emp);
+	}
+
+	public Employee findPwd(Employee emp) {
+		Employee ee = sqlssesion.selectOne("Employee.findPwd", emp);
+		System.out.println(ee);
+		return ee;
+	}
 	
 	
 }

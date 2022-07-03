@@ -138,18 +138,6 @@
 			<artifactId>spring-websocket</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		<!-- stomp -->
-		<dependency>
-		    <groupId>org.springframework.integration</groupId>
-		    <artifactId>spring-integration-stomp</artifactId>
-		    <version>5.3.2.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-messaging</artifactId>
-			<version>${org.springframework-version}</version>
-		</dependency>
-		
 		<!-- jackson -->
 		<dependency>
 		    <groupId>org.codehaus.jackson</groupId>
@@ -216,7 +204,8 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.11.0</version>
 		</dependency>
-		<!-- spring-security -->
+
+		<!-- Spring Security -->
 		<!-- spring-security-core -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -229,19 +218,68 @@
 			<artifactId>spring-security-web</artifactId>
 			<version>${org.springframework-security-version}</version>
 		</dependency>
-		<!--spring-security-config -->
+		<!-- spring-security-config -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>5.3.3.RELEASE</version>
+			<version>${org.springframework-security-version}</version>
 		</dependency>
-		<!-- gson -->
+		<!-- jackson-databind -->
 		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.8.9</version>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.13.2.2</version>
 		</dependency>
-	
+		
+		<!-- 이메일보내기  -->
+		<!-- javax.mail -->
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>mail</artifactId>
+		    <version>1.4.7</version>
+		</dependency>				
+		<!-- apache.commons -->
+		<dependency>
+	 		<groupId>org.apache.commons</groupId>
+		 	<artifactId>commons-email</artifactId>
+		 	<version>1.5</version>
+	 	</dependency>
+	 	 <!-- dsn -->
+		<!--<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>dsn</artifactId>
+		    <version>2.0.1</version>
+		</dependency>
+	 	imap
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>imap</artifactId>
+		    <version>2.0.1</version>
+		</dependency>
+		mail api
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>mailapi</artifactId>
+		    <version>2.0.1</version>
+		</dependency>
+		pop3
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>pop3</artifactId>
+		    <version>2.0.1</version>
+		</dependency>
+		smtp
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>smtp</artifactId>
+		    <version>2.0.1</version>
+		</dependency> -->
+
+
+
+	 	
+
+
 	</dependencies>
 	<build>
 		<plugins>

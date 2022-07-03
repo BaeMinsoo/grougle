@@ -73,21 +73,25 @@
 	<%@ include file="./sidebar/chatsidebar.jsp"%>
 	<%@ include file="./sidebar/leftsidebar.jsp"%>
 	<div class="main-container">	
-		<c:if test="${loginSsInfo == null}">
-			<div>
-				<button type="button"onclick="location.href='<%=request.getContextPath()%>/employee/login'">로그인</button>
-				<button type="button" onclick="location.href='<%=request.getContextPath()%>/employee/agreement'">회원가입</button>
-			</div>
-		</c:if>
 		
+		<c:if test="${login != null}">
+		<p>${employee.emp_name}님 반갑습니다.</p>
+		<button id="logoutBtn" type="button" onclick="location.href='<%=request.getContextPath()%>/employee/logout'">로그아웃 </button>
+		</c:if>
+		<c:if test="${loginSsInfo == null}">
+		<div>
+		<button type="button"onclick="location.href='<%=request.getContextPath()%>/employee/login'">로그인</button>
+		<button type="button" onclick="location.href='<%=request.getContextPath()%>/employee/agreement'">회원가입</button>
+		</div>
+		</c:if>		
 		<c:if test="${not empty loginSsInfo}">
 			<div>
-				<p>${employee.emp_id}님환영 합니다.</p>
-				<button id="logoutBtn" type="button" onclick="location.href='<%=request.getContextPath()%>/employee/logout'">로그아웃</button>
+				<p>${employee.emp_name}님 반갑습니다.</p>
+				<button id="logoutBtn" type="button" onclick="location.href='<%=request.getContextPath()%>/employee/logout'">로그아웃 </button>
 			</div>
 		</c:if>
 		<c:if test="${msg == false}">
-			<p style="color: red;">로그인 실패! 아이디와 비밀번호 확인해주세요.</p>
+			<p style="color: red;">아이디나 패스워드가 일치하지 않습니다.</p>
 		</c:if>
 	
 	dkdkfafeia;efjeaidkfjaeifjfaiefadfjeaikdfjeialkdfajeiadf;aei;fkadjfaiefajdfiaekfjdfiwekfajdfiefadfadf<br>

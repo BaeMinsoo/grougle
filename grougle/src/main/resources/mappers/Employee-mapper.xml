@@ -29,6 +29,14 @@
 		where emp_email = #{emp_email}
 	</select>
 	
+	<!-- 비밀번호 찾기 -->
+	<select id="findPwd" parameterType="Emp" resultType="Emp">
+		select emp_id, emp_email
+		from employee
+		where emp_id = #{emp_id}
+		and emp_email = #{emp_email}
+	</select>
+	
 	<!-- 비밀번호 변경 -->
 	<update id="updatePwd" parameterType="Emp">
 		update employee set emp_pwd = #{emp_pwd} 

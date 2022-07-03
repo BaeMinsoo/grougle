@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <title>로그인</title>
 </head>
 <body>
@@ -21,22 +22,19 @@
 			<div>
 				<button type="submit">로그인</button>
 				<button type="button" onclick="location.href='<%=request.getContextPath()%>/employee/agreement'">회원가입</button>
-				<button type="button" id="findId">아이디찾기</button>
-				<button type="button" id="findPwd">비밀번호찾기</button>
+				<button type="button" onclick="location.href='<%=request.getContextPath()%>/employee/findId_form'" id="findId">아이디찾기</button>
+				<button type="button" onclick="location.href='<%=request.getContextPath()%>/employee/findPwd_form'" id="findPwd">비밀번호찾기</button>
 			</div>
 		</c:if>
 	</form>
 	
 	<script>
-		$("#enroll").click(function(){
-			location.href = "enroll";
-		});
-		$("#findId").click(function(){
-			location.href = "findId";
-		});
+		<%-- $("#findId").click(function(){
+			location.href = "<%=request.getContextPath()%>/employee/findId_form";
+		});--%>
 		$("#findPwd").click(function(){
-			location.href = "findPwd";
-		});
+			location.href = '<%=request.getContextPath()%>/employee/findPwd_form';
+		}); 
 	</script>
 	
 	

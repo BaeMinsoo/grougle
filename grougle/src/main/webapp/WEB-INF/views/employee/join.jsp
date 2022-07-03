@@ -14,7 +14,7 @@
 	crossorigin="anonymous"></script>
 <!-- CSS -->
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath() %>/resources/css/join/join.css">
+	href="<%=request.getContextPath()%>/resources/css/join/join.css">
 <!-- JavaScript -->
 <%-- <script src="<%=request.getContextPath()%>/resources/js/join.js"></script> --%>
 <%-- <script src=" ${pageContext.request.contextPath}/resources/js/join.js"></script> --%>
@@ -39,23 +39,13 @@
 		private Timestamp emp_update_date;
 		private Timestamp emp_out_date; -->
 
-<ul class="join_step">
-	<li >
-	<strong>1</strong>
-	<span>약관동의</span>
-	</li>
-	<li class="on">
-	<strong>2</strong>
-	<span>사원정보</span>
-	</li>
-	<li>
-	<strong>3</strong>
-	<span>신청완료</span>
-	</li>
-</ul>
+	<ul class="join_step">
+		<li><strong>1</strong> <span>약관동의</span></li>
+		<li class="on"><strong>2</strong> <span>사원정보</span></li>
+		<li><strong>3</strong> <span>신청완료</span></li>
+	</ul>
 
-	<form action="<%=request.getContextPath()%>/employee/join"
-		method="post">
+	<form action="<%=request.getContextPath()%>/employee/joindo" method="post">
 		<table>
 			<tr>
 				<th>사원번호</th>
@@ -89,25 +79,25 @@
 			<tr>
 				<th>패스워드</th>
 				<td><input type="password" id="emp_pwd" name="emp_pwd"
-					required="required"></td>
+					></td>
 			</tr>
 
 			<tr>
 				<th>패스워드 확인</th>
 				<td><input type="password" id="emp_pwdck" name="emp_pwd_check"
-					required="required"> <span id="emp_pwd_check"
+					> <span id="emp_pwd_check"
 					style="display: none;"></span></td>
 			</tr>
 
 			<tr>
 				<th>사진등록</th>
 				<td><input type="text" name="emp_original_filename"
-					required="required"></td>
+					></td>
 			</tr>
 
 			<tr>
 				<th>이름</th>
-				<td><input type="text" name="emp_name" required="required"></td>
+				<td><input type="text" name="emp_name"></td>
 			</tr>
 			<tr>
 				<th>성별</th>
@@ -121,19 +111,19 @@
 			<tr>
 				<th>생년월일</th>
 				<td><input type="date" value="1990-01-01" name="emp_birth"
-					required="required"></td>
+					></td>
 			</tr>
 			<tr>
 				<th>이메일</th>
 				<td><input type="text" name="emp_email" id="emp_email"
-					required="required"> <span id="emp_check_email"
+					> <span id="emp_check_email"
 					style="display: none; font-size: .8em; padding-left: 10px; color: red;">유효성
 						검사 뜰 자리</span></td>
 			</tr>
 			<tr>
 				<th>연락처</th>
 				<td><input type="text" name="emp_tel" id="emp_tel"
-					required="required"> <span id="emp_check_tel"
+					> <span id="emp_check_tel"
 					style="display: none; font-size: .8em; padding-left: 10px; color: red;">유효성
 						검사 뜰 자리</span></td>
 			</tr>
@@ -162,26 +152,28 @@
 
 	<script type="text/javascript">
 		/* 아이디 중복확인 체크 */
-		
+
 		$("#emp_idck").click(function() {
-		    var id = $("#emp_id").val();
-		    if(id == ""){
-		        alert("아이디를 입력해 주십시오");
-		    }else{
-		    	chenkEmpId(emp_id);
-		    }    
+			var id = $("#emp_id").val();
+			if (id == "") {
+				alert("아이디를 입력해 주십시오");
+			} else {
+				chenkEmpId(emp_id);
+			}
 		})
-		
+
 		var isCheckId = 0;
 		function chenkEmpId() {
 			var emp_id = $("#emp_id").val();
 			console.log(emp_id);
-			
+
 			$.ajax({
 				async : false,
 				type : "POST",
 				url : "idcheck",
-				data : {emp_id: emp_id},
+				data : {
+					emp_id : emp_id
+				},
 				success : function(data) {
 					if (data == "S") {
 						alert("사용가능한 아이디입니다.");
@@ -291,8 +283,9 @@
 								console.log("유효성체크 하나요?");
 								$("#emp_check_email").css('display',
 										'inline-block');
-								$("#emp_check_email").text(
-										'grougle@emailAddress.com 형태로 작성 해주십시오.');
+								$("#emp_check_email")
+										.text(
+												'grougle@emailAddress.com 형태로 작성 해주십시오.');
 								$("#emp_check_email").css('font-size', '0.8em');
 								$("#emp_check_email").css('color', 'red');
 							} else {
@@ -337,7 +330,7 @@
 								$("#emp_check_tel").css('font-size', '1.2em');
 								$("#emp_check_tel").css('color', 'green');
 							}
-						});
+						});		
 	</script>
 
 </body>

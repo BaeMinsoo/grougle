@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <body>
-	<h1>Chatting Page (id: ${empId})</h1>
+	<h1>Chatting Page (id: ${loginSsInfo.emp_id})</h1>
 	<br>
 	<div>
 		<div>
@@ -13,16 +13,16 @@
     	<br>
     	<div class="well" id="chatdata">
     		<!-- User Session Info Hidden -->
-    		<input type="hidden" value='${empId}' id="sessionuserid">
+    		<input type="hidden" value='${loginSsInfo.emp_id}' id="sessionuserid">
     	</div>
 	</div>
 
 <script>
   $(document).ready(function(){
 
-    var username = $('#sessionuserid').val();;
+    var username = '${loginSsInfo.emp_id}';
 
-    console.log(username);
+    console.log("여기여기+"+username);
 
     var sockJs = new SockJS("/grougle/chat");
     //1. SockJS를 내부에 들고있는 stomp를 내어줌
@@ -34,6 +34,7 @@
     	console.log("STOMP Connection");
       //4. subscribe(path, callback)으로 메세지를 받을 수 있음
       	stomp.subscribe("/sub/chat/message/", function (chat) {
+      		console.log(chat);
         var content = JSON.parse(chat.body);
 
         var writer = content.ch_msgid;
@@ -60,13 +61,13 @@
       });
 
       //3. send(path, header, message)로 메세지를 보낼 수 있음
-      stomp.send('/pub/chat/enter', {}, JSON.stringify({msg_id: username}))
+      stomp.send('/pub/chat/enter', {}, JSON.stringify({ch_msgid: username}))
     });
 
     $("#sendBtn").on("click", function(e){
       var msg = document.getElementById("message");
 
-      console.log(username + ":" + msg.value);
+      console.log("여기여기여기"+username + ":" + msg.value);
       stomp.send('/pub/chat/message', {}, JSON.stringify({ch_msg: msg.value, ch_msgid: username}));
       msg.value = '';
     });

@@ -30,11 +30,11 @@
 	<aop:aspectj-autoproxy/>
 	
 	<!-- Websocket  -->
-	<websocket:handlers>
+	<!-- <websocket:handlers>
 		<websocket:mapping handler="echoHandler" path="/echo"/>
 		<websocket:sockjs />
 	</websocket:handlers>
 	
-	<beans:bean id="echoHandler" class="kh.spring.grougle.chat.common.EchoHandler"/>
+	<beans:bean id="echoHandler" class="kh.spring.grougle.chat.common.EchoHandler"/> -->
 	
 </beans:beans>

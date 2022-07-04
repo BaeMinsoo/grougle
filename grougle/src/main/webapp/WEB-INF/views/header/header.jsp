@@ -25,7 +25,7 @@
 		</div>
 		<div class="dashboard-setting user-notification">
 			<div class="dropdown">
-				<a class="dropdown-toggle no-arrow" href="<%=request.getContextPath() %>/chat/room" 
+				<a class="dropdown-toggle no-arrow" href="javascript:;" 
 					onclick="openNav()"><i class="micon dw dw-chat3"></i>
 				</a>
 			</div>
@@ -39,7 +39,7 @@
 				<div class="dropdown-menu dropdown-menu-right">
 					<div class="notification-list mx-h-350 customscroll">
 						<ul>
-							<li><a href="#"> <img src="/resources/vendors/images/img.jpg"
+							<li><a href="#"> <img src="<%=request.getContextPath() %>/resources/vendors/images/img.jpg"
 									alt="">
 									<h3>John Doe</h3>
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing
@@ -54,7 +54,7 @@
 			<div class="dropdown">
 				<a class="dropdown-toggle" href="#" role="button"
 					data-toggle="dropdown"> <span class="user-icon"> <img
-						src="/resources/vendors/images/photo8.jpg" alt="">
+						src="<%=request.getContextPath() %>/resources/vendors/images/photo8.jpg" alt="">
 				</span> <span class="user-name">ZIDANE</span>
 				</a>
 				<div

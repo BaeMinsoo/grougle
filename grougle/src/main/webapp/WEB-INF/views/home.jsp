@@ -75,23 +75,23 @@
 	<div class="main-container">	
 		
 		<c:if test="${login != null}">
-		<p>${employee.emp_name}´Ô ¹İ°©½À´Ï´Ù.</p>
-		<button id="logoutBtn" type="button" onclick="location.href='<%=request.getContextPath()%>/employee/logout'">·Î±×¾Æ¿ô </button>
+		<p>${employee.emp_name}ë‹˜ ë°˜ê°‘ìŠµë‹ˆë‹¤.</p>
+		<button id="logoutBtn" type="button" onclick="location.href='<%=request.getContextPath()%>/employee/logout'">ë¡œê·¸ì•„ì›ƒ </button>
 		</c:if>
 		<c:if test="${loginSsInfo == null}">
 		<div>
-		<button type="button"onclick="location.href='<%=request.getContextPath()%>/employee/login'">·Î±×ÀÎ</button>
-		<button type="button" onclick="location.href='<%=request.getContextPath()%>/employee/agreement'">È¸¿ø°¡ÀÔ</button>
+		<button type="button"onclick="location.href='<%=request.getContextPath()%>/employee/login'">ë¡œê·¸ì¸</button>
+		<button type="button" onclick="location.href='<%=request.getContextPath()%>/employee/agreement'">íšŒì›ê°€ì…</button>
 		</div>
 		</c:if>		
 		<c:if test="${not empty loginSsInfo}">
 			<div>
-				<p>${employee.emp_name}´Ô ¹İ°©½À´Ï´Ù.</p>
-				<button id="logoutBtn" type="button" onclick="location.href='<%=request.getContextPath()%>/employee/logout'">·Î±×¾Æ¿ô </button>
+				<p>${employee.emp_name}ë‹˜ ë°˜ê°‘ìŠµë‹ˆë‹¤.</p>
+				<button id="logoutBtn" type="button" onclick="location.href='<%=request.getContextPath()%>/employee/logout'">ë¡œê·¸ì•„ì›ƒ </button>
 			</div>
 		</c:if>
 		<c:if test="${msg == false}">
-			<p style="color: red;">¾ÆÀÌµğ³ª ÆĞ½º¿öµå°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.</p>
+			<p style="color: red;">ì•„ì´ë””ë‚˜ íŒ¨ìŠ¤ì›Œë“œê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.</p>
 		</c:if>
 	
 	dkdkfafeia;efjeaidkfjaeifjfaiefadfjeaikdfjeialkdfajeiadf;aei;fkadjfaiefajdfiaekfjdfiwekfajdfiefadfadf<br>

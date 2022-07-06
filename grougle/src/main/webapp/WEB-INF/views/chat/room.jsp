@@ -192,8 +192,10 @@
 						//stomp.send('/pub/chat/enter', {}, JSON.stringify({ch_msgid: username}))
 					});
 
-					// 채팅 여러개 쌓여서 스크롤 바 생길 때 자동으로 가장 하단으로 가기
-
+					$("#sendBtn").on("click", function(e){
+    					send();
+    				});
+					//엔터키 이벤트 등록
 					$("#message").keyup(function() {
 						if (window.event.keyCode == 13) {
 							send();
@@ -211,6 +213,7 @@
 						msg.value = '';
 					}
 
+					// 채팅 여러개 쌓여서 스크롤 바 생길 때 자동으로 가장 하단으로 가기
 					var offset = $("#chatdata").children().last().offset();
 					console.log(offset);
 					$("#chatdata").animate({

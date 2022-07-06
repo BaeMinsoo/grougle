@@ -2,7 +2,78 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<html>
+<head>
+<!-- Basic Page Info -->
+<meta charset="utf-8">
+<title>grougle</title>
 
+<!-- Mobile Specific Metas -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<!-- Google Font -->
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+	rel="stylesheet">
+<!-- CSS -->
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath() %>/resources/vendors/styles/core.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath() %>/resources/vendors/styles/icon-font.min.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath() %>/resources/src/plugins/datatables/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath() %>/resources/src/plugins/datatables/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath() %>/resources/vendors/styles/style.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath() %>/resources/css/chat/chat.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath() %>/resources/css/chat/chatlist.css">
+<link rel="stylesheet" 
+	href="<%=request.getContextPath() %>/resources/css/chat/css/bootstrap.css">
+	
+<!-- 채팅 -->
+<!-- <link href="https://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script> -->
+
+<!-- js -->
+<script src="<%=request.getContextPath() %>/resources/vendors/scripts/core.js"></script>
+<%-- <script src="<%=request.getContextPath() %>/resources/vendors/scripts/script.min.js"></script> --%>
+<script src="<%=request.getContextPath() %>/resources/vendors/scripts/process.js"></script>
+<script src="<%=request.getContextPath() %>/resources/vendors/scripts/layout-settings.js"></script>
+<script src="<%=request.getContextPath() %>/resources/js/chat-sidebar.js"></script>
+<script
+	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/jquery.dataTables.min.js"></script>
+<script
+	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/dataTables.bootstrap4.min.js"></script>
+<script
+	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/dataTables.responsive.min.js"></script>
+<script
+	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
+<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- <script src="https://code.jqeury.com/jquery-3.1.1.min.js"></script> -->    
+<script 
+	src="<%=request.getContextPath() %>/resources/css/chat/js/bootstrap.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async
+	src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() {
+		dataLayer.push(arguments);
+	}
+	gtag('js', new Date());
+
+	gtag('config', 'UA-119386393-1');
+</script>
+
+</head>
 <body>
 	<div class="ks-messages ks-messenger__messages">
 		<div class="ks-header">
@@ -149,4 +220,4 @@
 	</script>
 
 </body>
-
+</html>

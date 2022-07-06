@@ -74,6 +74,11 @@ ${loginSsInfo.emp_id}
     </div>
 </div>
 </div>
+<script>
+function openChatRoom() {
+	  window.open("${pageContext.request.contextPath}/chat/room","","width=320,height=400");
+	}
+</script>
 <!-- <script type="text/javascript">
 $(document).ready(function(){
     $('.jspContainer').jScrollPane();

@@ -23,8 +23,8 @@ public class ChatController {
 	@Autowired
 	private ChatServiceImpl service;
 	
-	@GetMapping("room")
-	public ModelAndView chat(ModelAndView mv,
+	@GetMapping("chatlist")
+	public ModelAndView chatList(ModelAndView mv,
 			HttpSession ss) {
 		System.out.println("사용자 아이디이이"+ss.getAttribute("loginSsInfo"));
 //		// ID 저장
@@ -37,4 +37,19 @@ public class ChatController {
 
 		return mv;
 	}
+	@GetMapping("room")
+	public ModelAndView chat(ModelAndView mv,
+			HttpSession ss) {
+		System.out.println("사용자 아이디이이"+ss.getAttribute("loginSsInfo"));
+//		// ID 저장
+//		Employee empInfo = (Employee)ss.getAttribute("loginSsINfo");
+//		String empId = empInfo.getEmp_id();
+//		
+//		// ID담기
+//		mv.addObject("empId", empId);
+		mv.setViewName("chat/room");
+		
+		return mv;
+	}
+	
 }

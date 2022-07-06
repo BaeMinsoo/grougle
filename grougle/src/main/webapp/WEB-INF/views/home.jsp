@@ -29,11 +29,19 @@
 	href="<%=request.getContextPath() %>/resources/vendors/styles/style.css">
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath() %>/resources/css/chat/chat.css">
-
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath() %>/resources/css/chat/chatlist.css">
+<link rel="stylesheet" 
+	href="<%=request.getContextPath() %>/resources/css/chat/css/bootstrap.css">
+	
+<!-- 채팅 -->
+<!-- <link href="https://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script> -->
 
 <!-- js -->
 <script src="<%=request.getContextPath() %>/resources/vendors/scripts/core.js"></script>
-<script src="<%=request.getContextPath() %>/resources/vendors/scripts/script.min.js"></script>
+<%-- <script src="<%=request.getContextPath() %>/resources/vendors/scripts/script.min.js"></script> --%>
 <script src="<%=request.getContextPath() %>/resources/vendors/scripts/process.js"></script>
 <script src="<%=request.getContextPath() %>/resources/vendors/scripts/layout-settings.js"></script>
 <script src="<%=request.getContextPath() %>/resources/js/chat-sidebar.js"></script>
@@ -45,9 +53,13 @@
 	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/dataTables.responsive.min.js"></script>
 <script
 	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
 <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
+<!-- <script src="https://code.jqeury.com/jquery-3.1.1.min.js"></script> -->    
+<script 
+	src="<%=request.getContextPath() %>/resources/css/chat/js/bootstrap.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async
 	src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>

@@ -62,3 +62,75 @@
   .chat-sidebar {padding-top: 15px;}
   .chat-sidebar a {font-size: 18px;}
 }
+/* 은진누나 css */
+.s_receive_chat {
+		background-color: lightblue;
+		margin-bottom: 5px;
+		border-radius: 10px;
+		width: 300px;
+		font-size: 1.2em;
+		margin-right: 70%;
+		float: left;
+		height: auto;
+		padding: 20px;
+		position: relative;
+		margin-left: 20px;
+		word-break: break-all;
+	}
+	
+	.s_receive_chat:after {
+		border-top: 15px solid lightblue;
+		border-left: 15px solid transparent;
+		border-right: 0px solid transparent;
+		border-bottom: 0px solid transparent;
+		content: "";
+		position: absolute;
+		top: 10px;
+		left: -15px;
+	}
+	
+	.s_sender_chat {
+		float: right;
+		margin-left: 70%;
+		background-color: antiquewhite;
+		margin-bottom: 5px;
+		border-radius: 10px;
+		width: 300px;
+		font-size: 1.2em;
+		height: auto;
+		padding: 20px;
+		position: relative;
+		margin-right: 20px;
+		word-break: break-all;
+	}
+	
+	.s_sender_chat:after {
+		border-top: 15px solid antiquewhite;
+		border-left: 0px solid transparent;
+		border-right: 15px solid transparent;
+		border-bottom: 0px solid transparent;
+		content: "";
+		position: absolute;
+		top: 10px;
+		right: -15px;
+	}
+	
+	.s_receive {
+		background: none;
+		font-weight: bold;
+		float: left;
+		margin-right: 70%;
+		height: 55px;
+		line-height: 70px;
+		margin-left: 20px;
+	}
+	
+	.s_sender {
+		background: none;
+		font-weight: bold;
+		float: right;
+		margin-left: 70%;
+		height: 55px;
+		line-height: 70px;
+		margin-right: 20px;
+	}

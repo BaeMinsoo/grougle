@@ -5,17 +5,10 @@
 <div id="chatNav" class="chat-sidebar">
 	<div class="sidebar-title">
 		<div class="header-search">
-			<form>
-				<div class="form-group">
-					<i class="dw dw-search2 search-icon"></i> <input type="text"
-						class="form-control search-input" placeholder="Search Here">
-				</div>
-			</form>
 			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 		</div>
 
 		<div class="sidebar-btn-group">
-			<a href="<%=request.getContextPath()%>/chat/room"></a>
 			<button class="tablink" onclick="openPage('EMP', this, '#6495ed')"
 				id="defaultOpen">EMP</button>
 			<button class="tablink"
@@ -26,7 +19,7 @@
 
 	<div class="customscroll">
 		<div id="EMP" class="tabcontent">
-			<jsp:include page="/WEB-INF/views/chat/room.jsp" flush="false" />
+			<jsp:include page="/WEB-INF/views/chat/chatlist.jsp" flush="false" />
 		</div>
 		<div id="PROJECT" class="tabcontent">
 			<h3>News</h3>

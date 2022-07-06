@@ -33,7 +33,7 @@ public class ChatController {
 //		
 //		// ID담기
 //		mv.addObject("empId", empId);
-		mv.setViewName("chat/room");
+		mv.setViewName("chat/chatlist");
 
 		return mv;
 	}

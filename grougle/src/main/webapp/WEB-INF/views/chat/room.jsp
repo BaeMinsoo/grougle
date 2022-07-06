@@ -1,157 +1,152 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>  
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <body>
-	<h1>Chatting Page (id: ${loginSsInfo.emp_id})</h1>
-	<br>
+	<div class="ks-messages ks-messenger__messages">
+		<div class="ks-header">
+			<div class="ks-description">
+				<div class="ks-name">
+					<!-- 채팅방 이름 불러오기 -->
+					Chat name
+				</div>
+				<div class="ks-amount">
+					<!-- 채팅방 인원 불러오기 -->
+					id: ${loginSsInfo.emp_id}
+				</div>
+				<div class="ks-search">
+                    <div class="input-icon icon-right icon icon-lg icon-color-primary">
+                        <input id="input-group-icon-text" type="text" class="form-control" placeholder="Search">
+                        <span class="icon-addon">
+                <span class="la la-search"></span>
+                        </span>
+                    </div>
+                </div>
+			</div>
+			<div class="ks-controls">
+				<div class="dropdown">
+					<button
+						class="btn btn-primary-outline ks-light ks-no-text ks-no-arrow"
+						type="button" id="dropdownMenuButton" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">
+						<span class="la la-ellipsis-h ks-icon"></span>
+					</button>
+					<div class="dropdown-menu dropdown-menu-right ks-simple"
+						aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="#"> <span
+							class="la la-user-plus ks-icon"></span> <span class="ks-text">
+								<!-- 사원추가 --> Add members
+						</span>
+						</a> <a class="dropdown-item" href="#"> <span
+							class="la la-trash-o ks-icon"></span> <span class="ks-text">
+								<!-- 채팅방 나가기 --> Delete
+						</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div>
 		<div>
-			<input type="text" id="message"/>
-    		<input type="button" id="sendBtn" value="전송"/>
-    	</div>
-    	<br>
-    	<div class="well" id="chatdata">
-    		<!-- User Session Info Hidden -->
-    		<input type="hidden" value='${loginSsInfo.emp_id}' id="sessionuserid">
-    	</div>
+			<input type="text" id="message" placeholder="내용을 입력해주세요" onkeyup="enterkey()" /> 
+			<input type="button" id="sendBtn" class="btn btn-primary" value="전송" />
+		</div>
+		<br>
+		<div class="well" id="chatdata">
+			<!-- User Session Info Hidden -->
+			<input type="hidden" value='${loginSsInfo.emp_id}' id="sessionuserid">
+		</div>
 	</div>
 
-<script>
-  $(document).ready(function(){
+	<script>
+		$(document).ready(
+				function() {
 
-    var username = '${loginSsInfo.emp_id}';
+					var username = '${loginSsInfo.emp_id}';
 
-    console.log("여기여기+"+username);
+					console.log("여기여기+" + username);
 
-    var sockJs = new SockJS("/grougle/chat");
-    //1. SockJS를 내부에 들고있는 stomp를 내어줌
-    var stomp = Stomp.over(sockJs);
-    console.log('여기는?');
-	
-	    //2. connection이 맺어지면 실행
-	  	stomp.connect({}, function (){
-    	console.log("STOMP Connection");
-      //4. subscribe(path, callback)으로 메세지를 받을 수 있음
-      	stomp.subscribe("/sub/chat/message/", function (chat) {
-      		console.log(chat);
-        var content = JSON.parse(chat.body);
+					var sockJs = new SockJS("/grougle/chat");
+					//1. SockJS를 내부에 들고있는 stomp를 내어줌
+					var stomp = Stomp.over(sockJs);
+					console.log('여기는?');
 
-        var writer = content.ch_msgid;
-        var message = content.ch_msg;
-        
-      //나와 상대방이 보낸 메세지를 구분하여 영역을 나눈다.//
-    	if(username == writer){
-    		var printHTML = "<div class='well'>";
-    		printHTML += "<div class='alert alert-info'>";
-    		printHTML += "<strong>["+writer+"] -> "+message+"</strong>";
-    		printHTML += "</div>";
-    		printHTML += "</div>";
-    		
-    		$("#chatdata").append(printHTML);
-    	} else{
-    		var printHTML = "<div class='well'>";
-    		printHTML += "<div class='alert alert-warning'>";
-    		printHTML += "<strong>["+writer+"] -> "+message+"</strong>";
-    		printHTML += "</div>";
-    		printHTML += "</div>";
-    		
-    		$("#chatdata").append(printHTML);
-    	}
-      });
+					//2. connection이 맺어지면 실행
+					stomp.connect({}, function() {
+						console.log("STOMP Connection");
+						//4. subscribe(path, callback)으로 메세지를 받을 수 있음
+						stomp.subscribe("/sub/chat/message/", function(chat) {
+							console.log(chat);
+							var content = JSON.parse(chat.body);
 
-      //3. send(path, header, message)로 메세지를 보낼 수 있음
-      stomp.send('/pub/chat/enter', {}, JSON.stringify({ch_msgid: username}))
-    });
+							var writer = content.ch_msgid;
+							var message = content.ch_msg;
 
-    $("#sendBtn").on("click", function(e){
-      var msg = document.getElementById("message");
+							//나와 상대방이 보낸 메세지를 구분하여 영역을 나눈다.//
+							if (username == writer) { // 보낸 사람의 경우
+								// 채팅 여러개 보내면 이름 안뜨게 하기
+								if ($("#chatdata").children().last().hasClass(
+										"s_sender_chat")) {
+									$("#chatdata").append(
+											'<div class="s_sender_chat">'
+													+ message + '</div>');
+								} else { // 하나면 이름 매번 뜨기
+									$("#chatdata").append(
+											'<div class="s_sender">' + writer
+													+ '</div>');
+									$("#chatdata").append(
+											'<div class="s_sender_chat">'
+													+ message + '</div>');
+								}
+							} else { // 받는 사람의 경우
+								if ($("#chatdata").children().last().hasClass(
+										"s_receive_chat")) {
+									$("#chatdata").append(
+											'<div class="s_receive_chat">'
+													+ message + '</div>');
+								} else {
+									$("#chatdata").append(
+											'<div class="s_receive">' + writer
+													+ '</div>');
+									$("#chatdata").append(
+											'<div class="s_receive_chat">'
+													+ message + '</div>');
+								}
+							}
+						});
 
-      console.log("여기여기여기"+username + ":" + msg.value);
-      stomp.send('/pub/chat/message', {}, JSON.stringify({ch_msg: msg.value, ch_msgid: username}));
-      msg.value = '';
-    });
-  });
-  
-//엔터키 이벤트 등록
-  function enterkey(){
-  	if (window.event.keyCode == 13) {
-      	// 엔터키가 눌렸을 때
-      	console.log('enter message...');
-      	sendMessage();
-  	}
-  }
-</script>
-	
-<!-- <script type="text/javascript">
-$(function(){
-	//websocket을 지정한 URL로 연결
-	sock= new SockJS("<c:url value="/echo"/>");
-	
-	//websocket 서버에서 메시지를 보내면 자동으로 실행된다.
-	sock.onmessage = onMessage;
-	//websocket 과 연결을 끊고 싶을때 실행하는 메소드
-	sock.onclose = onClose;
-});
-	
-$("#sendBtn").click(function(){
-	console.log('send message...');
-       sendMessage();
-   });	        
-	
-	
-function sendMessage(){      
-	//websocket으로 메시지를 보내겠다.
-  	sock.send($("#message").val());     
-}
-            
-//evt 파라미터는 websocket이 보내준 데이터다.
-function onMessage(evt){  //변수 안에 function자체를 넣음.
-	var data = evt.data;
-	var sessionid = null;
-	var message = null;
-	
-	//문자열을 splite//
-	var strArray = data.split('|');
-	
-	for(var i=0; i<strArray.length; i++){
-		console.log('str['+i+']: ' + strArray[i]);
-	}
-	
-	//current session id//
-	var currentuser_session = $('#sessionuserid').val();
-	console.log('current session id: ' + currentuser_session);
-	
-	sessionid = strArray[0]; //현재 메세지를 보낸 사람의 세션 등록//
-	message = strArray[1]; //현재 메세지를 저장//
-	
-	//나와 상대방이 보낸 메세지를 구분하여 영역을 나눈다.//
-	if(sessionid == currentuser_session){
-		var printHTML = "<div class='well'>";
-		printHTML += "<div class='alert alert-info'>";
-		printHTML += "<strong>["+sessionid+"] -> "+message+"</strong>";
-		printHTML += "</div>";
-		printHTML += "</div>";
-		
-		$("#chatdata").append(printHTML);
-	} else{
-		var printHTML = "<div class='well'>";
-		printHTML += "<div class='alert alert-warning'>";
-		printHTML += "<strong>["+sessionid+"] -> "+message+"</strong>";
-		printHTML += "</div>";
-		printHTML += "</div>";
-		
-		$("#chatdata").append(printHTML);
-	}
-	
-	console.log('chatting data: ' + data);
-	
-  	/* sock.close(); */
-  	
-}
-function onClose(evt){
-	$("#data").append("연결 끊김");
-}    
-</script> -->
+						//3. send(path, header, message)로 메세지를 보낼 수 있음
+						//stomp.send('/pub/chat/enter', {}, JSON.stringify({ch_msgid: username}))
+					});
+
+					// 채팅 여러개 쌓여서 스크롤 바 생길 때 자동으로 가장 하단으로 가기
+
+					$("#message").keyup(function() {
+						if (window.event.keyCode == 13) {
+							send();
+						}
+					})
+
+					function send() {
+						var msg = document.getElementById("message");
+
+						console.log(username + ":" + msg.value);
+						stomp.send('/pub/chat/message', {}, JSON.stringify({
+							ch_msg : msg.value,
+							ch_msgid : username
+						}));
+						msg.value = '';
+					}
+
+					var offset = $("#chatdata").children().last().offset();
+					console.log(offset);
+					$("#chatdata").animate({
+						scrollTop : 90000
+					}, 0);
+				});
+	</script>
+
 </body>
 

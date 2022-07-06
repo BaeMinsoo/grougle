@@ -23,7 +23,7 @@ ${loginSsInfo.emp_id}
                         <div class="jspPane" style="padding: 0px; top: 0px; width: 339px;">
                         	<ul class="ks-items">
                                 <li class="ks-item ks-active">
-                                    <a href="#">
+                                    <a class="dropdown-toggle no-arrow" href="javascript:;" onclick="openChatRoom()">
                                         <span class="ks-group-amount">3</span>
                                         <div class="ks-body">
                                             <div class="ks-name">
@@ -51,7 +51,7 @@ ${loginSsInfo.emp_id}
                                     </a>
                                 </li>
                                 <li class="ks-item">
-                                    <a href="#">
+                                    <a class="dropdown-toggle no-arrow" href="javascript:;" onclick="openChatRoom()">
                                         <span class="ks-avatar">
                                             <img src="https://bootdey.com/img/Content/avatar/avatar4.png" width="36" height="36">
                                             <span class="badge badge-pill badge-danger ks-badge ks-notify">7</span>
@@ -67,16 +67,29 @@ ${loginSsInfo.emp_id}
                                 </li>
                         	</ul>
                         </div>
+                        <div class="jspVerticalBar">
+                            <div class="jspCap jspCapTop"></div>
+                            <div class="jspTrack" style="height: 550px;">
+                                <div class="jspDrag" style="height: 261px;">
+                                    <div class="jspDragTop"></div>
+                                    <div class="jspDragBottom"></div>
+                                </div>
+                            </div>
+                            <div class="jspCap jspCapBottom"></div>
+                        </div>
                     </div>
                 </div>
         	</div>
+        	
+        	
         </div>
     </div>
 </div>
 </div>
 <script>
+/* 채팅창 열기(새로운 윈도우창) */
 function openChatRoom() {
-	  window.open("${pageContext.request.contextPath}/chat/room","","width=320,height=400");
+	  window.open("${pageContext.request.contextPath}/chat/room","","width=700,height=600");
 	}
 </script>
 <!-- <script type="text/javascript">

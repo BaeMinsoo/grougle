@@ -33,12 +33,7 @@
 	href="<%=request.getContextPath() %>/resources/css/chat/chatlist.css">
 <link rel="stylesheet" 
 	href="<%=request.getContextPath() %>/resources/css/chat/css/bootstrap.css">
-	
-<!-- 채팅 -->
-<!-- <link href="https://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script> -->
-
+  
 <!-- js -->
 <script src="<%=request.getContextPath() %>/resources/vendors/scripts/core.js"></script>
 <%-- <script src="<%=request.getContextPath() %>/resources/vendors/scripts/script.min.js"></script> --%>
@@ -53,11 +48,8 @@
 	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/dataTables.responsive.min.js"></script>
 <script
 	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
 <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- <script src="https://code.jqeury.com/jquery-3.1.1.min.js"></script> -->    
 <script 
 	src="<%=request.getContextPath() %>/resources/css/chat/js/bootstrap.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -75,61 +67,65 @@
 
 </head>
 <body>
-	<div class="ks-messages ks-messenger__messages">
-		<div class="ks-header">
-			<div class="ks-description">
-				<div class="ks-name">
-					<!-- 채팅방 이름 불러오기 -->
-					Chat name
-				</div>
-				<div class="ks-amount">
-					<!-- 채팅방 인원 불러오기 -->
-					id: ${loginSsInfo.emp_id}
-				</div>
-				<div class="ks-search">
-                    <div class="input-icon icon-right icon icon-lg icon-color-primary">
-                        <input id="input-group-icon-text" type="text" class="form-control" placeholder="Search">
-                        <span class="icon-addon">
-                <span class="la la-search"></span>
-                        </span>
-                    </div>
-                </div>
-			</div>
-			<div class="ks-controls">
-				<div class="dropdown">
-					<button
-						class="btn btn-primary-outline ks-light ks-no-text ks-no-arrow"
-						type="button" id="dropdownMenuButton" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false">
-						<span class="la la-ellipsis-h ks-icon"></span>
-					</button>
-					<div class="dropdown-menu dropdown-menu-right ks-simple"
-						aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="#"> <span
-							class="la la-user-plus ks-icon"></span> <span class="ks-text">
-								<!-- 사원추가 --> Add members
-						</span>
-						</a> <a class="dropdown-item" href="#"> <span
-							class="la la-trash-o ks-icon"></span> <span class="ks-text">
-								<!-- 채팅방 나가기 --> Delete
-						</span>
-						</a>
+<div class="container">
+<div class="ks-page-content">
+	<div class="ks-page-content-body">
+		<div class="ks-messenger">
+			<div class="ks-messages ks-messenger__messages">
+				<div class="ks-header">
+					<div class="ks-description">
+						<div class="ks-name"><!-- 채팅방 이름 불러오기 -->Chat name</div>
+						<div class="ks-amount"><!-- 채팅방 인원 불러오기 -->id: ${loginSsInfo.emp_id}	</div>
+					</div>
+					<div class="ks-controls">
+						<div class="dropdown">
+							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="<%=request.getContextPath() %>/resources/css/chat/gear_icon.svg">
+                                <!-- <span class="la la-ellipsis-h ks-icon"></span> -->
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right ks-simple" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">
+                                    <span class="la la-user-plus ks-icon"></span>
+                                    <span class="ks-text">Add members</span>
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <span class="la la-trash-o ks-icon"></span>
+                                    <span class="ks-text">Delete</span>
+                                </a>
+                            </div>
+						</div>
 					</div>
 				</div>
+				<!-- 채팅내용 -->
+				<div class="ks-body ks-scrollable jspScrollable"
+					data-auto-height="" data-reduce-height=".ks-footer"	data-fix-height="32"
+					style="height: 480px; overflow: hidden; padding: 0px; width: 100%;" tabindex="0">
+					<div class="jspContainer" style="width: 100%; height: 501px;">
+						<div class="jspPane" style="padding: 0px; top: 0px; width: 99%;">
+							<div class="well" id="chatdata" style="height: 700px; overflow: auto;">
+								<!-- User Session Info Hidden -->
+								<input type="hidden" value='${loginSsInfo.emp_id}'
+									id="sessionuserid">
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 입력창 -->
+				<div class="ks-footer">
+					<div class="ks-controls" style="margin-top: 10px;display: contents; justify-content: center;">
+						<div style="width: 100%">
+						<input style="width:89%; height:50px; display: inline-block;" type="text" id="message" placeholder="내용을 입력해주세요"	onkeyup="enterkey()" /> 
+						<input style="width:9%; height:50px; margin-left: 10px" type="button" id="sendBtn" class="btn btn-primary" value="Send" />
+						</div>
+					</div>
+				</div>
+				
+				
 			</div>
 		</div>
 	</div>
-	<div>
-		<div>
-			<input type="text" id="message" placeholder="내용을 입력해주세요" onkeyup="enterkey()" /> 
-			<input type="button" id="sendBtn" class="btn btn-primary" value="전송" />
-		</div>
-		<br>
-		<div class="well" id="chatdata">
-			<!-- User Session Info Hidden -->
-			<input type="hidden" value='${loginSsInfo.emp_id}' id="sessionuserid">
-		</div>
-	</div>
+</div>
+</div>
 
 	<script>
 		$(document).ready(
@@ -158,34 +154,27 @@
 							//나와 상대방이 보낸 메세지를 구분하여 영역을 나눈다.//
 							if (username == writer) { // 보낸 사람의 경우
 								// 채팅 여러개 보내면 이름 안뜨게 하기
-								if ($("#chatdata").children().last().hasClass(
-										"s_sender_chat")) {
-									$("#chatdata").append(
-											'<div class="s_sender_chat">'
-													+ message + '</div>');
+								if ($("#chatdata").children().last().hasClass("s_sender_chat")) {
+									$("#chatdata").append('<div class="s_sender_chat">'	+ message + '</div>');
 								} else { // 하나면 이름 매번 뜨기
-									$("#chatdata").append(
-											'<div class="s_sender">' + writer
-													+ '</div>');
-									$("#chatdata").append(
-											'<div class="s_sender_chat">'
-													+ message + '</div>');
+									$("#chatdata").append('<div class="s_sender">' + writer	+ '</div>');
+									$("#chatdata").append('<div class="s_sender_chat">'	+ message + '</div>');
 								}
 							} else { // 받는 사람의 경우
-								if ($("#chatdata").children().last().hasClass(
-										"s_receive_chat")) {
-									$("#chatdata").append(
-											'<div class="s_receive_chat">'
-													+ message + '</div>');
+								if ($("#chatdata").children().last().hasClass("s_receive_chat")) {
+									$("#chatdata").append('<div class="s_receive_chat">' + message + '</div>');
 								} else {
-									$("#chatdata").append(
-											'<div class="s_receive">' + writer
-													+ '</div>');
-									$("#chatdata").append(
-											'<div class="s_receive_chat">'
-													+ message + '</div>');
+									$("#chatdata").append('<div class="s_receive">' + writer + '</div>');
+									$("#chatdata").append('<div class="s_receive_chat">' + message + '</div>');
 								}
 							}
+							
+							// 채팅 여러개 쌓여서 스크롤 바 생길 때 자동으로 가장 하단으로 가기
+							var offset = $("#chatdata").children().last().offset();
+							console.log(offset);
+							$("#chatdata").animate({
+								scrollTop : 90000
+							}, 0);
 						});
 
 						//3. send(path, header, message)로 메세지를 보낼 수 있음
@@ -213,12 +202,6 @@
 						msg.value = '';
 					}
 
-					// 채팅 여러개 쌓여서 스크롤 바 생길 때 자동으로 가장 하단으로 가기
-					var offset = $("#chatdata").children().last().offset();
-					console.log(offset);
-					$("#chatdata").animate({
-						scrollTop : 90000
-					}, 0);
 				});
 	</script>
 

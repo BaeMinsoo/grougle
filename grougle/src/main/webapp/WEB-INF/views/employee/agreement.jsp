@@ -13,13 +13,17 @@
 <title>약관동의</title>
 </head>
 <body>
+
+	<ul class="join_step">
+		<li class="on"><strong>1</strong> <span>약관동의</span></li>
+		<li><strong>2</strong> <span>사원정보</span></li>
+		<li><strong>3</strong> <span>신청완료</span></li>
+	</ul>
 	<form action="<%=request.getContextPath()%>/employee/join" name="form"
 		method="post">
-		<table width="1400" height="650">
-			<tr>
-				<td width="100%" height="10%"><span style="padding-left: 160px"><img
-						src="" width="290" height="100"
-						border="0" align="middle"></span>&nbsp; <b>안녕하세요</b> <br>
+		<table width="1400" height="650">		
+			<tr>			
+				<td width="100%" height="10%"><span style="padding-left: 160px"></span>&nbsp; <b>안녕하세요</b> <br>
 					<hr></td>
 			</tr>
 			<tr>
@@ -95,14 +99,10 @@
 				<td width="100%" height="50%" align="center">
 					<p align="left"></p> <br>
 			<tr>
-				<td align="center" valign="top"><input type="button" value="동의"
-					onclick="chk('<%=request.getContextPath()%>')" />&nbsp;&nbsp;&nbsp; <input type="button"
-					value="동의하지 않습니다" onclick="nochk('<%=request.getContextPath()%>')" /> 
-					<%-- 절대경로를 매개인자 처럼 사용해서 이동하는 방법*
-					<button type="button" onclick="location.href='<%=request.getContextPath()%>/employee/join'">동의</button>
-					&nbsp;&nbsp;&nbsp;
-					<input type="button" value="동의하지 않습니다" onclick="<%=request.getContextPath()%>'" /> 
-					--%>
+				<td align="center" valign="top"><input type="button" 
+				value="동의" onclick="chk('<%=request.getContextPath()%>')" />
+				<input type="button" value="동의하지 않습니다" onclick="nochk('<%=request.getContextPath()%>/employee/login')" /> 
+				
 				</td>
 			</tr>
 		</table>

@@ -12,6 +12,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
 	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
 	crossorigin="anonymous"></script>
+<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.min.js"></script>
 <!-- CSS -->
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/resources/css/join/join.css">
@@ -45,7 +46,8 @@
 		<li><strong>3</strong> <span>신청완료</span></li>
 	</ul>
 
-	<form action="<%=request.getContextPath()%>/employee/joindo" method="post">
+	<form id="join" action="<%=request.getContextPath()%>/employee/joindo"
+		method="post">
 		<table>
 			<tr>
 				<th>사원번호</th>
@@ -78,26 +80,24 @@
 			</tr>
 			<tr>
 				<th>패스워드</th>
-				<td><input type="password" id="emp_pwd" name="emp_pwd"
-					></td>
+				<td><input type="password" id="emp_pwd" name="emp_pwd"></td>
 			</tr>
 
 			<tr>
 				<th>패스워드 확인</th>
-				<td><input type="password" id="emp_pwdck" name="emp_pwd_check"
-					> <span id="emp_pwd_check"
-					style="display: none;"></span></td>
+				<td><input type="password" id="emp_pwdck" name="emp_pwd_check">
+					<span id="emp_pwd_check" style="display: none;"></span></td>
 			</tr>
 
 			<tr>
 				<th>사진등록</th>
-				<td><input type="text" name="emp_original_filename"
-					></td>
+				<td><input type="hidden" role="uploadcare-uploader"
+					name="emp_original_filename" /></td>
 			</tr>
 
 			<tr>
 				<th>이름</th>
-				<td><input type="text" name="emp_name"></td>
+				<td><input type="text" name="emp_name" id="emp_name"></td>
 			</tr>
 			<tr>
 				<th>성별</th>
@@ -110,20 +110,19 @@
 			</tr>
 			<tr>
 				<th>생년월일</th>
-				<td><input type="date" value="1990-01-01" name="emp_birth"
-					></td>
+				<td><input type="date" value="1990-01-01" name="emp_birth"></td>
 			</tr>
 			<tr>
 				<th>이메일</th>
-				<td><input type="text" name="emp_email" id="emp_email"
-					> <span id="emp_check_email"
+				<td><input type="text" name="emp_email" id="emp_email">
+					<span id="emp_check_email"
 					style="display: none; font-size: .8em; padding-left: 10px; color: red;">유효성
 						검사 뜰 자리</span></td>
 			</tr>
 			<tr>
 				<th>연락처</th>
-				<td><input type="text" name="emp_tel" id="emp_tel"
-					> <span id="emp_check_tel"
+				<td><input type="text" name="emp_tel" id="emp_tel">
+					<span id="emp_check_tel"
 					style="display: none; font-size: .8em; padding-left: 10px; color: red;">유효성
 						검사 뜰 자리</span></td>
 			</tr>
@@ -147,7 +146,10 @@
 				</td>
 			</tr>
 		</table>
-		<button type="submit">회원가입</button>
+		<button type="button" onclick="fnSubmit(); return false;">회원가입</button>
+		<button  type="button"
+					onclick="location.href='<%=request.getContextPath()%>/employee/login'">취소</button>
+
 	</form>
 
 	<script type="text/javascript">
@@ -330,7 +332,76 @@
 								$("#emp_check_tel").css('font-size', '1.2em');
 								$("#emp_check_tel").css('color', 'green');
 							}
-						});		
+						});
+	</script>
+
+
+	<script>
+		$(document).ready(function() {
+
+		});
+
+		function fnSubmit() {
+
+			var email_rule = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+			// var tel_rule = /^\d{2,3}-\d{3,4}-\d{4}$/; 전화번호용
+
+			if ($("#emp_id").val() == null || $("#emp_id").val() == "") {
+				alert("아이디를 입력해주세요.");
+				$("#emp_id").focus();
+
+				return false;
+			}
+
+			if ($("#emp_idck").val() != 'S') {
+				alert("아이디 중복체크를 눌러주세요.");
+				$("#emp_idck").focus();
+
+				return false;
+			}
+
+			if ($("#emp_pwd").val() == null || $("#emp_pwd").val() == "") {
+				alert("비밀번호를 입력해주세요.");
+				$("#emp_pwd").focus();
+
+				return false;
+			}
+
+			if ($("#emp_pwdck").val() == null || $("#emp_pwdck").val() == "") {
+				alert("비밀번호 확인을 입력해주세요.");
+				$("#emp_pwdck").focus();
+
+				return false;
+			}
+
+			if ($("#emp_name").val() == null || $("#emp_name").val() == "") {
+				alert("이름을 입력해주세요.");
+				$("#emp_name").focus();
+
+				return false;
+			}
+
+			if ($("#emp_mail").val() == null || $("#emp_mail").val() == "") {
+				alert("이메일을 입력해주세요.");
+				$("#emp_mail").focus();
+
+				return false;
+			}
+
+			if (confirm("회원가입하시겠습니까?")) {
+
+				$("#join").submit();
+
+				return false;
+			}
+		}
+	</script>
+
+
+
+	<script>
+		UPLOADCARE_PUBLIC_KEY = "3aa32830c381251bd485"
+		UPLOADCARE_TABS = "file camera url facebook gdrive gphotos"
 	</script>
 
 </body>

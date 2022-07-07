@@ -1,15 +1,20 @@
 package kh.spring.grougle.employee.controller;
 
+import java.util.Date;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.util.WebUtils;
 
 import kh.spring.grougle.employee.domain.Employee;
 import kh.spring.grougle.employee.model.service.EmployeeService;
@@ -25,6 +32,8 @@ import kh.spring.grougle.employee.model.service.EmployeeService;
 @Controller
 @RequestMapping("/employee")
 public class EmployeeController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
 	@Autowired
 	private EmployeeService service;
@@ -32,11 +41,10 @@ public class EmployeeController {
 	// 회원가입 GET
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public void insertEmployee() {
-//		logger.info("get join");
 	}
 
 	// 회원가입 POST
-	@RequestMapping(value = "/join", method = RequestMethod.POST)
+	@RequestMapping(value = "/joindo", method = RequestMethod.POST)
 	public String insertEmployee(ModelAndView mv, Employee emp) {
 		service.insertEmployee(emp);
 		mv.setViewName("redirect:/joindo");
@@ -66,19 +74,34 @@ public class EmployeeController {
 		return empIdcheck;
 	}
 
-	// 로그인 & 아웃
+	// 로그인 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String empLogin() {
+	public String empLogin(
+			@ModelAttribute("Employee")Employee emp,
+			HttpServletRequest request,
+			Model model) {
+		logger.info("login");
+		
+		Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
+		if(null != inputFlashMap) {
+			model.addAttribute("msg",(String) inputFlashMap.get("msg"));
+		}
 		return "employee/login";
 	}
+		
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String empLogin(Employee emp, @RequestParam("emp_id") String id, @RequestParam("emp_pwd") String pwd,
-			HttpServletRequest req, RedirectAttributes rttr) throws Exception {
-//		Logger.info("post login");
+	public String empLogin(
+			@ModelAttribute("Employee") Employee emp
+			, HttpServletRequest req
+			, HttpSession httpSession
+			, RedirectAttributes rttr
+			, Model model) throws Exception {
+		logger.info("loginVO"+emp.getEmp_id());
 
 		HttpSession session = req.getSession();
 		Employee login = service.empLogin(emp);
+		logger.info("Pw"+ emp);
 
 		if (login == null) {
 			session.setAttribute("loginSsInfo", null);
@@ -86,17 +109,38 @@ public class EmployeeController {
 		} else {
 			session.setAttribute("loginSsInfo", login);
 		}
+		System.out.println("loginSsInfo 로그인 접속:" +login);
 		return "redirect:/";
 	}
-
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String empLogout(HttpSession session) throws Exception {
-
-		session.invalidate();
-
-		return "redirect:/";
+			
+	//로그아웃
+	@RequestMapping(value="/logout" , method=RequestMethod.GET)
+	public String empLogout(
+			HttpServletRequest request
+			,  HttpSession session
+			, HttpServletResponse response
+			,ModelMap model)throws Exception{
+		logger.info("logout");
+		
+		Object URL = session.getAttribute("URL");
+		Object object = session.getAttribute("login");
+		if(object != null) {
+			Employee emp = (Employee) object;
+			session.removeAttribute("login");
+			session.invalidate();
+			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+			if(loginCookie != null) {
+				loginCookie.setPath("/");
+				loginCookie.setMaxAge(0);
+				response.addCookie(loginCookie);
+				service.keepLogin(emp.getEmp_id(),"none",new Date());
+				
+			}
+		}
+		logger.info("URL"+ URL);
+		 String requestURL = "/";		
+		return "redirect:"+requestURL;		
 	}
-
 	// 아이디 찾기 폼
 	@RequestMapping(value = "/findId_form")
 	public String findId() throws Exception {
@@ -132,6 +176,7 @@ public class EmployeeController {
 	String hostSMTPid = "91desperado@naver.com"; // 본인의 아이디 입력
 	String hostSMTPpwd = "c8980c8980d"; // 비밀번호 입력
 
+	
 	// 보내는 사람 EMail, 제목, 내용
 	String fromEmail = "dnwls.KH@google.com"; // 보내는 사람 email
 	String fromName = "Grougle"; // 보내는 사람 이름

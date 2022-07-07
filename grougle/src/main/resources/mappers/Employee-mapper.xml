@@ -11,13 +11,14 @@
  
  	<!-- 아이디 중복체크 -->
 	<select id="empIdcheck" parameterType="string" resultType="int">
-		SELECT COUNT(*) FROM employee
+		SELECT COUNT(*) 
+		FROM employee
 		WHERE emp_id = #{emp_id}
 	</select>
 	
 	<!-- 로그인 -->
 	<select id="empLogin" parameterType="string" resultType="Emp">
-		select emp_id, emp_pwd, emp_name
+		select emp_name, emp_id, emp_pwd
 		from employee
 		where emp_id = #{emp_id}
 		and emp_pwd = #{emp_pwd}
@@ -25,7 +26,8 @@
 	
 	<!-- 아이디 찾기 -->
 	<select id="findId" parameterType="string" resultType="String">
-		select emp_id from employee 
+		select emp_id 
+		from employee 
 		where emp_email = #{emp_email}
 	</select>
 	

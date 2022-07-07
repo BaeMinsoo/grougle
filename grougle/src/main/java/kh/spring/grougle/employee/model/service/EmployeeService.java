@@ -1,6 +1,7 @@
 package kh.spring.grougle.employee.model.service;
 
 import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,7 +26,7 @@ public class EmployeeService {
 		int idCnt = dao.empIdcheck(emp_id);
 		return idCnt;
 	}
-
+	//로그인
 	public Employee empLogin(Employee emp) throws Exception {
 		return dao.empLogin(emp);
 	}
@@ -143,9 +144,23 @@ public class EmployeeService {
         	System.out.println("메일발송 실패 : " + e);
         }
     }
-		
-		
-		
+
+	public void keepLogin(String emp_id, String string, Date date) {
+		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
 

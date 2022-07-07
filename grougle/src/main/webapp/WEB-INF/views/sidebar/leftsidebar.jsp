@@ -48,7 +48,7 @@
 						</ul>
 					</li>
 					<li>
-						<a onclick="location.href='<%=request.getContextPath()%>/calendar/calendar'" class="dropdown-toggle no-arrow">
+						<a onclick="location.href='<%=request.getContextPath()%>/calendar/calendar'" class="dropdown-toggle no-arrow" style="cursor: pointer;">
 							<span class="micon dw dw-calendar1"></span><span class="mtext">일정관리</span>
 						</a>
 					</li>
@@ -78,10 +78,8 @@
 							<span class="micon dw dw-right-arrow1"></span><span class="mtext">근태관리</span>
 						</a>
 						<ul class="submenu">
-							<li><a href="video-player.html">Video Player</a></li>
-							<li><a href="login.html">Login</a></li>
-							<li><a href="forgot-password.html">Forgot Password</a></li>
-							<li><a href="reset-password.html">Reset Password</a></li>
+							<li><a onclick="location.href='<%=request.getContextPath()%>/attendance/attendance'">근태</a></li>
+							<li><a href="login.html">연차</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">

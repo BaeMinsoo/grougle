@@ -19,139 +19,135 @@ public class Calendar {
 			`SCD_PLACE`	VARCHAR2(100)	NULL,
 			`EMP_NO`	NUMBER	NOT NULL	COMMENT '년도4자리+부서번호2자리+가입순서 3자리(000~)'
 		);*/
-	private int scdNo;
-	private String scdWriter;
-	private Timestamp scdWriteDate;
-	private Timestamp scdUpdateDate;
-	private String scdType;
-	private String scdName;
-	private String scdDate;
-	private String scdTime;
-	private String scdContent;
-	private String scdPlace;
-	private int empNo;
+	private int scd_no;
+	private String scd_writer;
+	private Timestamp scd_writeDate;
+	private Timestamp scd_updateDate;
+	private String scd_type;
+	private String scd_name;
+	private String scd_date;
+	private String scd_time;
+	private String scd_content;
+	private String scd_place;
+	private int emp_no;
 	
 	
 	@Override
 	public String toString() {
-		return "Calendar [scdNo=" + scdNo + ", scdWriter=" + scdWriter + ", scdWriteDate=" + scdWriteDate
-				+ ", scdUpdateDate=" + scdUpdateDate + ", scdType=" + scdType + ", scdName=" + scdName + ", scdDate="
-				+ scdDate + ", scdTime=" + scdTime + ", scdContent=" + scdContent + ", scdPlace=" + scdPlace
-				+ ", empNo=" + empNo + "]";
+		return "Calendar [scd_no=" + scd_no + ", scd_writer=" + scd_writer + ", scd_writeDate=" + scd_writeDate
+				+ ", scd_updateDate=" + scd_updateDate + ", scd_type=" + scd_type + ", scd_name=" + scd_name
+				+ ", scd_date=" + scd_date + ", scd_time=" + scd_time + ", scd_content=" + scd_content + ", scd_place="
+				+ scd_place + ", emp_no=" + emp_no + "]";
 	}
 
 
-	public int getScdNo() {
-		return scdNo;
+	public int getScd_no() {
+		return scd_no;
 	}
 
 
-	public void setScdNo(int scdNo) {
-		this.scdNo = scdNo;
+	public void setScd_no(int scd_no) {
+		this.scd_no = scd_no;
 	}
 
 
-	public String getScdWriter() {
-		return scdWriter;
+	public String getScd_writer() {
+		return scd_writer;
 	}
 
 
-	public void setScdWriter(String scdWriter) {
-		this.scdWriter = scdWriter;
+	public void setScd_writer(String scd_writer) {
+		this.scd_writer = scd_writer;
 	}
 
 
-	public Timestamp getScdWriteDate() {
-		return scdWriteDate;
+	public Timestamp getScd_writeDate() {
+		return scd_writeDate;
 	}
 
 
-	public void setScdWriteDate(Timestamp scdWriteDate) {
-		this.scdWriteDate = scdWriteDate;
+	public void setScd_writeDate(Timestamp scd_writeDate) {
+		this.scd_writeDate = scd_writeDate;
 	}
 
 
-	public Timestamp getScdUpdateDate() {
-		return scdUpdateDate;
+	public Timestamp getScd_updateDate() {
+		return scd_updateDate;
 	}
 
 
-	public void setScdUpdateDate(Timestamp scdUpdateDate) {
-		this.scdUpdateDate = scdUpdateDate;
+	public void setScd_updateDate(Timestamp scd_updateDate) {
+		this.scd_updateDate = scd_updateDate;
 	}
 
 
-	public String getScdType() {
-		return scdType;
+	public String getScd_type() {
+		return scd_type;
 	}
 
 
-	public void setScdType(String scdType) {
-		this.scdType = scdType;
+	public void setScd_type(String scd_type) {
+		this.scd_type = scd_type;
 	}
 
 
-	public String getScdName() {
-		return scdName;
+	public String getScd_name() {
+		return scd_name;
 	}
 
 
-	public void setScdName(String scdName) {
-		this.scdName = scdName;
+	public void setScd_name(String scd_name) {
+		this.scd_name = scd_name;
 	}
 
 
-	public String getScdDate() {
-		return scdDate;
+	public String getScd_date() {
+		return scd_date;
 	}
 
 
-	public void setScdDate(String scdDate) {
-		this.scdDate = scdDate;
+	public void setScd_date(String scd_date) {
+		this.scd_date = scd_date;
 	}
 
 
-	public String getScdTime() {
-		return scdTime;
+	public String getScd_time() {
+		return scd_time;
 	}
 
 
-	public void setScdTime(String scdTime) {
-		this.scdTime = scdTime;
+	public void setScd_time(String scd_time) {
+		this.scd_time = scd_time;
 	}
 
 
-	public String getScdContent() {
-		return scdContent;
+	public String getScd_content() {
+		return scd_content;
 	}
 
 
-	public void setScdContent(String scdContent) {
-		this.scdContent = scdContent;
+	public void setScd_content(String scd_content) {
+		this.scd_content = scd_content;
 	}
 
 
-	public String getScdPlace() {
-		return scdPlace;
+	public String getScd_place() {
+		return scd_place;
 	}
 
 
-	public void setScdPlace(String scdPlace) {
-		this.scdPlace = scdPlace;
+	public void setScd_place(String scd_place) {
+		this.scd_place = scd_place;
 	}
 
 
-	public int getEmpNo() {
-		return empNo;
+	public int getEmp_no() {
+		return emp_no;
 	}
 
 
-	public void setEmpNo(int empNo) {
-		this.empNo = empNo;
+	public void setEmp_no(int emp_no) {
+		this.emp_no = emp_no;
 	}
-	
-	
-	
-	
-	
+
 }

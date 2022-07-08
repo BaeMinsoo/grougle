@@ -240,7 +240,7 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>5.3.3.RELEASE</version>
+			<version>${org.springframework-security-version}</version>
 		</dependency>
 		
 		<!-- 이메일보내기  -->

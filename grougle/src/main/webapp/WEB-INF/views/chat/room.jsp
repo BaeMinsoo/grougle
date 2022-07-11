@@ -31,8 +31,6 @@
 	href="<%=request.getContextPath() %>/resources/css/chat/chat.css">
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath() %>/resources/css/chat/chatlist.css">
-<link rel="stylesheet" 
-	href="<%=request.getContextPath() %>/resources/css/chat/css/bootstrap.css">
   
 <!-- js -->
 <script src="<%=request.getContextPath() %>/resources/vendors/scripts/core.js"></script>
@@ -50,8 +48,6 @@
 	src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script 
-	src="<%=request.getContextPath() %>/resources/css/chat/js/bootstrap.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async
 	src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
@@ -74,14 +70,15 @@
 			<div class="ks-messages ks-messenger__messages">
 				<div class="ks-header">
 					<div class="ks-description">
-						<div class="ks-name"><!-- 채팅방 이름 불러오기 -->Chat name</div>
-						<div class="ks-amount"><!-- 채팅방 인원 불러오기 -->id: ${loginSsInfo.emp_id}	</div>
+						<div class="ks-name"><!-- 채팅방 이름 불러오기 -->Chat name: ${chatMember[0].RM_NAME}</div>
+						<c:forEach items="${chatMember}" var="item">
+							<div style="float:left; margin-right:5px;" class="ks-amount">${item.EMP_ID}</div>
+						</c:forEach>
 					</div>
-					<div class="ks-controls">
+					<div style="claer:both;" class="ks-controls">
 						<div class="dropdown">
 							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="<%=request.getContextPath() %>/resources/css/chat/gear_icon.svg">
-                                <!-- <span class="la la-ellipsis-h ks-icon"></span> -->
                             </button>
                             <div class="dropdown-menu dropdown-menu-right ks-simple" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="#">
@@ -114,7 +111,7 @@
 				<div class="ks-footer">
 					<div class="ks-controls" style="margin-top: 10px;display: contents; justify-content: center;">
 						<div style="width: 100%">
-						<input style="width:89%; height:50px; display: inline-block;" type="text" id="message" placeholder="내용을 입력해주세요"	onkeyup="enterkey()" /> 
+						<input style="width:89%; height:50px; display: inline-block;" type="text" id="message" placeholder="내용을 입력해주세요" /> 
 						<input style="width:9%; height:50px; margin-left: 10px" type="button" id="sendBtn" class="btn btn-primary" value="Send" />
 						</div>
 					</div>

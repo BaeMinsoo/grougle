@@ -22,7 +22,24 @@ ${loginSsInfo.emp_id}
                 	<div class="jspContainer" style="width: 339px; height: 550px;">
                         <div class="jspPane" style="padding: 0px; top: 0px; width: 339px;">
                         	<ul class="ks-items">
-                                <li class="ks-item ks-active">
+                        		
+								<%--<li class="ks-item">
+                                    <a class="dropdown-toggle no-arrow" href="javascript:;" onclick="openChatRoom()">
+                                        <span class="ks-avatar">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" width="36" height="36">
+                                        </span>
+                                        <div class="ks-body">
+                                        	
+                                             <div class="ks-name">
+                                                ${chatList.rm_name}
+                                                <span class="ks-datetime">${list. }</span>
+                                            </div> 
+                                            <div class="ks-message">Why didn't he come and talk to me himse...</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                --%>
+                                <!-- <li class="ks-item ks-active">
                                     <a class="dropdown-toggle no-arrow" href="javascript:;" onclick="openChatRoom()">
                                         <span class="ks-group-amount">3</span>
                                         <div class="ks-body">
@@ -33,20 +50,6 @@ ${loginSsInfo.emp_id}
                                             <div class="ks-message">
                                                 <img src="https://bootdey.com/img/Content/avatar/avatar1.png" width="18" height="18" class="rounded-circle"> The weird future of movie theater food
                                             </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="ks-item">
-                                    <a class="dropdown-toggle no-arrow" href="javascript:;" onclick="openChatRoom()">
-                                        <span class="ks-avatar">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" width="36" height="36">
-                                        </span>
-                                        <div class="ks-body">
-                                            <div class="ks-name">
-                                                Zidane
-                                                <span class="ks-datetime">just now</span>
-                                            </div>
-                                            <div class="ks-message">Why didn't he come and talk to me himse...</div>
                                         </div>
                                     </a>
                                 </li>
@@ -64,7 +67,7 @@ ${loginSsInfo.emp_id}
                                             <div class="ks-message">Why didn't he come and talk to me himse...</div>
                                         </div>
                                     </a>
-                                </li>
+                                </li> -->
                         	</ul>
                         </div>
                         <div class="jspVerticalBar">
@@ -87,9 +90,9 @@ ${loginSsInfo.emp_id}
 </div>
 </div>
 <script>
-/* √§∆√√¢ ø≠±‚(ªı∑ŒøÓ ¿©µµøÏ√¢) */
-function openChatRoom() {
-	  window.open("${pageContext.request.contextPath}/chat/room","","width=700,height=600");
+/* Ï±ÑÌåÖÏ∞Ω Ïó¥Í∏∞(ÏÉàÎ°úÏö¥ ÏúàÎèÑÏö∞Ï∞Ω) */
+function openChatRoom(rm_id) {
+	  window.open("${pageContext.request.contextPath}/chat/room?rm_id="+rm_id,"","width=700,height=600");
 	}
 </script>
 <!-- <script type="text/javascript">

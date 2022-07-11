@@ -8,24 +8,26 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kh.spring.grougle.chat.domain.ChatRoom;
+
 @Repository
 public class ChatDao {
 	@Autowired
 	private SqlSession sqlsession;
+	private Map<String, ChatRoom> chatRoomMap;
 	
-	public List<Map<String, Object>> selectAllRooms(String userId) {
-		return sqlsession.selectList("Messenger.selectAllRooms", userId);
+//	// 채팅방 리스트
+//	public List<Map<String, Object>> selectAllRooms(String emp_id, String emp_no) {
+//		return sqlsession.selectList("Messenger.selectAllRooms", emp_id);
+//	}
+	// 채팅방 리스트
+	public List<Map<String, Object>> selectAllRooms(String emp_no) {
+		return sqlsession.selectList("Chat.selectAllRooms", emp_no);
 	}
-	public int insertChatRoom(String name) {
-		int maxnum = sqlsession.selectOne("Chat.maxmessageroomno");
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("name", name);
-		map.put("maxnum", maxnum);
-		return sqlsession.insert("Chat.insertChatRoom", map);
+	// 채팅방 멤버
+	public List<Map<String, Object>> selectRoomMember(String rm_id) {
+		return sqlsession.selectList("Chat.selectRoomMember", rm_id);
 	}
 	
-	public List<Map<String, Object>> selectRoomByRoomId(String roomId) {
-		return sqlsession.selectList("Chat.selectRoomByRoomId", roomId);
-	}
 	
 }

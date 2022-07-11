@@ -19,15 +19,13 @@
 
 	<div class="customscroll">
 		<div id="EMP" class="tabcontent">
-			<jsp:include page="/WEB-INF/views/chat/chatlist.jsp" flush="false" />
+			<jsp:include page="/WEB-INF/views/chat/emplist.jsp" flush="false" />
 		</div>
 		<div id="PROJECT" class="tabcontent">
-			<h3>News</h3>
-			<p>Some news this fine day!</p>
+			<jsp:include page="/WEB-INF/views/chat/chatlist.jsp" flush="false" />
 		</div>
 		<div id="CHAT" class="tabcontent">
-			<h3>Contact</h3>
-			<p>Get in touch, or swing by for a cup of coffee.</p>
+			<jsp:include page="/WEB-INF/views/chat/chatlist.jsp" flush="false" />
 		</div>
 	</div>
 </div>

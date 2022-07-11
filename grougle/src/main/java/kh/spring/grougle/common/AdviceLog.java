@@ -71,10 +71,10 @@ public class AdviceLog {
 	public Object aroundLogCtrlMethod(ProceedingJoinPoint pjp) throws Throwable {
 		Object ro = null; // 타겟메소드로부터 return 받은 값을 저장함
 		
-		logger.debug("\t\t["+pjp.getTarget()+":"+pjp.getSignature().getName()+"]");
+		logger.debug("\t["+pjp.getTarget()+":"+pjp.getSignature().getName()+"]");
 		Object[] args = pjp.getArgs();
 		for(int i=0; i<args.length; i++) {
-			logger.debug("\t\t--args["+i+"] "+args[i]);
+			logger.debug("\t--args["+i+"] "+args[i]);
 		}
 		
 		StopWatch stopWatch = new StopWatch();
@@ -86,7 +86,7 @@ public class AdviceLog {
 		stopWatch.stop();
 		
 		// 타겟메소드의 return 값
-		logger.info("\t\t[CTRL Ret:"+stopWatch.getTotalTimeMillis()+"ms] "+ ro);
+		logger.info("\t[CTRL Ret:"+stopWatch.getTotalTimeMillis()+"ms] "+ ro);
 		
 		return ro;
 	}

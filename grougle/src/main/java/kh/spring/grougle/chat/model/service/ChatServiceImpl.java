@@ -13,18 +13,22 @@ public class ChatServiceImpl implements ChatService{
 	@Autowired
 	private ChatDao dao;
 	
+	// 채팅방 리스트
+//	@Override
+//	public List<Map<String, Object>> selectAllRooms(String emp_id) {
+//		return dao.selectAllRooms(emp_id);
+//	}
+	// 채팅방 리스트
 	@Override
-	public List<Map<String, Object>> selectAllRooms(String userId) {
-		return dao.selectAllRooms(userId);
+	public List<Map<String, Object>> selectAllRooms(String emp_no) {
+		return dao.selectAllRooms(emp_no);
 	}
-
-	@Override
-	public int insertChatRoom(String name) {
-		return dao.insertChatRoom(name);
+	// 채팅방 멤버
+	public List<Map<String, Object>> selectRoomMember(String rm_id) {
+		return dao.selectRoomMember(rm_id);
 	}
-
-	@Override
-	public  List<Map<String, Object>> selectRoomByRoomId(String roomId) {
-		return dao.selectRoomByRoomId(roomId);
-	}
+	
+	
+	
+	
 }

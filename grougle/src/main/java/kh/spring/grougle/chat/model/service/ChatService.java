@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ChatService {
-	public List<Map<String, Object>> selectAllRooms(String userId);
-
-	public int insertChatRoom(String name);
-
-	public  List<Map<String, Object>> selectRoomByRoomId(String roomId);
+	// 채팅방 리스트
+	public List<Map<String, Object>> selectAllRooms(String emp_no);
+	
+	// 채팅방 멤버
+	public List<Map<String, Object>> selectRoomMember(String rm_id);
 }

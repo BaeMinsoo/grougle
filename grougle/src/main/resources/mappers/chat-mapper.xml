@@ -2,4 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="Chat">
 
+	<!-- 채팅방 리스트 -->
+	<select id="selectAllRooms" parameterType="String" resultType="map">
+	select rm_id, rm_name from chatroom left join chatroomjoin using(rm_id) 
+		where emp_no = #{emp_no}
+	</select>
+	<!-- 채팅방 멤버 -->
+	<select id="selectRoomMember" parameterType="String" resultType="map">
+	select rm_id, jn_id, emp_no, emp_id, rm_name
+		from (select * from chatroomjoin left join chatroom using(rm_id) where rm_id =#{rm_id})
+		left join employee using(emp_no)
+	</select>
+	
+	
+	<!-- 채팅방 참가 클릭 -->
+	<select id="selectRoomByRoomId" parameterType="String" resultType="map">
+		select * from chatroom left join chatroomjoin using(rm_id) where rm_id = #{rm_id}
+	</select>
 </mapper>

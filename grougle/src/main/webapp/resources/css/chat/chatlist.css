@@ -382,6 +382,10 @@ body{
     font-size: 36px;
     line-height: 36px
 }
+.ks-messenger .ks-messages .ks-header .ks-controls .dropdown>.ks-icon {
+	font-size: 36px;
+    line-height: 36px
+}
 
 .ks-messenger .ks-messages>.ks-body .ks-items>.ks-item>.ks-body>.ks-message>.ks-files>.ks-file a>.ks-thumb>img,
 .ks-messenger__messages>.ks-body .ks-items>.ks-item>.ks-body>.ks-message>.ks-files>.ks-file a>.ks-thumb>img {

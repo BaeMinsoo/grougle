@@ -1,9 +1,19 @@
 package kh.spring.grougle.chat.domain;
 
+import java.util.UUID;
+
+import lombok.Data;
+
+@Data
 public class ChatRoom {
-	private String mr_no;
-    private String mr_name;
-    private String mr_wdate;
-    private String mr_useyn;
-    private String mr_ddate;
+	private String rm_id;
+	private String rm_name;
+	
+	public static ChatRoom createChatRoom (String rm_name) {
+		ChatRoom chatRoom = new ChatRoom();
+		chatRoom.rm_id = UUID.randomUUID().toString();
+		chatRoom.rm_name = rm_name;
+		
+		return chatRoom;
+	}
 }

@@ -22,9 +22,32 @@
 	  }
 	  document.getElementById(pageName).style.display = "block";
 	  elmnt.style.backgroundColor = color;
+	  
+// chatlist loading
+	  if(pageName == 'PROJECT') {
+	  	$.ajax({
+	  		url : "./chat/chatlist",
+	  		type : "get",
+	  		success : function(result) {
+	  			console.log("result : " + result);
+	  			var html = '';
+	  			$.each(JSON.parse(result), function(i, item) {
+	  				html += '<li class="ks-item">';
+			        html += '<a class="dropdown-toggle no-arrow" href="javascript:;" onclick="openChatRoom('+item.RM_ID+')">';
+		            html += '<span class="ks-avatar">';
+	                html += '<img src="https://bootdey.com/img/Content/avatar/avatar3.png" width="36" height="36">';
+		            html += '</span>';
+		            html += '<div class="ks-body">';
+		            html += '<div class="ks-name">' + item.RM_NAME + '</div>'    
+		            html += '</div>';
+			        html += '</a>';
+			  		html += '</li>';
+	  				
+	  			})
+	  			$(".ks-items").html(html);
+	  		}
+  		})
+	  }
 	}
 
-// chatwinopen(https://books.google.co.kr/books?id=fFNNEAAAQBAJ&pg=PA553&lpg=PA553&dq=jsp+%EC%B1%84%ED%8C%85+window.open&source=bl&ots=eXoG40MwiG&sig=ACfU3U0m-gi1KtDv4-vqaBlwred3jeW-RQ&hl=ko&sa=X&ved=2ahUKEwiG4JW5-uD4AhWapVYBHYR0CNcQ6AF6BAgnEAM#v=onepage&q=jsp%20%EC%B1%84%ED%8C%85%20window.open&f=false)
-	function openChatRoom() {
-	  window.open("<%=request.getContextPath() %>/chat/room","","width=320,height=400");
-	}
+	

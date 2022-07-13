@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Board">
+
+<!--  	private int wb_no;
+		private String wb_type;
+		private String wb_title;
+		private String wb_writer;
+		private String wb_content;
+		private String wb_original_filename;	
+		private Timestamp wb_date;
+		private int wb_level;
+		private int wb_ref;
+		private int wb_reply_ref;
+		private int wb_reply_seq;
+		private int wb_readcount;	
+		private int refnum; -->
+		
+<!-- 게시글 작성 -->
+<insert id="insertBoard" parameterType="Board">
+	insert into writer_bbs 
+	(wb_no
+	, wb_title, wb_writer, wb_content, wb_original_filename, wb_type
+	, wb_date
+	, wb_level
+	, wb_ref, wb_reply_ref
+	, wb_reply_seq
+	, wb_readcount)
+	values 
+	( (select nvl(max(wb_no),0)+1 from writer_bbs)
+	, #{wb_title},#{wb_writer}, #{wb_content}, #{wb_original_filename}, #{wb_type}
+	, DEFAULT
+	, DEFAULT
+	, (select nvl(max(wb_no),0)+1 from writer_bbs), (select nvl(max(wb_no),0)+1 from writer_bbs)
+	, DEFAULT
+	, DEFAULT
+	)
+</insert>
+
+<!-- 답글 시퀀스  -->
+<update id="updateBoardReplySeq" parameterType="Board">
+<![CDATA[
+	update writer_bbs set wb_reply_seq = wb_reply_seq+1
+	where wb_ref=(select wb_ref from writer_bbs where wb_no=#{refnum})
+	and wb_reply_seq > (select wb_reply_seq from writer_bbs where wb_no=#{refnum})
+]]>
+</update>
+
+<!-- 답글 작성 -->
+<insert id="insertBoardReply" parameterType="Board">
+<![CDATA[
+	insert into writer_bbs
+	(wb_no
+	, wb_title, wb_writer, wb_content, wb_original_filename, wb_type
+	, wb_date
+	, wb_level
+	, wb_ref, wb_reply_ref
+	, wb_reply_seq
+	, wb_readcount)
+	values
+	( (select nvl(max(WB_NO),0)+1 from board)
+	, #{wb_title},#{wb_writer}, #{wb_content}, #{wb_original_filename}, #{wb_type}
+	, DEFAULT
+	, (select wb_level+1 from writer_bbs where wb_no=#{refnum})
+	, (select wb_ref from writer_bbs where wb_no=#{refnum})
+	, #{refnum}
+	, (select wb_reply_seq+1 from writer_bbs where wb_no=#{refnum})
+	, DEFAULT
+	)
+]]>
+</insert>
+
+
+<!-- 게시글 리스트  -->
+<select id="selectBoardListAll" resultType="Board">
+<![CDATA[
+	select * from writer_bbs
+	order by wb_ref desc, wb_reply_seq asc
+]]>
+</select>
+
+<select id="selectBoard" resultType="Board" parameterType="string">
+<![CDATA[
+	select * from writer_bbs
+	where wb_no=#{wb_no}
+]]>
+</select>
+
+<!-- 게시글 수정  -->
+<update id="updateBoard" parameterType="Board">
+	update writer_bbs set
+		wb_title=#{wb_title}
+		, wb_content=#{wb_content}
+		, wb_original_filename=#{wb_original_filename}
+	where wb_no=#{wb_no}
+</update>
+</mapper>

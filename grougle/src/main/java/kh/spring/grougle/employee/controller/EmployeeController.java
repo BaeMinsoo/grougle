@@ -1,20 +1,18 @@
 package kh.spring.grougle.employee.controller;
 
-import java.util.Date;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.commons.mail.HtmlEmail;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +30,7 @@ import kh.spring.grougle.employee.model.service.EmployeeService;
 @Controller
 @RequestMapping("/employee")
 public class EmployeeController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
 	@Autowired
@@ -45,11 +43,11 @@ public class EmployeeController {
 
 	// 회원가입 POST
 	@RequestMapping(value = "/joindo", method = RequestMethod.POST)
-	public String insertEmployee(ModelAndView mv, Employee emp) {
-		service.insertEmployee(emp);
-		mv.setViewName("redirect:/joindo");
-		return null;
+	public String insertEmployee(@ModelAttribute Employee emp, RedirectAttributes rttr, HttpServletResponse response)
+			throws Exception {
+		rttr.addFlashAttribute("result", service.insertEmployee(emp, response));
 
+		return "employee/join";
 	}
 
 	// 약관동의
@@ -67,41 +65,36 @@ public class EmployeeController {
 		String empIdcheck;
 		int idCnt = service.empIdcheck(emp_id);
 		if (idCnt > 0)
+			//아이디가 존재하는 경우 
 			empIdcheck = "F";
 		else
+			//아이디가 존재하지 않는 경우
 			empIdcheck = "S";
 
 		return empIdcheck;
 	}
 
-	// 로그인 
+	// 로그인
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String empLogin(
-			@ModelAttribute("Employee")Employee emp,
-			HttpServletRequest request,
-			Model model) {
+	public String empLogin(@ModelAttribute("Employee") Employee emp, HttpServletRequest request, Model model) {
 		logger.info("login");
-		
+
 		Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
-		if(null != inputFlashMap) {
-			model.addAttribute("msg",(String) inputFlashMap.get("msg"));
+		if (null != inputFlashMap) {
+			model.addAttribute("msg", (String) inputFlashMap.get("msg"));
 		}
 		return "employee/login";
 	}
-		
 
+	// 로그인 POST
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String empLogin(
-			@ModelAttribute("Employee") Employee emp
-			, HttpServletRequest req
-			, HttpSession httpSession
-			, RedirectAttributes rttr
-			, Model model) throws Exception {
-		logger.info("loginVO"+emp.getEmp_id());
+	public String empLogin(@ModelAttribute("Employee") Employee emp, HttpServletRequest req, HttpSession httpSession,
+			RedirectAttributes rttr, HttpServletResponse response, Model model) throws Exception {
+		logger.info("loginSsInfo" + emp.getEmp_id());
 
 		HttpSession session = req.getSession();
-		Employee login = service.empLogin(emp);
-		logger.info("Pw"+ emp);
+		Employee login = service.empLogin(emp, response);
+		logger.info("Pw" + emp);
 
 		if (login == null) {
 			session.setAttribute("loginSsInfo", null);
@@ -109,38 +102,35 @@ public class EmployeeController {
 		} else {
 			session.setAttribute("loginSsInfo", login);
 		}
-		System.out.println("loginSsInfo 로그인 접속:" +login);
+		System.out.println("loginSsInfo 로그인 접속:" + login);
 		return "redirect:/";
 	}
-			
-	//로그아웃
-	@RequestMapping(value="/logout" , method=RequestMethod.GET)
-	public String empLogout(
-			HttpServletRequest request
-			,  HttpSession session
-			, HttpServletResponse response
-			,ModelMap model)throws Exception{
-		logger.info("logout");
-		
-		Object URL = session.getAttribute("URL");
-		Object object = session.getAttribute("login");
-		if(object != null) {
-			Employee emp = (Employee) object;
-			session.removeAttribute("login");
-			session.invalidate();
-			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
-			if(loginCookie != null) {
-				loginCookie.setPath("/");
-				loginCookie.setMaxAge(0);
-				response.addCookie(loginCookie);
-				service.keepLogin(emp.getEmp_id(),"none",new Date());
-				
-			}
-		}
-		logger.info("URL"+ URL);
-		 String requestURL = "/";		
-		return "redirect:"+requestURL;		
+
+	// 로그아웃
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public void empLogout(HttpSession session, HttpServletResponse response) throws Exception {
+		session.invalidate();
+//				session.removeAttribute("emp");
+		service.empLogout(response);
+
 	}
+
+	/*
+	 * HttpServletRequest request , HttpSession session , HttpServletResponse
+	 * response ,ModelMap model)throws Exception{ logger.info("logout");
+	 * 
+	 * Object URL = session.getAttribute("URL"); Object object =
+	 * session.getAttribute("login"); if(object != null) { Employee emp = (Employee)
+	 * object; session.removeAttribute("login"); session.invalidate(); Cookie
+	 * loginCookie = WebUtils.getCookie(request, "loginCookie"); if(loginCookie !=
+	 * null) { loginCookie.setPath("/"); loginCookie.setMaxAge(0);
+	 * response.addCookie(loginCookie); service.keepLogin(emp.getEmp_id(),"none",new
+	 * Date());
+	 * 
+	 * } } logger.info("URL"+ URL); String requestURL = "/"; return
+	 * "redirect:"+requestURL;
+	 */
+
 	// 아이디 찾기 폼
 	@RequestMapping(value = "/findId_form")
 	public String findId() throws Exception {
@@ -164,56 +154,60 @@ public class EmployeeController {
 	// 비밀번호 찾기
 	@RequestMapping(value = "/findPwd", method = RequestMethod.POST)
 	@ResponseBody
-	public String findPwd(
-			@ModelAttribute Employee emp
-			, HttpServletResponse response
-			) throws Exception {
+	public String findPwd(@ModelAttribute Employee emp, HttpServletResponse response) throws Exception {
 		service.findPwd(response, emp);
-	System.out.println(emp);
-	// Mail Server 설정
-	String charSet = "utf-8";
-	String hostSMTP = "smtp.naver.com";
-	String hostSMTPid = "91desperado@naver.com"; // 본인의 아이디 입력
-	String hostSMTPpwd = "c8980c8980d"; // 비밀번호 입력
-
-	
-	// 보내는 사람 EMail, 제목, 내용
-	String fromEmail = "dnwls.KH@google.com"; // 보내는 사람 email
-	String fromName = "Grougle"; // 보내는 사람 이름
-	String subject = "이메일 발송 테스트"; // 제목
-
-	// 받는 사람 E-Mail 주소
-	String mail = "91desperado@naver.com";
-	
-		try{
-			HtmlEmail email = new HtmlEmail();
-			email.setDebug(true);
-			email.setCharset(charSet);
-			email.setSSL(true);
-			email.setHostName(hostSMTP);
-			email.setSmtpPort(587); // SMTP 포트 번호 입력
-	
-			email.setAuthentication(hostSMTPid, hostSMTPpwd);
-			email.setTLS(true);
-			email.addTo(mail, charSet);
-			email.setFrom(fromEmail, fromName, charSet);
-			email.setSubject(subject);
-			email.setHtmlMsg("<p>이메일 발송 테스트 입니다.</p>"); // 본문 내용
-			email.send();
-		}catch(Exception e){
-			System.out.println(e);
-		}
+		/*
+		 * // Mail Server 설정 String charSet = "utf-8"; String hostSMTP =
+		 * "smtp.naver.com"; String hostSMTPid = "91desperado"; // 본인의 아이디 입력 String
+		 * hostSMTPpwd = "c8980c8980d"; // 비밀번호 입력
+		 * 
+		 * 
+		 * // 보내는 사람 EMail, 제목, 내용 String fromEmail = "91desperado@naver.com"; // 보내는 사람
+		 * email String fromName = "Grougle"; // 보내는 사람 이름 String subject =
+		 * "[Grougle]임시 비밀번호안내입니다."; // 제목 String msg = "Grougle에서 보내는 메일입니다.";
+		 * 
+		 * // 받는 사람 E-Mail 주소 String mail = emp.getEmp_email();
+		 * 
+		 * try{ HtmlEmail email = new HtmlEmail(); email.setDebug(true);
+		 * email.setCharset(charSet); email.setSSL(true); email.setHostName(hostSMTP);
+		 * email.setSmtpPort(587); // SMTP 포트 번호 입력
+		 * 
+		 * email.setAuthentication(hostSMTPid, hostSMTPpwd); email.setTLS(true);
+		 * email.addTo(mail, charSet); email.setFrom(fromEmail, fromName, charSet);
+		 * email.setSubject(subject); email.setHtmlMsg(msg); // 본문 내용 email.send();
+		 * }catch(Exception e){ System.out.println(e); }
+		 */
 		return null;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	// 회원 이메일 인증
+	@RequestMapping(value = "/approvalEmp", method = RequestMethod.POST)
+	public void approval_member(@ModelAttribute Employee emp, HttpServletResponse response) throws Exception {
+		service.approvalEmp(emp, response);
+	}
+
+	// 마이페이지 이동
+	@RequestMapping(value = "/empPage")
+	public String empPage() throws Exception {
+		return "/employee/empPage";
+	}
+
+	// empPage 수정
+	@RequestMapping(value = "/updateEmpPage", method = RequestMethod.POST)
+	public String update_mypage(@ModelAttribute Employee emp, HttpSession session, RedirectAttributes rttr)
+			throws Exception {
+		session.setAttribute("member", service.updateEmpPage(emp));
+		rttr.addFlashAttribute("msg", "회원정보 수정 완료");
+		return "redirect:/employee/empPage";
+	}
+
+	// 비밀번호 변경
+	@RequestMapping(value = "/updatePwd", method = RequestMethod.POST)
+	public String update_pw(@ModelAttribute Employee emp, @RequestParam("old_pwd") String old_pwd, HttpSession session,
+			HttpServletResponse response, RedirectAttributes rttr) throws Exception {
+		session.setAttribute("member", service.updatePwd(emp, old_pwd, response));
+		rttr.addFlashAttribute("msg", "비밀번호 수정 완료");
+		return "redirect:/employee/empPage";
+	}
+
 }

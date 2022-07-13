@@ -9,19 +9,17 @@
 <!-- 주소 daum 우편번호 API -->
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.min.js"></script>
 <!-- CSS -->
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/resources/css/join/join.css">
+	href="<%=request.getContextPath()%>/resources/css//.css">
 <!-- JavaScript -->
-<%-- <script src="<%=request.getContextPath()%>/resources/js/join.js"></script> --%>
-<%-- <script src=" ${pageContext.request.contextPath}/resources/js/join.js"></script> --%>
+<%-- <script src="<%=request.getContextPath()%>/resources/js/.js"></script> --%>
+<%-- <script src=" ${pageContext.request.contextPath}/resources/js/.js"></script> --%>
 </head>
 <body>
-	<!-- 	private int emp_no;
+	<!--private int emp_no;
 		private int dept_no;
 		private int position_no;
 		private String emp_id;
@@ -40,13 +38,13 @@
 		private Timestamp emp_update_date;
 		private Timestamp emp_out_date; -->
 
-	<ul class="join_step">
+	<ul class="_step">
 		<li><strong>1</strong> <span>약관동의</span></li>
 		<li class="on"><strong>2</strong> <span>사원정보</span></li>
 		<li><strong>3</strong> <span>신청완료</span></li>
 	</ul>
 
-	<form id="join" action="<%=request.getContextPath()%>/employee/joindo"
+	<form id="do" action="<%=request.getContextPath()%>/employee/joindo"
 		method="post">
 		<table>
 			<tr>
@@ -114,15 +112,17 @@
 			</tr>
 			<tr>
 				<th>이메일</th>
-				<td><input type="text" name="emp_email" id="emp_email">
-					<span id="emp_check_email"
+				<td><input type="text" name="emp_email" id="emp_email"
+					placeholder="이메일 인증 후 로그인이 가능합니다."> <span
+					id="emp_check_email"
 					style="display: none; font-size: .8em; padding-left: 10px; color: red;">유효성
-						검사 뜰 자리</span></td>
+						검사 뜰 자리</span> <span id="empEmailcheck" class="w3-text-red"></span></td>
+
 			</tr>
 			<tr>
 				<th>연락처</th>
-				<td><input type="text" name="emp_tel" id="emp_tel">
-					<span id="emp_check_tel"
+				<td><input type="text" name="emp_tel" id="emp_tel"> <span
+					id="emp_check_tel"
 					style="display: none; font-size: .8em; padding-left: 10px; color: red;">유효성
 						검사 뜰 자리</span></td>
 			</tr>
@@ -147,14 +147,13 @@
 			</tr>
 		</table>
 		<button type="button" onclick="fnSubmit(); return false;">회원가입</button>
-		<button  type="button"
-					onclick="location.href='<%=request.getContextPath()%>/employee/login'">취소</button>
-
+		<button type="button"
+			onclick="location.href='<%=request.getContextPath()%>/employee/login'">취소</button>
 	</form>
 
 	<script type="text/javascript">
-		/* 아이디 중복확인 체크 */
 
+	/* 아이디 중복확인 체크 */
 		$("#emp_idck").click(function() {
 			var id = $("#emp_id").val();
 			if (id == "") {
@@ -167,7 +166,7 @@
 		var isCheckId = 0;
 		function chenkEmpId() {
 			var emp_id = $("#emp_id").val();
-			console.log(emp_id);
+			console.log("아이디 중복확인: " + emp_id);
 
 			$.ajax({
 				async : false,
@@ -184,7 +183,7 @@
 						$("#divInputEmpid").removeClass("has-error")
 
 						$("#emp_pwd").focus();
-						isCheckId = 1;
+						isCheckId = 1;						
 					} else {
 						alert("아이디가 존재합니다. 다른 아이디를 입력해주세요.");
 
@@ -194,12 +193,11 @@
 						$("#emp_id").focus();
 					}
 				},
-				error : function(req, status, errThrown) {
-					alert("network error occur");
-				}
 			});
-		}
-
+		}	
+			
+			
+		
 		/* 다음 우편번호 주소 API */
 		$("#postcode_btn")
 				.click(
@@ -353,7 +351,8 @@
 				return false;
 			}
 
-			if ($("#emp_idck").val() != 'S') {
+			if ($("#emp_idck").val() != "S") {
+				console.log("회원가입 버튼:"empIdcheck)
 				alert("아이디 중복체크를 눌러주세요.");
 				$("#emp_idck").focus();
 
@@ -389,12 +388,30 @@
 			}
 
 			if (confirm("회원가입하시겠습니까?")) {
-
-				$("#join").submit();
-
+				$("#joindo").submit();
 				return false;
 			}
 		}
+		
+		/* $("#emp_email").keyup(function(){
+		$.ajax({
+			url : "empEmailcheck",
+			type : "POST",
+			data : {
+				email : $("#emp_email").val()
+			},
+			success : function(result) {
+				if (result == 1) {
+					$("#empEmailcheck").html("중복된 이메일이 있습니다.");
+				} else {
+					$("#empEmailcheck").html("");
+				}
+			},
+		})
+	});
+}) */
+		
+		
 	</script>
 
 

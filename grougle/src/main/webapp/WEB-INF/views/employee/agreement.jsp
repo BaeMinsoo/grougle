@@ -5,9 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- JavaScript -->
 <script src="<%=request.getContextPath()%>/resources/js/agreement.js"></script>
 <title>약관동의</title>
@@ -21,7 +19,7 @@
 	</ul>
 	<form action="<%=request.getContextPath()%>/employee/join" name="form"
 		method="post">
-		<table width="1400" height="650">		
+		<table>		
 			<tr>			
 				<td width="100%" height="10%"><span style="padding-left: 160px"></span>&nbsp; <b>안녕하세요</b> <br>
 					<hr></td>

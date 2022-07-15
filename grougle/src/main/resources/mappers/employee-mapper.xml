@@ -25,7 +25,7 @@
 	
 	<!-- 로그인 -->
 	<select id="empLogin" parameterType="string" resultType="Emp">
-		select emp_name, emp_id, emp_pwd
+		select emp_name, emp_id, emp_pwd, emp_no
 		from employee
 		where emp_id = #{emp_id}
 		and emp_pwd = #{emp_pwd}

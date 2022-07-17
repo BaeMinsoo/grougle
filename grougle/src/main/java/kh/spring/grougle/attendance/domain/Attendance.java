@@ -1,116 +1,211 @@
 package kh.spring.grougle.attendance.domain;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
+import lombok.Data;
+
+@Data
 public class Attendance {
-/* CREATE TABLE `ATTENDANCE` (
-	`EMP_NO`	NUMBER	NOT NULL	COMMENT '년도4자리+부서번호2자리+가입순서 3자리(000~)',
-	`ATT_STATUS`	VARCHAR2(4)	NOT NULL	COMMENT 'WK:업무중, OJ: 외근, LE: 조퇴, DO: 휴가(반차개념)',
-	`ATT_START`	TIMESTAMP	NOT NULL	DEFAULT SYSTIMESTAMP	COMMENT 'YYYY/MM/DD/HH:MI:SS',
-	`ATT_END`	TIMESTAMP	NOT NULL	DEFAULT SYSTIMESTAMP	COMMENT 'YYYY/MM/DD/HH:MI:SS',
-	`ATT_TOTALTIME`	VARCHAR2(40)	NOT NULL	COMMENT 'HH:MI',
-	`ATT_OVERTIME`	VARCHAR2(40)	NOT NULL	COMMENT 'HH:MI',
-	`ATT_LIMITTIME`	VARCHAR2(40)	NOT NULL	COMMENT 'HH:MI',
-	`DO_NO`	NUMBER	NOT NULL	COMMENT 'SEQ_DO_NO'
+/* CREATE TABLE ATTENDANCE (
+	ATT_NO	NUMBER	NOT NULL,--	COMMENT 'SEQ_ATT_NO'
+	EMP_NO	NUMBER	NOT NULL,--	COMMENT '년도4자리+부서번호2자리+가입순서 3자리(000~)',
+	ATT_STATUS	VARCHAR2(4)	NOT NULL CHECK (ATT_STATUS IN ('WK', 'EW', 'OJ', 'LE', 'DO')),--	COMMENT 'WK:업무중, OJ: 외근, LE: 조퇴, DO: 휴가(반차개념)',
+	ATT_WORKINGDAY	DATE	NULL,
+	ATT_START	TIMESTAMP	NOT NULL,--	COMMENT 'YYYY/MM/DD/HH:MI:SS',
+	ATT_END	TIMESTAMP	NULL,--	COMMENT 'YYYY/MM/DD/HH:MI:SS',
+	ATT_TOTALTIME	TIMESTAMP	NULL,--	COMMENT 'HH:MI:SS',
+	ATT_STRTOTALTIME	VARCHAR2(40)	NULL,
+	
+	ATT_OVERTIME	TIMESTAMP	NULL,--	COMMENT 'HH:MI':SS,
+	ATT_STROVERTIME	VARCHAR2(40)	NULL,
+	ATT_LIMITTIME	VARCHAR2(40)	NOT NULL,--	COMMENT 'HH:MI:SS',
+	ATT_WEEKNUM	NUMBER	NULL,
+	ATT_MONTHOVER	VARCHAR2(40)	NULL,
+	ATT_MONTHWORK	VARCHAR2(40)	NULL
 );
 */
-	private int emp_no;
-	private String att_status;
-	private Timestamp att_start;
-	private Timestamp att_end;
-	private String att_totaltime;
-	private String att_overtime;
-	private String att_limittime;
-	private int do_no;
+	private int attNo;
+	private int empNo;
+	private String attStatus;
+	private Date attWorkingday;
+	private Timestamp attStart;
+	private Timestamp attEnd;
+	private Timestamp attTotalTime;
+	private String attStrtotalTime;
+	private Timestamp attOverTime;;
+	private String attStroverTime;
+	private String attLimitTime;
+	private int attWeekNum;
+	private String attMonthOver;
+	private String attMonthWork;
 	
 	
+	public Attendance() {}
+	
+	
+	public Attendance(int attNo, int empNo, String attStatus, Date attWorkingday, Timestamp attStart,
+			Timestamp attEnd, Timestamp attTotalTime, Timestamp attOverTime) {
+		super();
+		this.attNo = attNo;
+		this.empNo = empNo;
+		this.attStatus = attStatus;
+		this.attWorkingday = attWorkingday;
+		this.attStart = attStart;
+		this.attEnd = attEnd;
+		this.attTotalTime = attTotalTime;
+		this.attOverTime = attOverTime;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Attendance [emp_no=" + emp_no + ", att_status=" + att_status + ", att_start=" + att_start + ", att_end="
-				+ att_end + ", att_totaltime=" + att_totaltime + ", att_overtime=" + att_overtime + ", att_limittime="
-				+ att_limittime + ", do_no=" + do_no + "]";
+		return "Attendance [attNo=" + attNo + ", empNo=" + empNo + ", attStatus=" + attStatus + ", attWorkingday="
+				+ attWorkingday + ", attStart=" + attStart + ", attEnd=" + attEnd + ", attTotalTime=" + attTotalTime
+				+ ", attStrtotalTime=" + attStrtotalTime + ", attOverTime=" + attOverTime + ", attStroverTime="
+				+ attStroverTime + ", attLimitTime=" + attLimitTime + ", attWeekNum=" + attWeekNum + ", attMonthOver="
+				+ attMonthOver + ", attMonthWork=" + attMonthWork + "]";
 	}
 
 
-	public int getEmp_no() {
-		return emp_no;
+	public int getAttNo() {
+		return attNo;
 	}
 
 
-	public void setEmp_no(int emp_no) {
-		this.emp_no = emp_no;
+	public void setAttNo(int attNo) {
+		this.attNo = attNo;
 	}
 
 
-	public String getAtt_status() {
-		return att_status;
+	public int getEmpNo() {
+		return empNo;
 	}
 
 
-	public void setAtt_status(String att_status) {
-		this.att_status = att_status;
+	public void setEmpNo(int empNo) {
+		this.empNo = empNo;
 	}
 
 
-	public Timestamp getAtt_start() {
-		return att_start;
+	public String getAttStatus() {
+		return attStatus;
 	}
 
 
-	public void setAtt_start(Timestamp att_start) {
-		this.att_start = att_start;
+	public void setAttStatus(String attStatus) {
+		this.attStatus = attStatus;
 	}
 
 
-	public Timestamp getAtt_end() {
-		return att_end;
+	public Date getAttWorkingday() {
+		return attWorkingday;
 	}
 
 
-	public void setAtt_end(Timestamp att_end) {
-		this.att_end = att_end;
+	public void setAttWorkingday(Date attWorkingday) {
+		this.attWorkingday = attWorkingday;
 	}
 
 
-	public String getAtt_totaltime() {
-		return att_totaltime;
+	public Timestamp getAttStart() {
+		return attStart;
 	}
 
 
-	public void setAtt_totaltime(String att_totaltime) {
-		this.att_totaltime = att_totaltime;
+	public void setAttStart(Timestamp attStart) {
+		this.attStart = attStart;
 	}
 
 
-	public String getAtt_overtime() {
-		return att_overtime;
+	public Timestamp getAttEnd() {
+		return attEnd;
 	}
 
 
-	public void setAtt_overtime(String att_overtime) {
-		this.att_overtime = att_overtime;
+	public void setAttEnd(Timestamp attEnd) {
+		this.attEnd = attEnd;
 	}
 
 
-	public String getAtt_limittime() {
-		return att_limittime;
+	public Timestamp getAttTotalTime() {
+		return attTotalTime;
 	}
 
 
-	public void setAtt_limittime(String att_limittime) {
-		this.att_limittime = att_limittime;
+	public void setAttTotalTime(Timestamp attTotalTime) {
+		this.attTotalTime = attTotalTime;
 	}
 
 
-	public int getDo_no() {
-		return do_no;
+	public String getAttStrtotalTime() {
+		return attStrtotalTime;
 	}
 
 
-	public void setDo_no(int do_no) {
-		this.do_no = do_no;
+	public void setAttStrtotalTime(String attStrtotalTime) {
+		this.attStrtotalTime = attStrtotalTime;
 	}
-	
+
+
+	public Timestamp getAttOverTime() {
+		return attOverTime;
+	}
+
+
+	public void setAttOverTime(Timestamp attOverTime) {
+		this.attOverTime = attOverTime;
+	}
+
+
+	public String getAttStroverTime() {
+		return attStroverTime;
+	}
+
+
+	public void setAttStroverTime(String attStroverTime) {
+		this.attStroverTime = attStroverTime;
+	}
+
+
+	public String getAttLimitTime() {
+		return attLimitTime;
+	}
+
+
+	public void setAttLimitTime(String attLimitTime) {
+		this.attLimitTime = attLimitTime;
+	}
+
+
+	public int getAttWeekNum() {
+		return attWeekNum;
+	}
+
+
+	public void setAttWeekNum(int attWeekNum) {
+		this.attWeekNum = attWeekNum;
+	}
+
+
+	public String getAttMonthOver() {
+		return attMonthOver;
+	}
+
+
+	public void setAttMonthOver(String attMonthOver) {
+		this.attMonthOver = attMonthOver;
+	}
+
+
+	public String getAttMonthWork() {
+		return attMonthWork;
+	}
+
+
+	public void setAttMonthWork(String attMonthWork) {
+		this.attMonthWork = attMonthWork;
+	}
 	
 	
 }

@@ -1,15 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="attendaceMapper">
-<!-- CREATE TABLE `ATTENDANCE` (
-	`EMP_NO`	NUMBER	NOT NULL	COMMENT '년도4자리+부서번호2자리+가입순서 3자리(000~)',
-	`ATT_STATUS`	VARCHAR2(4)	NOT NULL	COMMENT 'WK:업무중, OJ: 외근, LE: 조퇴, DO: 휴가(반차개념)',
-	`ATT_START`	TIMESTAMP	NOT NULL	DEFAULT SYSTIMESTAMP	COMMENT 'YYYY/MM/DD/HH:MI:SS',
-	`ATT_END`	TIMESTAMP	NOT NULL	DEFAULT SYSTIMESTAMP	COMMENT 'YYYY/MM/DD/HH:MI:SS',
-	`ATT_TOTALTIME`	VARCHAR2(40)	NOT NULL	COMMENT 'HH:MI',
-	`ATT_OVERTIME`	VARCHAR2(40)	NOT NULL	COMMENT 'HH:MI',
-	`ATT_LIMITTIME`	VARCHAR2(40)	NOT NULL	COMMENT 'HH:MI',
-	`DO_NO`	NUMBER	NOT NULL	COMMENT 'SEQ_DO_NO'
-); -->
+<mapper namespace="Attendance">
 
+<!-- property = 자바의 필드변수 이름 / column = DB의 해당 컬럼 -->
+<!-- id =primary key / result = 일반컬럼 -->
+	<resultMap type="Attendance" id="attResultSet">
+		<id column="ATT_NO" property="attNo"/>
+		<result column="EMP_NO" property="empNo"/>	
+		<result column="ATT_STATUS" property="attStatus"/>
+		<result column="ATT_WORKINGDAY" property="attWorkingday"/>
+		<result column="ATT_START" property="attStart"/>
+		<result column="ATT_END" property="attEnd"/>
+		<result column="ATT_TOTALTIME" property="attTotalTime"/>
+		<result column="ATT_STRTOTALTIME" property="attStrtotalTime"/>
+		<result column="ATT_OVERTIME" property="attOverTime"/>
+		<result column="ATT_STROVERTIME" property="attStroverTime"/>
+		<result column="ATT_LIMITTIME" property="attLimitTime"/>
+		<result column="ATT_WEEKNUM" property="attWeekNum"/>
+		<result column="ATT_MONTHOVER" property="attMonthOver"/>
+		<result column="ATT_MONTHWORK" property="attMonthWork"/>
+	</resultMap>
+	
+<!-- 금일 근태 -->
+	<select id="selectOffTime" resultMap="attResultSet">
+		select  ATT_NO, ATT_WORKINGDAY, ATT_START, ATT_END, ATT_STATUS, EMP_NO,SUBSTR(ATT_TOTALTIME , 9,9) ATT_STRTOTALTIME, SUBSTR(ATT_OVERTIME , 9,9) ATT_STROVERTIME
+		from ATTENDANCE
+		where EMP_NO = #{emp_no, jdbcType=VARCHAR}
+			and to_date(ATT_WORKINGDAY,'YY/MM/DD') in (SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD') FROM ATTENDANCE)
+	</select>
+	
+	<select id="selectWeekTime" parameterType="string" resultMap="attResultSet">
+		select 
+	        <!-- 초단위로 쪼갠 후 시간단위로 다시 결합 -->
+	        to_char(TRUNC(sum(((to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + 
+	                        ((to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),11,2))*60) )+
+	                        (to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),13,2)) ))
+	                /3600),
+	        'fm9900')||'시'|| 
+	        <!-- 초단위로 쪼갠 후 분 단위로 다시 결합 -->               
+	        to_char(TRUNC(mod( sum(((to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + 
+	                                ((to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),11,2))*60) ) +
+	                                (to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),13,2)) )), 
+	                          3600)
+	                    /60),
+	                'fm00')||'분'||
+	        <!-- 초단위로 쪼갠 후 합산 -->
+	        to_char(mod(sum(((to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + 
+	                        ((to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),11,2))*60) )+
+	                        (to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),13,2)) )),60), 
+	                    'fm00')
+	                ||'초' 
+	        as ATT_STRTOTALTIME, 
+	        
+	        <!-- 초단위로 쪼갠 후 시간단위로 다시 합산 -->
+	        to_char(TRUNC(sum(((to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + 
+	                        ((to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),11,2))*60) )+
+	                        (to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),13,2)) ))
+	                /3600),
+	        'fm9900')||'시'|| 
+	        <!-- 초단위로 쪼갠 후 분 단위로 다시 합산 -->                
+	        to_char(TRUNC(mod( sum(((to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + 
+	                                ((to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),11,2))*60) ) +
+	                                (to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),13,2)) )), 
+	                          3600)
+	                    /60),
+	                'fm00')||'분'||
+	        <!-- 초단위로 쪼갠 후 합산 -->
+	        to_char(mod(sum(((to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + 
+	                        ((to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),11,2))*60) )+
+	                        (to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),13,2)) )),60), 
+	                    'fm00')
+	                ||'초' 
+	        as ATT_STROVERTIME
+		from attendance
+		where ATT_WORKINGDAY between (select to_char(a.s_date, 'yyyy-mm-dd')   monday
+		                                from (
+		                                    select sysdate - (to_number(to_char(sysdate,'d'))-2) s_date
+		                                    from dual ) a) 
+		                                and (select  to_char(a.s_date+6, 'yyyy-mm-dd')  sunday
+		                                    from (
+		                                        select sysdate - (to_number(to_char(sysdate,'d'))-2) s_date
+		                                        from dual) a)
+		                                and EMP_NO=#{emp_no, jdbcType=VARCHAR}     
+		group by EMP_NO
+	</select>
+	
+	<select id="selectMonthTime" parameterType="string" resultMap="attResultSet">
+		select to_char(trunc(sum(((to_number(substr(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + ((to_number(substr(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),11,2))*60) )+
+				(to_number(substr(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),13,2)) ))/3600),'fm9900')||'시'|| 
+				
+				to_char(trunc(mod( sum(((to_number(substr(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + ((to_number(substr(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),11,2))*60) )+
+				(to_number(substr(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),13,2)) )),3600)/60),'fm00')||'분'||
+				
+				to_char(mod(sum(((to_number(substr(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + ((to_number(substr(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),11,2))*60) )+
+				(to_number(substr(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),13,2)) )),60),'fm00')||'초' 
+				as ATT_STRTOTALTIME, 
+				
+				to_char(trunc(sum(((to_number(substr(to_char(ATT_OVERTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + ((to_number(substr(to_char(ATT_OVERTIME, 'yyyymmddhh24missff'),11,2))*60) )+
+				(to_number(substr(to_char(ATT_OVERTIME, 'yyyymmddhh24missff'),13,2)) ))/3600),'fm9900')||'시'||
+				
+				to_char(trunc(mod( sum(((to_number(substr(to_char(ATT_OVERTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + ((to_number(substr(to_char(ATT_OVERTIME, 'yyyymmddhh24missff'),11,2))*60) )+
+				(to_number(substr(to_char(ATT_OVERTIME, 'yyyymmddhh24missff'),13,2)) )),3600)/60),'fm00')||'분'||
+				
+				to_char(mod(sum(((to_number(substr(to_char(ATT_OVERTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + ((to_number(substr(to_char(ATT_OVERTIME, 'yyyymmddhh24missff'),11,2))*60) )+
+				(to_number(substr(to_char(ATT_OVERTIME, 'yyyymmddhh24missff'),13,2)) )),60),'fm00')||'초' 
+				as ATT_STROVERTIME
+				
+		from attendance
+		where ATT_WORKINGDAY between (select TRUNC (sysdate, 'MM') from dual)
+		                                and (select LAST_DAY(SYSDATE)from dual)
+		                                and EMP_NO=#{emp_no, jdbcType=VARCHAR}
+		group by EMP_NO
+	</select>
+	
+	
 </mapper>

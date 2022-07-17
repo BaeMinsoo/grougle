@@ -25,6 +25,7 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/src/plugins/datatables/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/vendors/styles/style.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/chat/chat.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/attendance/att.css">
 
 <!-- js -->
 <script src="<%=request.getContextPath()%>/resources/vendors/scripts/core.js"></script>
@@ -58,7 +59,7 @@
 </head>
 
 <body>
-	<form action="<%=request.getContextPath()%>/attendance/attendance" method="post"></form>
+	<form action="<%=request.getContextPath()%>/attendance" method="post"></form>
 	<!-- 헤더&사이드바 -->
 	<%@ include file="../header/header.jsp"%>
 	<%@ include file="../sidebar/rightsidebar.jsp"%>
@@ -69,76 +70,74 @@
 		<div class="pd-ltr-20 xs-pd-20-10">
 		<!-- -------------------- -->
 			<div id="main-wrapper">
-			
-        <div class="content-body">
-            <div class="container-fluid">
-				<div class="col-xl-12 col-xxl-6 col-lg-6 col-md-12">
-                	<div class="row">
-                	
-                    </div>
-                </div>
-            
-            <!-- 출,퇴근시간 영역 -->
-                <div class="row">
-              
-                    <div class="col-lg-3">
-                        <div class="card">
-                            <div class="card-body" id="nowDateDiv">
-                                <div id="nowDateArea">
-                                <div>
-                                	<h5><%= today.format(nowTime) %></h5>
-                                	<h7><%= time.format(nowTime) %></h7>
-								</div>
-								</div>
-								<ul style="color:black; margin-top: 30px;">
-									<li>
-										출근시간
-										<c:choose>
-											<c:when test="${requestScope.empStatus1 != null }">
-												<input id="workInTime" name="workInTime" value="${''}">
-											</c:when>
-											<c:otherwise>
-												<input id="workInTime" name="workInTime">
-											</c:otherwise>
-										</c:choose>											
-									</li>
-									<li>
-										퇴근시간
-											<c:choose>
-												<c:when test="${requestScope.empStatus1 != null }">
-													<input id="workOutTime" name="workOutTime" value="${''}">
-												</c:when>
-												<c:otherwise>
-													<input id="workOutTime" name="workOutTime">
-												</c:otherwise>
-											</c:choose>	
-											
-									</li>
-								</ul>
-								<div class="basic-dropdown">
-                                    <div class="dropdown"> 업무상태 변경 : 
-                                        <c:choose>
-	                                        <c:when  test="${''}">
-		                                        <select id="changeStatus" disabled="disabled">
-		                                        	<option value="업무상태선택">업무상태선택</option>
-		                                        	<option value="업무">업무</option>
-		                                        	<option value="업무종료" selected="selected">업무종료</option>
-		                                        	<option value="외근">외근</option>
-		                                        	<option value="출장">출장</option>
-		                                        	<option value="반차">반차</option>
-		                                        </select>
-	                                        </c:when>
-	                                        <c:otherwise>
-	                                        	<select id="changeStatus">
-	                                        	<option value="업무상태선택">업무상태선택</option>	                                        
-	                                        	<option value="업무" <c:if test="${Attendance.getAtt_status() eq '업무'}">selected</c:if>>업무</option>
-	                                        	<option value="업무종료" <c:if test="${'업무종료'}">selected</c:if>>업무종료</option>
-	                                        	<option value="외근" <c:if test="${'외근'}">selected</c:if>>외근</option>
-	                                        	<option value="출장" <c:if test="${'출장'}">selected</c:if>>출장</option>
-	                                        	<option value="반차" <c:if test="${'반차'}">selected</c:if>>반차</option>
-	                                        </select>
-	                                        </c:otherwise>
-                                        </c:choose>
+				<div class="content-body">
+					<div class="container-fluid">
+						<div class="col-xl-12 col-xxl-6 col-lg-6 col-md-12">
+							<div class="row">
+							
+							</div>
+						</div>
+
+						<!-- 출,퇴근시간 영역 -->
+						<div class="row">
+
+							<div class="col-lg-3">
+								<div class="card">
+									<div class="card-body" id="nowDateDiv">
+										<div id="nowDateArea">
+											<div>
+												<h5><%=today.format(nowTime)%></h5>
+												<h7><%=time.format(nowTime)%></h7>
+											</div>
+										</div>
+										<ul style="color: black; margin-top: 30px;">
+											<li> 출근시간 
+												<c:choose>
+													<c:when test="${requestScope.att1 != null }">
+														<input id="workInTime" name="workInTime"
+															value="${requestScope.att1.getAttStart()}">
+													</c:when>
+													<c:otherwise>
+														<input id="workInTime" name="workInTime">
+													</c:otherwise>
+												</c:choose>
+											</li>
+											<li>퇴근시간 <c:choose>
+													<c:when test="${requestScope.att1 != null }">
+														<input id="workOutTime" name="workOutTime"
+															value="${requestScope.att1.getAttEnd()}">
+													</c:when>
+													<c:otherwise>
+														<input id="workOutTime" name="workOutTime">
+													</c:otherwise>
+												</c:choose>
+
+											</li>
+										</ul>
+										<div class="basic-dropdown">
+											<div class="dropdown"> 업무상태 변경 :
+												<c:choose>
+													<c:when test="${att1.getAttStatus() eq '업무종료'}">
+														<select id="changeStatus" disabled="disabled">
+															<option value="업무상태선택">업무상태선택</option>
+															<option value="업무중">업무중</option>
+															<option value="업무종료" selected="selected">업무종료</option>
+															<option value="외근">외근</option>
+															<option value="조퇴">조퇴</option>
+															<option value="반차">반차</option>
+														</select>
+													</c:when>
+													<c:otherwise>
+														<select id="changeStatus">
+															<option value="업무상태선택">업무상태선택</option>
+															<option value="업무중" <c:if test="${att1.getAttStatus() eq '업무중'}">selected</c:if>>업무중</option>
+															<option value="업무종료" <c:if test="${att1.getAttStatus() eq '업무종료'}">selected</c:if>>업무종료</option>
+															<option value="외근" <c:if test="${att1.getAttStatus() eq '외근'}">selected</c:if>>외근</option>
+															<option value="조퇴" <c:if test="${att1.getAttStatus() eq '출장'}">selected</c:if>>조퇴</option>
+															<option value="반차" <c:if test="${att1.getAttStatus() eq '반차'}">selected</c:if>>반차</option>
+														</select>
+													</c:otherwise>
+												</c:choose>
                                     </div>
                                 </div>
 								

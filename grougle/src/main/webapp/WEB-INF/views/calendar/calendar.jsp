@@ -130,7 +130,7 @@
 						</ul> <span class="nav_mtitle"
 						style="font-weight: bold; font-size: 15pt;">기업일정</span>
 						<ul class="nav_share_ul">
-							<div style='margin-bottom: 10px;'></div>
+							<li style='margin-bottom: 10px;'></li>
 							<li>
 								<p class='nav_ul_p'>
 									<input id='calendar_id_-9999' class='calCheckbox' type='checkbox' /> 

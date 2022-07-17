@@ -11,12 +11,14 @@
 		<typeAlias type="kh.spring.grougle.chat.domain.ChatRoomJoin" alias="ChatRoomJoin"/>
 		<typeAlias type="kh.spring.grougle.employee.domain.Employee" alias="Emp"/>
 		<typeAlias type="kh.spring.grougle.board.domain.Board" alias="Board"/>
+		<typeAlias type="kh.spring.grougle.attendance.domain.Attendance" alias="Attendance"/>
 	</typeAliases>
 	 
 	<mappers>
 		 <mapper resource="mappers/position-mapper.xml"/> 
 		 <mapper resource="mappers/chat-mapper.xml"/> 
 		 <mapper resource="mappers/employee-mapper.xml"/>
+		 <mapper resource="mappers/attendance-mapper.xml"/>
 	</mappers>
 
 </configuration>

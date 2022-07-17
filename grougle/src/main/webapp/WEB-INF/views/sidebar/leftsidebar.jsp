@@ -78,7 +78,7 @@
 							<span class="micon dw dw-right-arrow1"></span><span class="mtext">근태관리</span>
 						</a>
 						<ul class="submenu">
-							<li><a onclick="location.href='<%=request.getContextPath()%>/attendance/attendance'">근태</a></li>
+							<li><a onclick="location.href='<%=request.getContextPath()%>/attendance'">근태</a></li>
 							<li><a href="login.html">연차</a></li>
 						</ul>
 					</li>

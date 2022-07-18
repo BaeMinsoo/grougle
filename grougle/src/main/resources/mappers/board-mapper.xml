@@ -20,7 +20,7 @@
 <insert id="insertBoard" parameterType="Board">
 	insert into writer_bbs 
 	(wb_no
-	, wb_title, wb_writer, wb_content, wb_original_filename, wb_type
+	, wb_title, wb_writer, wb_content, wb_original_filename, wb_rename_filename
 	, wb_date
 	, wb_level
 	, wb_ref, wb_reply_ref
@@ -28,8 +28,8 @@
 	, wb_readcount)
 	values 
 	( (select nvl(max(wb_no),0)+1 from writer_bbs)
-	, #{wb_title},#{wb_writer}, #{wb_content}, #{wb_original_filename}, #{wb_type}
-	, DEFAULT
+	, #{wb_title},#{wb_writer}, #{wb_content}, #{wb_original_filename}, #{wb_rename_filename}
+	, sysdate
 	, DEFAULT
 	, (select nvl(max(wb_no),0)+1 from writer_bbs), (select nvl(max(wb_no),0)+1 from writer_bbs)
 	, DEFAULT
@@ -50,23 +50,45 @@
 <insert id="insertBoardReply" parameterType="Board">
 <![CDATA[
 	insert into writer_bbs
-	(wb_no
-	, wb_title, wb_writer, wb_content, wb_original_filename, wb_type
-	, wb_date
-	, wb_level
-	, wb_ref, wb_reply_ref
-	, wb_reply_seq
-	, wb_readcount)
+		(wb_no
+		, wb_title, wb_writer, wb_content, wb_original_filename, wb_rename_filename
+		, wb_date
+		, wb_level
+		, wb_ref, wb_reply_ref
+		, wb_reply_seq
+		, wb_readcount)
 	values
-	( (select nvl(max(WB_NO),0)+1 from board)
-	, #{wb_title},#{wb_writer}, #{wb_content}, #{wb_original_filename}, #{wb_type}
-	, DEFAULT
-	, (select wb_level+1 from writer_bbs where wb_no=#{refnum})
-	, (select wb_ref from writer_bbs where wb_no=#{refnum})
-	, #{refnum}
-	, (select wb_reply_seq+1 from writer_bbs where wb_no=#{refnum})
-	, DEFAULT
-	)
+		( (select nvl(max(wb_no),0)+1 from writer_bbs)
+		, #{wb_title},#{wb_writer}, #{wb_content}, #{wb_original_filename}, #{wb_rename_filename}
+		, systimestamp
+		, (select wb_level+1 from writer_bbs where wb_no=#{refnum})
+		, (select wb_ref from writer_bbs where wb_no=#{refnum})
+		, #{refnum}
+		, (select wb_reply_seq+1 from writer_bbs where wb_no=#{refnum})
+		, DEFAULT
+		)
+]]>
+</insert>
+<!-- 답답글 작성 -->
+<insert id="insertBoardReply2" parameterType="Board">
+<![CDATA[
+	insert into writer_bbs
+		(wb_no
+		, wb_title, wb_writer, wb_content, wb_original_filename, wb_rename_filename
+		, wb_date
+		, wb_level
+		, wb_ref, wb_reply_ref
+		, wb_reply_seq
+		, wb_readcount)
+	select (select nvl(max(wb_no),0)+1 from writer_bbs)
+		, #{wb_title},#{wb_writer}, #{wb_content}, #{wb_original_filename}, #{wb_rename_filename}
+		, systimestamp
+		, wb_level+1
+		, wb_ref
+		, #{refnum}
+		, wb_reply_seq+1
+		, 0
+		from writer_bbs where wb_no=#{refnum}
 ]]>
 </insert>
 
@@ -94,4 +116,17 @@
 		, wb_original_filename=#{wb_original_filename}
 	where wb_no=#{wb_no}
 </update>
+
+<!-- 게시글 삭제 -->
+<delete id="deleteBoard" parameterType="string">
+	delete from writer_bbs where wb_no=#{wb_no}
+</delete>
+
+
+
+
+
+
+
+
 </mapper>

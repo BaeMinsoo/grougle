@@ -63,7 +63,7 @@
 
 </head>
 <body>
-<div class="container">
+<div>
 <div class="ks-page-content">
 	<div class="ks-page-content-body">
 		<div class="ks-messenger">
@@ -103,6 +103,40 @@
 								<!-- User Session Info Hidden -->
 								<input type="hidden" value='${loginSsInfo.emp_id}'
 									id="sessionuserid">
+								<c:forEach items="${chatMessages }" var="chatmsg" varStatus="status">
+									<c:choose>
+										<c:when test="${chatmsg.ch_writer eq loginSsInfo.emp_id}">
+											<c:if test="${status.index != 0}">
+												<c:if test="${chatMessages[status.index-1].ch_writer eq chatMessages[status.index].ch_writer}">
+													<div class="s_sender_chat">${chatmsg.ch_msg}</div>
+												</c:if>
+												<c:if test="${chatMessages[status.index-1].ch_writer ne chatMessages[status.index].ch_writer}">
+													<div class="s_sender">${chatmsg.ch_writer}</div>
+													<div class="s_sender_chat">${chatmsg.ch_msg}</div>
+												</c:if>
+											</c:if>
+											<c:if test="${status.index == 0 }">
+												<div class="s_sender">${chatmsg.ch_writer}</div>
+												<div class="s_sender_chat">${chatmsg.ch_msg}</div>
+											</c:if>
+										</c:when>
+										<c:otherwise>
+											<c:if test="${status.index != 0}">
+												<c:if test="${chatMessages[status.index-1].ch_writer eq chatMessages[status.index].ch_writer}">
+													<div class="s_receive_chat">${chatmsg.ch_msg}</div>
+												</c:if>
+												<c:if test="${chatMessages[status.index-1].ch_writer ne chatMessages[status.index].ch_writer}">
+													<div class="s_receive">${chatmsg.ch_writer}</div>
+													<div class="s_receive_chat">${chatmsg.ch_msg}</div>
+												</c:if>
+											</c:if>
+											<c:if test="${status.index == 0 }">
+												<div class="s_receive">${chatmsg.ch_writer}</div>
+												<div class="s_receive_chat">${chatmsg.ch_msg}</div>
+											</c:if>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
 							</div>
 						</div>
 					</div>
@@ -123,31 +157,30 @@
 	</div>
 </div>
 </div>
-
-	<script>
+<script>
 		$(document).ready(
 				function() {
-
+					var rm_name = '${chatMember[0].RM_NAME}'
+					var rm_id = '${chatMember[0].RM_ID}'
+					var ch_time = '${chatMember[0].CH_TIME}'
+					var emp_no = '${chatMember[0].EMP_NO}'
 					var username = '${loginSsInfo.emp_id}';
-
-					console.log("여기여기+" + username);
-
+					console.log("방제목,방번호,시간,사원번호,사용자" 
+							+ rm_name + ", " + rm_id + ", " + ch_time + ", " + emp_no + ", "  +username);
+					
 					var sockJs = new SockJS("/grougle/chat");
 					//1. SockJS를 내부에 들고있는 stomp를 내어줌
 					var stomp = Stomp.over(sockJs);
 					console.log('여기는?');
-
 					//2. connection이 맺어지면 실행
 					stomp.connect({}, function() {
 						console.log("STOMP Connection");
 						//4. subscribe(path, callback)으로 메세지를 받을 수 있음
-						stomp.subscribe("/sub/chat/message/", function(chat) {
+						stomp.subscribe("/sub/chat/message/" + rm_id, function(chat) {
 							console.log(chat);
 							var content = JSON.parse(chat.body);
-
-							var writer = content.ch_msgid;
+							var writer = content.ch_writer;
 							var message = content.ch_msg;
-
 							//나와 상대방이 보낸 메세지를 구분하여 영역을 나눈다.//
 							if (username == writer) { // 보낸 사람의 경우
 								// 채팅 여러개 보내면 이름 안뜨게 하기
@@ -163,6 +196,175 @@
 								} else {
 									$("#chatdata").append('<div class="s_receive">' + writer + '</div>');
 									$("#chatdata").append('<div class="s_receive_chat">' + message + '</div>');
+								}
+							}
+							
+							// 채팅 여러개 쌓여서 스크롤 바 생길 때 자동으로 가장 하단으로 가기
+							var offset = $("#chatdata").children().last().offset();
+							console.log(offset);
+							$("#chatdata").animate({
+								scrollTop : 90000
+							}, 0);
+						});
+						//3. send(path, header, message)로 메세지를 보낼 수 있음
+						//stomp.send('/pub/chat/enter', {}, JSON.stringify({ch_msgid: username}))
+					});
+					$("#sendBtn").on("click", function(e){
+    					send();
+    				});
+					//엔터키 이벤트 등록
+					$("#message").keyup(function() {
+						if (window.event.keyCode == 13) {
+							send();
+						}
+					})
+					function send() {
+						var msg = document.getElementById("message");
+						console.log(username + ":" + msg.value +" ^^rm_id :" + rm_id);
+						stomp.send('/pub/chat/message', {}, JSON.stringify({
+							rm_id : rm_id,
+							rm_name : rm_name,
+							emp_no : emp_no,
+							ch_msg : msg.value,
+							ch_writer : username
+						}));
+						msg.value = '';
+					}
+				});
+	</script>
+	
+	
+	<!-- <script>
+		$(document).ready(
+				function() {
+					var rm_name = '${chatMember[0].RM_NAME}'
+					var rm_id = '${chatMember[0].RM_ID}'
+					var emp_no = '${chatMember[0].EMP_NO}'
+					var username = '${emp_id}';
+					
+					console.log(rm_name + ", " + rm_id + ", " + emp_no + ", " + username);
+					
+					
+					var sockJs = new SockJS("/grougle/chat");
+					//1. SockJS를 내부에 들고있는 stomp를 내어줌
+					var stomp = Stomp.over(sockJs);
+					console.log('여기는?');
+					//2. connection이 맺어지면 실행
+					stomp.connect({}, function(frame) {
+						console.log("STOMP Connection");
+						console.log(frame);
+						//4. subscribe(path, callback)으로 메세지를 받을 수 있음
+						stomp.subscribe("/sub/chat/message/" + rm_id, function(chat) {
+							console.log(chat.body);
+							
+							var content = JSON.parse(chat.body);
+							var writer = content.emp_id;
+							var message = content.ch_msg;
+							var sdate = content.ch_time;
+							console.log('++empid: ' + writer);
+							//나와 상대방이 보낸 메세지를 구분하여 영역을 나눈다.//
+							if (username == writer) { // 보낸 사람의 경우
+								// 채팅 여러개 보내면 이름 안뜨게 하기
+								if ($("#chatdata").children().last().hasClass("s_sender_chat")) {
+									$("#chatdata").append('<div class="s_sender_chat">'	+ message + '</div>');
+									$("#chatdata").append('<div class="s_sender">' + sdate	+ '</div>');
+								} else { // 하나면 이름 매번 뜨기
+									$("#chatdata").append('<div class="s_sender">' + writer	+ '</div>');
+									$("#chatdata").append('<div class="s_sender_chat">'	+ message + '</div>');
+									$("#chatdata").append('<div class="s_sender">' + sdate	+ '</div>');
+								}
+							} else { // 받는 사람의 경우
+								if ($("#chatdata").children().last().hasClass("s_receive_chat")) {
+									$("#chatdata").append('<div class="s_receive_chat">' + message + '</div>');
+									$("#chatdata").append('<div class="s_receive">' + sdate	+ '</div>');
+								} else {
+									$("#chatdata").append('<div class="s_receive">' + writer + '</div>');
+									$("#chatdata").append('<div class="s_receive_chat">' + message + '</div>');
+									$("#chatdata").append('<div class="s_receive">' + sdate	+ '</div>');
+								}
+							}
+							
+							// 채팅 여러개 쌓여서 스크롤 바 생길 때 자동으로 가장 하단으로 가기
+							var offset = $("#chatdata").children().last().offset();
+							console.log(offset);
+							$("#chatdata").animate({scrollTop : 90000 }, 0);
+						});
+						//3. send(path, header, message)로 메세지를 보낼 수 있음
+						//stomp.send('/pub/chat/enter', {}, JSON.stringify({rm_id: rm_id, emp_no: emp_no}))
+					});
+					
+					$("#sendBtn").on("click", function(e){
+    					send();
+    				});
+					//엔터키 이벤트 등록
+					$("#message").keyup(function() {
+						if (window.event.keyCode == 13) {
+							send();
+						}
+					})
+
+					function send() {
+							var msg = document.getElementById("message");
+							
+							console.log(username + ":" + msg.value);
+							stomp.send('/pub/chat/message/'+ rm_id, {}, JSON.stringify({
+								rm_id : rm_id,
+								ch_msg: msg.value,
+								emp_no: emp_no
+							}));
+							msg.value = '';
+					   }
+					
+				});
+	</script> -->
+	<!-- <script>
+		$(document).ready(
+				function() {
+					
+					var rm_name = '${chatMember[0].RM_NAME}'
+					var rm_id = '${chatMember[0].RM_ID}'
+					var emp_no = '${chatMember[0].EMP_NO}'
+					var username = '${loginSsInfo.emp_id}';
+
+					console.log(rm_name + ", " + rm_id + ", " +username);
+
+					var sockJs = new SockJS("/grougle/chat");
+					//1. SockJS를 내부에 들고있는 stomp를 내어줌
+					var stomp = Stomp.over(sockJs);
+					console.log('여기는?');
+
+					//2. connection이 맺어지면 실행
+					stomp.connect({}, function() {
+						console.log("STOMP Connection");
+						//4. subscribe(path, callback)으로 메세지를 받을 수 있음
+						stomp.subscribe("/sub/chat/message/" + rm_id, function(chat) {
+							console.log(chat);
+							var content = JSON.parse(chat.body);
+
+							var writer = content.emp_no;
+							var message = content.ch_msg;
+							var sdate = content.ch_time;
+							console.log('++empno: ' + emp_no);
+
+							//나와 상대방이 보낸 메세지를 구분하여 영역을 나눈다.//
+							if (username == writer) { // 보낸 사람의 경우
+								// 채팅 여러개 보내면 이름 안뜨게 하기
+								if ($("#chatdata").children().last().hasClass("s_sender_chat")) {
+									$("#chatdata").append('<div class="s_sender_chat">'	+ message + '</div>');
+									//$("#chatdata").append('<div class="s_sender">' + sdate	+ '</div>');
+								} else { // 하나면 이름 매번 뜨기
+									$("#chatdata").append('<div class="s_sender">' + writer	+ '</div>');
+									$("#chatdata").append('<div class="s_sender_chat">'	+ message + '</div>');
+									//$("#chatdata").append('<div class="s_sender">' + sdate	+ '</div>');
+								}
+							} else { // 받는 사람의 경우
+								if ($("#chatdata").children().last().hasClass("s_receive_chat")) {
+									$("#chatdata").append('<div class="s_receive_chat">' + message + '</div>');
+									//$("#chatdata").append('<div class="s_sender">' + sdate	+ '</div>');
+								} else {
+									$("#chatdata").append('<div class="s_receive">' + writer + '</div>');
+									$("#chatdata").append('<div class="s_receive_chat">' + message + '</div>');
+									//$("#chatdata").append('<div class="s_sender">' + sdate	+ '</div>');
 								}
 							}
 							
@@ -189,18 +391,19 @@
 					})
 
 					function send() {
-						var msg = document.getElementById("message");
-
-						console.log(username + ":" + msg.value);
-						stomp.send('/pub/chat/message', {}, JSON.stringify({
-							ch_msg : msg.value,
-							ch_msgid : username
-						}));
-						msg.value = '';
-					}
-
+							var msg = document.getElementById("message");
+							
+							console.log(username + ":" + msg.value);
+							stomp.send('/pub/chat/message/'+ rm_id, {}, JSON.stringify({
+								rm_id : rm_id,
+								ch_msg: msg.value,
+								emp_no: emp_no
+							}));
+							msg.value = '';
+					   }
+					
 				});
-	</script>
+	</script> -->
 
 </body>
 </html>

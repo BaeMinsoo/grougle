@@ -10,6 +10,22 @@ span {
   background: url("https://www.bootdey.com/img/bgy.png") no-repeat fixed center;
   background-size: cover;
 } */
+/* 스크롤바 디자인 */
+	.s_scroll::-webkit-scrollbar {
+    	width: 10px;  /* 스크롤바의 너비 */
+    	height: 10px;  /* 스크롤바의 너비 */
+	}
+	
+	.s_scroll::-webkit-scrollbar-thumb {
+	    height: 30%; /* 스크롤바의 길이 */
+	    background: #34343482; /* 스크롤바의 색상 */
+	    
+	    border-radius: 10px;
+	}
+	
+	.s_scroll::-webkit-scrollbar-track{
+	    background: #4747471a;  /*스크롤바 뒷 배경 색상*/
+	}
 .full {
   height: 100%;
   width: 100%;

@@ -9,4 +9,5 @@ public class ChatMessage {
 	private String ch_time;
 	private String rm_id;
 	private int emp_no;
+	private String ch_writer;
 }

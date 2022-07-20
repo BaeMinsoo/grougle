@@ -7,6 +7,18 @@
 	select rm_id, rm_name from chatroom left join chatroomjoin using(rm_id) 
 		where emp_no = #{emp_no}
 	</select>
+	
+	<!-- 사원 리스트 -->
+	<select id="selectEmployeeList" resultType="map">
+	select emp_no, dept_no, position_no, emp_id, emp_name 
+		from employee 
+		group by dept_no, emp_no, position_no, emp_id, emp_name 
+		order by dept_no, emp_name
+	</select>
+	<!-- 채팅방 -->
+	<select id="selectRoomByRoomId" parameterType="String" resultType="map">
+		select * from chatroom left join chatroomjoin using(rm_id) where rm_id =#{rm_id}
+	</select>
 	<!-- 채팅방 멤버 -->
 	<select id="selectRoomMember" parameterType="String" resultType="map">
 	select rm_id, jn_id, emp_no, emp_id, rm_name
@@ -14,9 +26,27 @@
 		left join employee using(emp_no)
 	</select>
 	
+	<!-- TODO 채팅방 멤버 카운트 -->
+	<select id="memberCount" parameterType="String" resultType="string">
+	 select count(*)
+		from (select * from chatroomjoin left join chatroom using(rm_id) where rm_id = #{rm_id})
+		left join employee using(emp_no);
+	</select>
+
+	<!-- 채팅 저장 -->	
+	<insert id="insertMessage" parameterType="ChatMessage">
+		insert into chatmessage values(#{ch_msgid}, #{ch_msg}, systimestamp, #{rm_id}, #{emp_no}, #{ch_writer})
+	</insert>
+	<select id="selectMaxMsgNo" resultType="String">
+		select nvl(max(ch_msgid)+1, 0) from chatmessage
+	</select>
+	<select id="selectMsgSdate" parameterType="String" resultType="String">
+		select to_char(ch_time, 'yyyy/mm/dd HH24:MI') from chatmessage where ch_msgid=#{ch_msgid}
+	</select>
 	
-	<!-- 채팅방 참가 클릭 -->
-	<select id="selectRoomByRoomId" parameterType="String" resultType="map">
-		select * from chatroom left join chatroomjoin using(rm_id) where rm_id = #{rm_id}
+	<!-- 메시지 호출 -->
+	<select id="selectMessage" parameterType="ChatMessage" resultType="ChatMessage">
+	select ch_msgid, rm_id, ch_writer, ch_msg, to_char(ch_time, 'yyyy/mm/dd HH24:MI') ch_time 
+		from chatmessage where rm_id=#{rm_id} order by ch_msgid
 	</select>
 </mapper>

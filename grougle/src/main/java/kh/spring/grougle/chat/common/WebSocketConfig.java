@@ -23,7 +23,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         //the url is for Websocket handshake
-        registry.addEndpoint("/chat") //handshake가 될 endpoint지정
-                .withSockJS(); //SockJS사용
+    	 //handshake가 될 endpoint지정
+        registry.addEndpoint("/chat").withSockJS(); //SockJS사용
     }
 }

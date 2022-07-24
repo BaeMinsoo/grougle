@@ -9,24 +9,54 @@ import kh.spring.grougle.attendance.model.dao.AttendanceDao;
 
 @Service
 public class AttendanceServiceImpl implements AttendanceService {
+	
 	@Autowired
 	private AttendanceDao attDAO;
 	
+	@Autowired
+	private SqlSessionTemplate sqlSession;
+	
 	@Override
-	public Attendance selectOffTime(String empNo) {
+	public Attendance selectOffTime(int empNo) {
 		return attDAO.selectOffTime(empNo);
 	}
 
 	@Override
-	public Attendance selectWeekTime(String empNo) {
+	public Attendance selectWeekTime(int empNo) {
 		return attDAO.selectWeekTime(empNo);
 	}
 
 	@Override
-	public Attendance selectMonthTime(String empNo) {
+	public Attendance selectMonthTime(int empNo) {
 		return attDAO.selectMonthTime(empNo);
 	}
 	
 	
+	@Override 
+	public int insertStartTime(Attendance attStatus) {
+		return attDAO.insertStartTime(attStatus);
+	}
+
+	@Override
+	public Attendance selectStartTime(int empNo) {
+		return attDAO.selectStartTime(empNo);
+	}
+	
+	@Override
+	public int updateEndTime(Attendance attStatus) {
+		return attDAO.updateEndTime(attStatus);
+	}
+
+	@Override
+	public int updateStatus(Attendance attStatus) {
+		int result = attDAO.updateStatus(attStatus);
+		return result;
+	}
+	
+	@Override
+	public int updateTotalTime(Attendance att) {
+		return attDAO.updateTotalTime(att);
+	}
+	 
 	
 }

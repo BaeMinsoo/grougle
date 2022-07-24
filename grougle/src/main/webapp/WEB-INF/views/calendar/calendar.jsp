@@ -6,13 +6,9 @@
 <meta charset="UTF-8">
 <title>일정관리</title>
 <!-- fullcalendar -->
-<link
-	href="<%=request.getContextPath()%>/resources/css/calendar/lib/main.css"
-	rel='stylesheet' />
-<script
-	src="<%=request.getContextPath()%>/resources/css/calendar/lib/main.js"></script>
-<script
-	src="<%=request.getContextPath()%>/resources/css/calendar/lib/locales/ko.js"></script>
+<link href="<%=request.getContextPath()%>/resources/css/calendar/lib/main.css" rel='stylesheet' />
+<script src="<%=request.getContextPath()%>/resources/css/calendar/lib/main.js"></script>
+<script src="<%=request.getContextPath()%>/resources/css/calendar/lib/locales/ko.js"></script>
 
 <script>
 <!-- 캘린더 전역변수 설정 -->

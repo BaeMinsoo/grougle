@@ -5,11 +5,20 @@ import kh.spring.grougle.attendance.domain.Attendance;
 
 public interface AttendanceService {
 
-	public Attendance selectOffTime(String empNo);
+	public Attendance selectOffTime(int empNo);
 	
-	public Attendance selectWeekTime(String empNo);
+	public Attendance selectWeekTime(int empNo);
 	
-	public Attendance selectMonthTime(String empNo);
+	public Attendance selectMonthTime(int empNo);
 	
+	int insertStartTime(Attendance attStatus);
+	
+	public Attendance selectStartTime(int empNo);
+	
+	int updateEndTime(Attendance attStatus);
+
+	int updateStatus(Attendance attStatus);
+	
+	int updateTotalTime(Attendance att);
 	
 }

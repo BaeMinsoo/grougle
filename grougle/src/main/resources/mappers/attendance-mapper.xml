@@ -25,11 +25,11 @@
 	<select id="selectOffTime" resultMap="attResultSet">
 		select  ATT_NO, ATT_WORKINGDAY, ATT_START, ATT_END, ATT_STATUS, EMP_NO,SUBSTR(ATT_TOTALTIME , 9,9) ATT_STRTOTALTIME, SUBSTR(ATT_OVERTIME , 9,9) ATT_STROVERTIME
 		from ATTENDANCE
-		where EMP_NO = #{emp_no, jdbcType=VARCHAR}
+		where EMP_NO = #{emp_no}
 			and to_date(ATT_WORKINGDAY,'YY/MM/DD') in (SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD') FROM ATTENDANCE)
 	</select>
 	
-	<select id="selectWeekTime" parameterType="string" resultMap="attResultSet">
+	<select id="selectWeekTime" parameterType="int" resultMap="attResultSet">
 		select 
 	        <!-- 초단위로 쪼갠 후 시간단위로 다시 결합 -->
 	        to_char(TRUNC(sum(((to_number(SUBSTR(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + 
@@ -81,11 +81,11 @@
 		                                    from (
 		                                        select sysdate - (to_number(to_char(sysdate,'d'))-2) s_date
 		                                        from dual) a)
-		                                and EMP_NO=#{emp_no, jdbcType=VARCHAR}     
+		                                and EMP_NO=#{emp_no}     
 		group by EMP_NO
 	</select>
 	
-	<select id="selectMonthTime" parameterType="string" resultMap="attResultSet">
+	<select id="selectMonthTime" parameterType="int" resultMap="attResultSet">
 		select to_char(trunc(sum(((to_number(substr(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),9,2))*60*60) ) + ((to_number(substr(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),11,2))*60) )+
 				(to_number(substr(to_char(ATT_TOTALTIME, 'yyyymmddhh24missff'),13,2)) ))/3600),'fm9900')||'시'|| 
 				
@@ -109,9 +109,56 @@
 		from attendance
 		where ATT_WORKINGDAY between (select TRUNC (sysdate, 'MM') from dual)
 		                                and (select LAST_DAY(SYSDATE)from dual)
-		                                and EMP_NO=#{emp_no, jdbcType=VARCHAR}
+		                                and EMP_NO=#{emp_no}
 		group by EMP_NO
 	</select>
+	
+	<insert id="insertStartTime" >
+	<!-- parameterType은 생략가능/  -->
+	<!-- parameterType="kh.spring.grougle.attendance.domain.Attendance" / parameterType="Attendance"-->
+		insert into attendance 
+		values(ATTENDANCE_SEQ.NEXTVAL, #{empNo}, #{attStatus}, SYSTIMESTAMP, SYSTIMESTAMP ,null, null, null)
+	</insert>
+	
+	<select id="selectStartTime" resultMap="attResultSet">
+		select * 
+		from attendance a
+		where a.emp_no = #{empNo}  
+		and to_date(att_workingday,'YY/MM/DD') in (
+		                    SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD') 
+		                    FROM attendance)
+		and att_start is not null
+	</select>
+	
+	
+	<!-- 업무상태 수정 -->
+	<update id="updateStatus">
+		update attendance
+		set att_status = #{attStatus}
+		where emp_no = #{empNo}
+			and to_date(att_workingday,'yy/mm/dd') in (SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD') FROM attendance)
+	</update>
+	<!-- 퇴근시간, 업무상태 수정 -->
+	<update id="updateOffTime">
+		update attendance 
+		set att_end = systimestamp, att_status = #{attStatus}
+		where emp_no = #{empNo}
+     		  and to_date(att_workingday,'YY/MM/DD') in (SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD') FROM attendance)
+	</update>
+	<!-- 근무시간, 초과근무시간 수정 -->
+	<update id="updateTotalTime">
+		update attendance 
+		set att_totaltime = #{attTotalTime}, att_overtime = #{attOverTime}
+		where emp_no = #{empNo}
+     		  and to_date(att_workingday,'YY/MM/DD') in (SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD') FROM attendance)
+	</update>
+	
+	
+	
+	
+	
+	
+	
 	
 	
 </mapper>

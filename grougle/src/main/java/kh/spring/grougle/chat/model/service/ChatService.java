@@ -28,4 +28,7 @@ public interface ChatService {
 	
 	// 메시지 호출
 	public List<ChatMessage> selectMessage(String rm_id);
+	
+	// 채팅방 생성 및 멤버 인서트
+	public int createRoom(Map<String, Object> map);
 }

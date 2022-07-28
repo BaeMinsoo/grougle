@@ -48,5 +48,9 @@ public class ChatDao {
 	public List<ChatMessage> selectMessage(String rm_id) {
 		return sqlsession.selectList("Chat.selectMessage", rm_id);
 	}
+	// 채팅방 생성
+	public int createRoom(Map<String, Object> map) {
+		return sqlsession.insert("Chat.createRoom", map);
+	}
 	
 }

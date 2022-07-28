@@ -53,5 +53,8 @@ public class ChatServiceImpl implements ChatService{
 	public List<ChatMessage> selectMessage(String rm_id) {
 		return dao.selectMessage(rm_id);
 	}
-	
+	// 채팅방생성 및 멤버 인서트
+	public int createRoom(Map<String, Object> map) {
+		return dao.createRoom(map);
+	}
 }

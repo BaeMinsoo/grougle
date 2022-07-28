@@ -9,11 +9,12 @@
 	</select>
 	
 	<!-- 사원 리스트 -->
-	<select id="selectEmployeeList" resultType="map">
-	select emp_no, dept_no, position_no, emp_id, emp_name 
+<!-- 	select emp_no, dept_no, position_no, emp_id, emp_name 
 		from employee 
 		group by dept_no, emp_no, position_no, emp_id, emp_name 
-		order by dept_no, emp_name
+		order by dept_no, position_no desc, emp_name -->
+	<select id="selectEmployeeList" resultType="map">
+	select * from employeelist left join dept using(dept_no) order by dept_no 
 	</select>
 	<!-- 채팅방 -->
 	<select id="selectRoomByRoomId" parameterType="String" resultType="map">
@@ -38,7 +39,7 @@
 		insert into chatmessage values(#{ch_msgid}, #{ch_msg}, systimestamp, #{rm_id}, #{emp_no}, #{ch_writer})
 	</insert>
 	<select id="selectMaxMsgNo" resultType="String">
-		select nvl(max(ch_msgid)+1, 0) from chatmessage
+		select nvl(max(to_number(ch_msgid))+1, 0) from chatmessage
 	</select>
 	<select id="selectMsgSdate" parameterType="String" resultType="String">
 		select to_char(ch_time, 'yyyy/mm/dd HH24:MI') from chatmessage where ch_msgid=#{ch_msgid}
@@ -49,4 +50,18 @@
 	select ch_msgid, rm_id, ch_writer, ch_msg, to_char(ch_time, 'yyyy/mm/dd HH24:MI') ch_time 
 		from chatmessage where rm_id=#{rm_id} order by ch_msgid
 	</select>
+	 <!-- 채팅방 생성 -->
+	 <insert id="createRoom" parameterType="map">
+	 	insert all
+	 	into chatroom values (to_char(seq_rm.nextval), #{rm_name})
+	 	<foreach collection="emp_names" item="empname" index="idx">
+	 		into chatroomjoin values (
+		 		to_char(get_seq_rmjoin), 
+		 		to_char(seq_rm.nextval),
+				(select emp_no from employee where emp_name = #{empname})
+			)
+	 	</foreach>
+	 	select * from dual
+	</insert>
+		
 </mapper>

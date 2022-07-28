@@ -75,7 +75,7 @@
 <body>
 	<%@ include file="./header/header.jsp"%>
 	<%@ include file="./sidebar/rightsidebar.jsp"%>
-	<%@ include file="./sidebar/chatsidebar.jsp"%>
+	<%@ include file="./chat/chatsidebar.jsp"%>
 	<%@ include file="./sidebar/leftsidebar.jsp"%>
 	<div id="main" class="main-container">	
 		

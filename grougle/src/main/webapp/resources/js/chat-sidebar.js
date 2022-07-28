@@ -33,18 +33,19 @@
 	  			var html = '';
 	  			$.each(JSON.parse(result), function(i, item) {
 	  				html += '<li class="ks-item">';
-			        html += '<a class="dropdown-toggle no-arrow" href="javascript:;" onclick="openChatRoom('+item.RM_ID+')">';
+			        html += '<a class="dropdown-toggle no-arrow" href="javascript:;" onclick="openoboChatRoom('+item.RM_ID+')">';
 		            html += '<span class="ks-avatar">';
 	                html += '<img src="https://bootdey.com/img/Content/avatar/avatar3.png" width="36" height="36">';
 		            html += '</span>';
 		            html += '<div class="ks-body">';
 		            html += '<div class="ks-name">' + item.EMP_NAME + '</div>';
+		            html += '<span class="ks-name">' + item.EMP_ID + '</span>';
 		            html += '</div>';
 			        html += '</a>';
 			  		html += '</li>';
 	  				
 	  			})
-	  			$(".ks-items").html(html);
+	  			$(".emplist.ks-items").html(html);
 	  		}
   		})
 	  }
@@ -62,10 +63,7 @@
 	                html += '<img src="https://bootdey.com/img/Content/avatar/avatar3.png" width="36" height="36">';
 		            html += '</span>';
 		            html += '<div class="ks-body">';
-		            html += '<div class="ks-name">' + item.RM_NAME;    
-		            html += '<span class="ks-datetime">'+ item.CH_TIME +'</span>';
-		            html += '</div>';
-//		            html += '<div class="ks-message">' + item.CH_MSG + '</div>
+		            html += '<div class="ks-name">' + item.RM_NAME + '</div>';;    
 		            html += '</div>';
 			        html += '</a>';
 			  		html += '</li>';
@@ -75,33 +73,7 @@
 	  		}
   		})
 	  }
-	  if(pageName == 'CHAT') {
-	  	$.ajax({
-	  		url : "./chat/chatlist",
-	  		type : "get",
-	  		success : function(result) {
-	  			console.log("result : " + result);
-	  			var html = '';
-	  			$.each(JSON.parse(result), function(i, item) {
-	  				html += '<li class="ks-item">';
-			        html += '<a class="dropdown-toggle no-arrow" href="javascript:;" onclick="openChatRoom('+item.RM_ID+')">';
-		            html += '<span class="ks-avatar">';
-	                html += '<img src="https://bootdey.com/img/Content/avatar/avatar3.png" width="36" height="36">';
-		            html += '</span>';
-		            html += '<div class="ks-body">';
-		            html += '<div class="ks-name">' + item.RM_NAME;    
-//		            html += '<span class="ks-datetime">'+ item.CH_TIME +'</span>';
-		            html += '</div>';
-//		            html += '<div class="ks-message">' + item.CH_MSG + '</div>
-		            html += '</div>';
-			        html += '</a>';
-			  		html += '</li>';
-	  				
-	  			})
-	  			$(".ks-items").html(html);
-	  		}
-  		})
-	  }
+	  
 	}
 
 	

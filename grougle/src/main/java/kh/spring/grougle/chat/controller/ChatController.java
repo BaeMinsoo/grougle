@@ -1,18 +1,21 @@
 package kh.spring.grougle.chat.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.interceptor.LoggingCacheErrorHandler;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +37,39 @@ public class ChatController {
 	private ChatServiceImpl service;
 //	${loginSsInfo.emp_id}
 	// 채팅방 목록 조회
-	@GetMapping("chatlist")
+	@GetMapping(value="chatsidebar", produces = "application/text; charset=utf8")
+	@ResponseBody
+	public String chatSideBar(@RequestParam(value = "rm_id", defaultValue = "0") String rm_id,
+			HttpSession ss) {
+		// 사원 리스트
+		List<Map<String,Object>> empList = service.selectEmployeeList();
+		return new Gson().toJson(empList);
+	}
+	@PostMapping(value="createroom", produces = "application/text; charset=utf8")
+	@ResponseBody
+	public ModelAndView createRoom(
+			ModelAndView mv, RedirectAttributes rttr,
+			@RequestParam(value = "emp_names[]", required = false) List<String> emp_names,
+			@RequestParam(value = "rm_name", required = false) String rm_name
+			) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("emp_names", emp_names);
+		map.put("rm_name", rm_name);
+		System.out.println("여기");
+		System.out.println(map);
+		// 채팅방 생성
+		int result = service.createRoom(map);
+		
+		if (result > 0) {
+			rttr.addFlashAttribute("msg", "대화방을 생성했습니다");
+			mv.setViewName("redirect:/chat/room");
+		} else {
+			rttr.addFlashAttribute("msg", "대화방 생성을 실패했습니다");
+			mv.setViewName("redirect:/chat/chatsidebar");
+		}
+		return mv;
+	}
+	@GetMapping(value="chatlist", produces = "application/text; charset=utf8")
 	@ResponseBody
 	public String chatList(
 			@RequestParam(value = "rm_id", defaultValue = "0") String rm_id,
@@ -60,7 +95,9 @@ public class ChatController {
 	// 사원 리스트
 	@GetMapping(value="emplist", produces = "application/text; charset=utf8") 
 	@ResponseBody
-	public String empList(HttpSession ss) {
+	public String empList(
+			@RequestParam(value = "rm_id", defaultValue = "0") String rm_id,
+			HttpSession ss) {
 		// 사원 리스트
 		List<Map<String,Object>> empList = service.selectEmployeeList();
 		return new Gson().toJson(empList);
@@ -94,6 +131,14 @@ public class ChatController {
 		mv.addObject("emp_id", emp_id);
 		mv.setViewName("chat/room");
 		return mv;
+	}
+	@GetMapping(value="room", produces = "application/text; charset=utf8") 
+	@ResponseBody
+	public String addchat(@RequestParam(value = "rm_id", defaultValue = "0") String rm_id,
+			HttpSession ss) {
+		// 사원 리스트
+		List<Map<String,Object>> empList = service.selectEmployeeList();
+		return new Gson().toJson(empList);
 	}
 	
 }

@@ -17,7 +17,7 @@
 		<!-- 구르글 로그인 -->
 		<div id="contents">
 			<h1>
-			<img src="/main/webapp/resources/grougle/dark-grougle.svg" id="logo_img" alt="logo">
+			<img src="<%=request.getContextPath()%>/resources/grougle/dark-grougle.svg"  id="logo_img" alt="logo">
 			</h1>
 		
 				<div class="login-box">
@@ -43,7 +43,7 @@
 					</div>
 					<h2>Grougle 공지사항</h2>
 					<ul>
-					<li></li>
+					<li><a onclick="location.href='<%=request.getContextPath()%>/board/list'" >Grougle 공지사항입니다.</a></li>
 					<li></li>
 					<li></li>
 					</ul>

@@ -20,7 +20,9 @@ public class EmployeeService {
 	private EmployeeDao dao;
 	
 	//회원가입	
-	public int insertEmployee(Employee emp, HttpServletResponse response) throws Exception {
+	public int insertEmployee(
+			Employee emp
+			, HttpServletResponse response) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 
@@ -32,7 +34,7 @@ public class EmployeeService {
 			out.close();
 			return 0;
 			
-		} else if (dao.empEmailcheck(emp.getEmp_email()) == 1) {
+		} else if (dao.empEmailcheck(emp.getEmp_email()).equals("1")) {
 			out.println("<script>");
 			out.println("alert('동일한 이메일이 있습니다.');");
 			out.println("history.go(-1);");
@@ -44,6 +46,7 @@ public class EmployeeService {
 			//인증키 set
 			emp.setEmp_approval_key(createKey());
 			dao.insertEmployee(emp);
+			sendEmail(emp, "join");
 			return 1;
 		}
 	}
@@ -68,9 +71,40 @@ public class EmployeeService {
 	// 로그인
 	public Employee empLogin(Employee emp, HttpServletResponse response) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
-		return dao.empLogin(emp);
+		PrintWriter out = response.getWriter();
+		// 등록된 아이디가 없으면
+		if(dao.empIdcheck(emp.getEmp_id()) == 0) {
+			out.println("<script>");
+			out.println("alert('등록된 아이디가 없습니다.');");
+			out.println("history.go(-1);");
+			out.println("</script>");
+			out.close();
+			return null;
+		} else {
+			String emp_pwd = emp.getEmp_pwd();
+			emp = dao.empLogin(emp.getEmp_id());
+			// 비밀번호가 다를 경우
+			if(!emp.getEmp_pwd().equals(emp_pwd)) {
+				out.println("<script>");
+				out.println("alert('비밀번호가 다릅니다.');");
+				out.println("history.go(-1);");
+				out.println("</script>");
+				out.close();
+				return null;
+			// 이메일 인증을 하지 않은 경우
+			}else if(!emp.getEmp_approval_status().equals("true")) {
+				out.println("<script>");
+				out.println("alert('이메일 인증 후 로그인 하세요.');");
+				out.println("history.go(-1);");
+				out.println("</script>");
+				out.close();
+				dao.empLogin(emp);
+				return null;
+			}else {
+				return emp;
+			}
+		}
 	}
-	
 	// 로그아웃
 		public void empLogout(HttpServletResponse response) throws Exception {
 			response.setContentType("text/html;charset=utf-8");
@@ -100,7 +134,9 @@ public class EmployeeService {
 	}
 
 	// 비밀번호 찾기
-	public void findPwd(HttpServletResponse response, Employee emp) throws Exception {
+	public void findPwd(
+			HttpServletResponse response
+			, Employee emp) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
@@ -132,6 +168,12 @@ public class EmployeeService {
 		}
 	}
 	
+	// 이메일 중복 검사(AJAX)
+		public String empEmailcheck(String emp_email, HttpServletResponse response) throws Exception {
+			String result = dao.empEmailcheck(emp_email);
+			return result;
+		}
+	
 		
 	// 이메일 발송
 		public void sendEmail(Employee emp, String div) throws Exception {
@@ -156,9 +198,9 @@ public class EmployeeService {
 				msg += emp.getEmp_id() + "님 회원가입을 환영합니다.</h3>";
 				msg += "<div style='font-size: 130%'>";
 				msg += "하단의 인증 버튼 클릭 시 정상적으로 회원가입이 완료됩니다.</div><br/>";
-				msg += "<form method='post' action='http://localhost:8090/grougle/employee/approvalEmp'>";
-				msg += "<input type='hidden' name='email' value='" + emp.getEmp_email() + "'>";
-				msg += "<input type='hidden' name='approval_key' value='" + emp.getEmp_approval_key() + "'>";
+				msg += "<form method='POST' action='http://localhost:8090/grougle/employee/approvalEmp'>";
+				msg += "<input type='hidden' name='emp_email' value='" + emp.getEmp_email() + "'>";
+				msg += "<input type='hidden' name='emp_approval_key' value='" + emp.getEmp_approval_key() + "'>";
 				msg += "<input type='submit' value='인증'></form><br/></div>";
 				
 			}else if(div.equals("findPwd")) {
@@ -207,7 +249,7 @@ public class EmployeeService {
 			} else { // 이메일 인증을 성공하였을 경우
 				out.println("<script>");
 				out.println("alert('Grougle 가입인증이 완료되었습니다. 로그인 후 이용하세요.');");
-				out.println("location.href='<%=request.getContextPath()%>/employee/login';");
+				out.println("location.href='http://localhost:8090/grougle/employee/login';");
 				out.println("</script>");
 				out.close();
 			}
@@ -235,10 +277,5 @@ public class EmployeeService {
 				return dao.empLogin(emp.getEmp_id());
 			}
 		}
-	
-	
-	
-	
-	
 
 }

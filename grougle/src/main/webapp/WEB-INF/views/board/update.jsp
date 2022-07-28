@@ -33,10 +33,10 @@
 				
 			</tr>
 			<tr>
-				<td>${board.wb_no }<a href="<%=request.getContextPath()%>/board/read?wb_no=${board.wb_no }">${board.wb_no }</a></td>
+				<td><a href="<%=request.getContextPath()%>/board/read?wb_no=${board.wb_no }">${board.wb_no }</a></td>
 				<td>${board.wb_date }</td>
 				<td>${board.wb_writer }</td>
-				<td>${board.wb_readcount }</td>	
+				<td>${board.wb_count }</td>	
 				<td>${board.wb_level }</td>	
 				<td>${board.wb_ref }</td>	
 				<td>${board.wb_reply_ref }</td>	
@@ -44,16 +44,24 @@
 				
 			</tr>
 		</table>
-		<input type="hidden" name="board_num" value="${board.wb_no }">
+		<input type="hidden" name="wb_no" value="${board.wb_no }">
 		<div>
-			제목:<input type="text" name="board_title" value="${board.wb_title }">
+			제목:<input type="text" name="wb_title" value="${board.wb_title }">
 		</div>		
 		<div>
-			내용: <input type="text" name="board_content" value="${board.wb_content }">
+			내용: <input type="text" name="wb_content" value="${board.wb_content }">
 		</div>
+		<div>변경할첨부파일:<input type="file" name="uploadfile"></div>
 		
-		<button type="reset">원래대로</button>
+	<c:if test="${not empty board.wb_original_filename }">
+		<input type="hidden" name="wb_rename_filename" value="${board.wb_rename_filename }">
+		<div>
+		기존첨부파일: <input type="text" name="wb_original_filename" value="${board.wb_original_filename }" id="orgFile" readonly>
+		<button type="button" onclick="document.getElementById('orgFile').value='';">기존파일삭제</button></div>
+		<div><img src="<%=request.getContextPath() %>/${board.wb_rename_filename }" width="500"></div>
+	</c:if>
 		<button type="submit">수정하기</button>
+		<button type="button" onclick="<%=request.getContextPath()%>/board/list">원래대로</button>		
 	</form>
 	</div>
 </c:otherwise>

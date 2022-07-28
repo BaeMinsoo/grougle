@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="Board">
-
 <!--  	private int wb_no;
 		private String wb_type;
 		private String wb_title;
@@ -13,26 +12,78 @@
 		private int wb_ref;
 		private int wb_reply_ref;
 		private int wb_reply_seq;
-		private int wb_readcount;	
+		private int wb_count;	
 		private int refnum; -->
+		
+		<resultMap type="Board" id="BoardAndReCommentResultMap">
+				<id column="WB_NO" property="wb_no"/>				
+				<result column="EMP_NO" property="emp_no"/>
+				<result column="WB_TYPE" property="wbf_no"/>
+				<result column="WB_TITLE" property="wb_title"/>
+				<result column="WB_CONTENT" property="wb_content"/>
+				<result column="WB_COUNT" property="wb_count"/>
+				<result column="WB_WRITER" property="wb_writer"/>
+				<result column="WB_DATE" property="wb_date"/>
+				<result column="WB_ORIGINAL_FILENAME" property="wb_original_filename"/>
+				<result column="WB_RENAME_FILENAME" property="wb_rename_filename"/>
+				<result column="WB_LEVEL" property="wb_level"/>
+				<result column="WB_REF" property="wb_ref"/>
+				<result column="WB_REPLY_REF" property="wb_reply_ref"/>
+				<result column="WB_REPLY_SEQ" property="wb_reply_seq"/>
+				<result column="reCommentCnt" property="reCommentCnt"/>
+				<collection property="reCommentList" resultMap="ReCommentResultMap"/>
+		</resultMap>		
+		<!-- 	private List<ReComment> reCommentList;  // 생성자시 초기값 설정하지 않음	 -->
+		
+		<resultMap type="Board" id="BoardResultMap">
+			<id column="WB_NO" property="wb_no"/>
+				<result column="EMP_NO" property="emp_no"/>
+				<result column="WB_TYPE" property="wbf_no"/>
+				<result column="WB_TITLE" property="wb_title"/>
+				<result column="WB_CONTENT" property="wb_content"/>
+				<result column="WB_COUNT" property="wb_count"/>
+				<result column="WB_WRITER" property="wb_writer"/>
+				<result column="WB_DATE" property="wb_date"/>
+				<result column="WB_ORIGINAL_FILENAME" property="wb_original_filename"/>
+				<result column="WB_RENAME_FILENAME" property="wb_rename_filename"/>
+				<result column="WB_LEVEL" property="wb_level"/>
+				<result column="WB_REF" property="wb_ref"/>
+				<result column="WB_REPLY_REF" property="wb_reply_ref"/>
+				<result column="WB_REPLY_SEQ" property="wb_reply_seq"/>
+				<result column="reCommentCnt" property="reCommentCnt"/>
+					<collection property="reCommentList" resultMap="ReCommentResultMap"/>
+		</resultMap>
+		
+		<resultMap type="BoardComment" id="ReCommentResultMap">
+			<id column="WBC_NO" property="wbc_no"/>
+			<result column="WB_NO" property="wb_no"/>
+			<result column="WBC_CONTENT" property="wbc_content"/>
+			<result column="WBC_WRITER" property="wbc_writer"/>
+			<result column="WBC_DATE" property="wbc_date"/>
+		</resultMap>
+		
+		
+		
+		
 		
 <!-- 게시글 작성 -->
 <insert id="insertBoard" parameterType="Board">
 	insert into writer_bbs 
-	(wb_no
+	(wb_no 
+	, emp_no
 	, wb_title, wb_writer, wb_content, wb_original_filename, wb_rename_filename
 	, wb_date
 	, wb_level
+	, wb_count
 	, wb_ref, wb_reply_ref
-	, wb_reply_seq
-	, wb_readcount)
+	, wb_reply_seq)
 	values 
-	( (select nvl(max(wb_no),0)+1 from writer_bbs)
+	( (select nvl(max(wb_no),0)+1 from writer_bbs) , #{emp_no}
 	, #{wb_title},#{wb_writer}, #{wb_content}, #{wb_original_filename}, #{wb_rename_filename}
-	, sysdate
+	, CURRENT_DATE
+	, DEFAULT
 	, DEFAULT
 	, (select nvl(max(wb_no),0)+1 from writer_bbs), (select nvl(max(wb_no),0)+1 from writer_bbs)
-	, DEFAULT
 	, DEFAULT
 	)
 </insert>
@@ -40,7 +91,8 @@
 <!-- 답글 시퀀스  -->
 <update id="updateBoardReplySeq" parameterType="Board">
 <![CDATA[
-	update writer_bbs set wb_reply_seq = wb_reply_seq+1
+	update writer_bbs 
+	set wb_reply_seq = wb_reply_seq+1
 	where wb_ref=(select wb_ref from writer_bbs where wb_no=#{refnum})
 	and wb_reply_seq > (select wb_reply_seq from writer_bbs where wb_no=#{refnum})
 ]]>
@@ -50,25 +102,26 @@
 <insert id="insertBoardReply" parameterType="Board">
 <![CDATA[
 	insert into writer_bbs
-		(wb_no
+		(wb_no, emp_no
 		, wb_title, wb_writer, wb_content, wb_original_filename, wb_rename_filename
 		, wb_date
+		, wb_count
 		, wb_level
 		, wb_ref, wb_reply_ref
-		, wb_reply_seq
-		, wb_readcount)
+		, wb_reply_seq)
 	values
-		( (select nvl(max(wb_no),0)+1 from writer_bbs)
+		( (select nvl(max(wb_no),0)+1 from writer_bbs), #{emp_no}
 		, #{wb_title},#{wb_writer}, #{wb_content}, #{wb_original_filename}, #{wb_rename_filename}
-		, systimestamp
+		, sysdate
+		, default
 		, (select wb_level+1 from writer_bbs where wb_no=#{refnum})
 		, (select wb_ref from writer_bbs where wb_no=#{refnum})
 		, #{refnum}
 		, (select wb_reply_seq+1 from writer_bbs where wb_no=#{refnum})
-		, DEFAULT
 		)
 ]]>
 </insert>
+
 <!-- 답답글 작성 -->
 <insert id="insertBoardReply2" parameterType="Board">
 <![CDATA[
@@ -79,10 +132,10 @@
 		, wb_level
 		, wb_ref, wb_reply_ref
 		, wb_reply_seq
-		, wb_readcount)
+		, wb_count)
 	select (select nvl(max(wb_no),0)+1 from writer_bbs)
 		, #{wb_title},#{wb_writer}, #{wb_content}, #{wb_original_filename}, #{wb_rename_filename}
-		, systimestamp
+		, sysdate		
 		, wb_level+1
 		, wb_ref
 		, #{refnum}
@@ -93,12 +146,52 @@
 </insert>
 
 
-<!-- 게시글 리스트  -->
-<select id="selectBoardListAll" resultType="Board">
-<![CDATA[
+<!-- 	WBC_NO
+		WB_NO
+		WBC_CONTENT
+		WBC_WRITER
+		WBC_DATE -->
+
+
+<select id="selectTotalCnt" resultType="_int">
+		select count(*) from writer_bbs
+</select>
+
+
+<select id="selectBoardList" resultMap="BoardResultMap">
+	<![CDATA[
+	select writer_bbs.*, WRITER_BBS_COMMENT.*, (select count(*) from WRITER_BBS_COMMENT c where c.wb_no= writer_bbs.wb_no) reCommentCnt
+	from writer_bbs 
+	left outer join WRITER_BBS_COMMENT on writer_bbs.wb_no = WRITER_BBS_COMMENT.wb_no
+	order by writer_bbs.wb_date desc, WRITER_BBS_COMMENT.wbc_date desc
+	]]>
+</select>
+
+<select id="selectBoardAndReComment" resultType="Board" parameterType="string">
+	select * 
+	from (select * from writer_bbs where WB_NO =#{WB_NO}) t1 
+        left outer join (select * from WRITER_BBS_COMMENT where WB_NO=#{WB_NO}) t2 using (WB_NO)
+</select>
+
+<select id="selectReCommentList" resultType="BoardComment" parameterType="string">
+	select * 
+	from WRITER_BBS_COMMENT 
+	where WB_NO=#{WB_NO}
+</select>
+	
+<!-- 게시글 리스트 --> 
+<select id="selectBoardListAll" resultMap="BoardResultMap">
+ <![CDATA[
+	select writer_bbs.*, WRITER_BBS_COMMENT.*, (select count(*) from WRITER_BBS_COMMENT c where c.wb_no= writer_bbs.wb_no) reCommentCnt
+	from writer_bbs 
+	left outer join WRITER_BBS_COMMENT on writer_bbs.wb_no = WRITER_BBS_COMMENT.wb_no
+	order by writer_bbs.wb_date desc, WRITER_BBS_COMMENT.wbc_date desc
+	]]>
+ 
+ <!-- <![CDATA[
 	select * from writer_bbs
 	order by wb_ref desc, wb_reply_seq asc
-]]>
+]]> -->
 </select>
 
 <select id="selectBoard" resultType="Board" parameterType="string">
@@ -122,11 +215,52 @@
 	delete from writer_bbs where wb_no=#{wb_no}
 </delete>
 
+<!-- 조회수 증가 -->
+<update id="updateReviewCnt" parameterType="Board">	
+	UPDATE writer_bbs
+	SET wb_COUNT = wb_COUNT + 1
+	WHERE wb_no = #{wb_no}
+</update>
 
 
 
+<!-- 댓글 조회 -->
+	<select id="readReply" resultType="BoardComment">
+    	SELECT
+    		  wbc_NO, wbc_CONTENT, wbc_WRITER
+    	 FROM WRITER_BBS_COMMENT
+    	WHERE wB_NO = #{wb_no}
+	</select>
 
+<!-- 댓글 작성 -->
+	<insert id="writeReply" parameterType="BoardComment">
+	 insert into WRITER_BBS_COMMENT
+	 (wbc_no, wb_no, wbc_content, wbc_writer, wbc_date, wbp, wbps, wbpl)
+    values((select nvl(max(wbc_no),0)+1 from WRITER_BBS_COMMENT), #{wb_no}, #{wbc_content}, #{wbc_writer}, CURRENT_DATE, #{wbp}, 0, 0)
+	</insert>
+	
+<!-- 댓글 수정 -->
+	<update id="updateReply" parameterType="BoardComment">
+		UPDATE WRITER_BBS_COMMENT SET wbc_CONTENT = #{wbc_CONTENT}
+		WHERE wbc_NO = #{wbc_no}
+	</update>
 
-
+<!-- 댓글 삭제 -->
+	<delete id="deleteReply" parameterType="BoardComment">
+		DELETE FROM WRITER_BBS_COMMENT
+		WHERE wbc_NO = #{wbc_no}
+	</delete>
+	
+<!-- 선택된 댓글 조회 -->
+	<select id="selectReply" resultType="BoardComment">
+		SELECT
+				wB_NO
+			  , wbc_NO
+			  , wbc_CONTENT
+			  , wbc_WRITER
+			  
+		  FROM WRITER_BBS_COMMENT
+		 WHERE wbc_NO = #{wbc_no}
+	</select>
 
 </mapper>

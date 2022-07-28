@@ -6,14 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
+<link rel="shortcut icon" href="#">
 <!-- 주소 daum 우편번호 API -->
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.min.js"></script>
+
 <!-- CSS -->
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/resources/css//.css">
+	href="<%=request.getContextPath()%>/resources/css/join/join.css">
 <!-- JavaScript -->
 <%-- <script src="<%=request.getContextPath()%>/resources/js/.js"></script> --%>
 <%-- <script src=" ${pageContext.request.contextPath}/resources/js/.js"></script> --%>
@@ -32,19 +34,19 @@
 		private String emp_email;
 		private String emp_tel;
 		private String emp_postcode;
-		private String emp_address;
+		private String emp_address;L
 		private String emp_detail_address;
 		private Timestamp emp_write_date;
 		private Timestamp emp_update_date;
 		private Timestamp emp_out_date; -->
 
-	<ul class="_step">
-		<li><strong>1</strong> <span>약관동의</span></li>
-		<li class="on"><strong>2</strong> <span>사원정보</span></li>
-		<li><strong>3</strong> <span>신청완료</span></li>
-	</ul>
+			<ul class="join_step">
+				<li><strong>1</strong> <span></span></li>
+				<li class="on"><strong>2</strong><span>사원정보</span></li>
+				<li><strong>3</strong> <span>   </span></li>
+			</ul>
 
-	<form id="do" action="<%=request.getContextPath()%>/employee/joindo"
+	<form id="joindo" action="<%=request.getContextPath()%>/employee/joindo"
 		method="post">
 		<table>
 			<tr>
@@ -147,13 +149,12 @@
 			</tr>
 		</table>
 		<button type="button" onclick="fnSubmit(); return false;">회원가입</button>
-		<button type="button"
-			onclick="location.href='<%=request.getContextPath()%>/employee/login'">취소</button>
+		<input type="button"
+			onclick = "cancle()" value="취소">
 	</form>
 
 	<script type="text/javascript">
-
-	/* 아이디 중복확인 체크 */
+		/* 아이디 중복확인 체크 */
 		$("#emp_idck").click(function() {
 			var id = $("#emp_id").val();
 			if (id == "") {
@@ -183,7 +184,7 @@
 						$("#divInputEmpid").removeClass("has-error")
 
 						$("#emp_pwd").focus();
-						isCheckId = 1;						
+						isCheckId = 1;
 					} else {
 						alert("아이디가 존재합니다. 다른 아이디를 입력해주세요.");
 
@@ -194,10 +195,8 @@
 					}
 				},
 			});
-		}	
-			
-			
-		
+		}
+
 		/* 다음 우편번호 주소 API */
 		$("#postcode_btn")
 				.click(
@@ -247,7 +246,6 @@
 				console.log("빈문자열");
 				$("#emp_pwd_check").css('display', 'inline-block');
 				$("#emp_pwd_check").text('');
-				H
 			} else if (firstPwd != secondPwd) {
 				console.log("firstPwd : " + firstPwd);
 				console.log("secondPwd : " + secondPwd);
@@ -265,7 +263,7 @@
 			}
 		});
 
-		/* 이메일 유효성 검사 */
+		/* 이메일 유효성 검사*/
 		$("#emp_email")
 				.keyup(
 						function() {
@@ -323,7 +321,7 @@
 								// $("#k_tel").focus();
 								// return false;
 							} else {
-								console.log("else 탔아???");
+								console.log("else 탔어???");
 								$("#emp_check_tel").css('display',
 										'inline-block');
 								$("#emp_check_tel").text('');
@@ -331,8 +329,40 @@
 								$("#emp_check_tel").css('color', 'green');
 							}
 						});
+		
+		$("#emp_tel").on(
+		         "input",
+		         function() {
+		            var target = document.getElementById("emp_tel");
+		            target.value = target.value.replace(/[^0-9]/g, '').replace(
+		                  /^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+		                  .replace(/(-{1,2})$/g, "");
+		         });
 	</script>
 
+<script>
+	
+	
+		$("#emp_email").change(function() {
+			
+			$.ajax({
+				url : "checkEmail",
+				type : "POST",
+				dataType:"json",
+				data : {
+					emp_email : $("#emp_email").val()
+				},
+				success : function(result) {
+					console.log(result);
+					if (result > 0) {
+						$("#empEmailcheck").html("중복된 이메일이 존재합니다.");
+					} else {
+						$("#empEmailcheck").html("");
+					}
+				}
+			})
+		})
+	</script>
 
 	<script>
 		$(document).ready(function() {
@@ -351,13 +381,12 @@
 				return false;
 			}
 
-			if ($("#emp_idck").val() != "S") {
-				console.log("회원가입 버튼:"empIdcheck)
-				alert("아이디 중복체크를 눌러주세요.");
-				$("#emp_idck").focus();
+			//if ($("#emp_idck").val() != "S") {
+				//alert("아이디 중복체크를 눌러주세요.");
+				//$("#emp_idck").focus();
 
-				return false;
-			}
+				//return false;
+			//}
 
 			if ($("#emp_pwd").val() == null || $("#emp_pwd").val() == "") {
 				alert("비밀번호를 입력해주세요.");
@@ -380,9 +409,9 @@
 				return false;
 			}
 
-			if ($("#emp_mail").val() == null || $("#emp_mail").val() == "") {
+			if ($("#emp_email").val() == null || $("#emp_email").val() == "") {
 				alert("이메일을 입력해주세요.");
-				$("#emp_mail").focus();
+				$("#emp_email").focus();
 
 				return false;
 			}
@@ -393,28 +422,20 @@
 			}
 		}
 		
-		/* $("#emp_email").keyup(function(){
-		$.ajax({
-			url : "empEmailcheck",
-			type : "POST",
-			data : {
-				email : $("#emp_email").val()
-			},
-			success : function(result) {
-				if (result == 1) {
-					$("#empEmailcheck").html("중복된 이메일이 있습니다.");
-				} else {
-					$("#empEmailcheck").html("");
-				}
-			},
-		})
-	});
-}) */
+		function cancle() {
+
+			var result = confirm("회원가입을 취소하시겠습니까?");			
+			if(result == true) {
+				alert("로그인 페이지로 이동합니다.");
+				location.href='<%=request.getContextPath()%>/employee/login';
+			} 
+			else {
+			}
+		}
+
 		
-		
+	
 	</script>
-
-
 
 	<script>
 		UPLOADCARE_PUBLIC_KEY = "3aa32830c381251bd485"

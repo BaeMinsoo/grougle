@@ -8,7 +8,7 @@
 	 	emp_tel, emp_postcode, emp_address, emp_detail_address, emp_write_date, emp_approval_key, emp_approval_status)
 	 	values(#{emp_no}, #{dept_no}, #{position_no}, #{emp_id}, #{emp_pwd}, #{emp_original_filename}, 
 	 	#{emp_name}, #{emp_gender}, #{emp_birth}, #{emp_email}, #{emp_tel}, #{emp_postcode}, #{emp_address}
-	 	, #{emp_detail_address}, #{emp_write_date}, #{emp_approval_key}, #{emp_approval_status})
+	 	, #{emp_detail_address}, to_char(sysdate, 'YYYY-MM-DD HH:MI:SS'), #{emp_approval_key}, default)
 	 </insert>
  
  	<!-- 아이디 중복체크 -->
@@ -19,8 +19,10 @@
 	</select>
 	
 	<!-- 이메일 중복 검사 -->
-	<select id="empEmailcheck" parameterType="String" resultType="int">
-		select count(*) from employee where emp_email = #{emp_email}
+	<select id="empEmailcheck" parameterType="String" resultType="String">
+		select count(*) 
+		from employee 
+		where emp_email = #{emp_email}
 	</select>
 	
 	<!-- 로그인 -->

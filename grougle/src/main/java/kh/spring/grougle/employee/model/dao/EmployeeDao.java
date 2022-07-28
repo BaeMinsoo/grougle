@@ -24,7 +24,7 @@ public class EmployeeDao {
 	}
 	
 	// 이메일 중복 검사
-		public int empEmailcheck(String emp_email) throws Exception{
+		public String empEmailcheck(String emp_email) throws Exception{
 			return sqlsession.selectOne("Employee.empEmailcheck", emp_email);
 		}
 	

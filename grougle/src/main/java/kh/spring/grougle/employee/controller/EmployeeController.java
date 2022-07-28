@@ -1,4 +1,4 @@
-package kh.spring.grougle.employee.controller;
+                                                                                                                                                                                package kh.spring.grougle.employee.controller;
 
 import java.util.Map;
 
@@ -24,6 +24,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.util.WebUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import kh.spring.grougle.employee.domain.Employee;
 import kh.spring.grougle.employee.model.service.EmployeeService;
 
@@ -47,7 +50,7 @@ public class EmployeeController {
 			throws Exception {
 		rttr.addFlashAttribute("result", service.insertEmployee(emp, response));
 
-		return "employee/join";
+		return "employee/joindo";
 	}
 
 	// 약관동의
@@ -72,11 +75,13 @@ public class EmployeeController {
 			empIdcheck = "S";
 
 		return empIdcheck;
-	}
-
-	// 로그인
+	}		
+	// *로그인 GET
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String empLogin(@ModelAttribute("Employee") Employee emp, HttpServletRequest request, Model model) {
+	public String empLogin(
+			@ModelAttribute("Employee") Employee emp
+			, HttpServletRequest request
+			, Model model) {
 		logger.info("login");
 
 		Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
@@ -88,21 +93,27 @@ public class EmployeeController {
 
 	// 로그인 POST
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String empLogin(@ModelAttribute("Employee") Employee emp, HttpServletRequest req, HttpSession httpSession,
-			RedirectAttributes rttr, HttpServletResponse response, Model model) throws Exception {
+	public String empLogin(
+			Employee emp
+			, @RequestParam("emp_id") String emp_id
+			, @RequestParam(name="emp_pwd") String emp_pwd
+			, HttpServletRequest req
+			, HttpSession httpSession
+			, RedirectAttributes rttr
+			, HttpServletResponse response
+			, Model model) throws Exception {
 		logger.info("loginSsInfo" + emp.getEmp_id());
 
 		HttpSession session = req.getSession();
 		Employee login = service.empLogin(emp, response);
 		logger.info("Pw" + emp);
-
 		if (login == null) {
 			session.setAttribute("loginSsInfo", null);
 			rttr.addFlashAttribute("msg", false);
 		} else {
 			session.setAttribute("loginSsInfo", login);
 		}
-		System.out.println("loginSsInfo 로그인 접속:" + login);
+		rttr.addFlashAttribute("msg", login.getEmp_name()+"님 로그인되었습니다.");
 		return "redirect:/";
 	}
 
@@ -179,10 +190,25 @@ public class EmployeeController {
 		 */
 		return null;
 	}
+	
+	// 이메일 중복 검사(AJAX)
+		@RequestMapping(value = "checkEmail", method = RequestMethod.POST)
+		@ResponseBody
+		public String check_email(
+				@RequestParam("emp_email") String emp_email
+				, HttpServletResponse response) throws Exception{
+			String result = service.empEmailcheck(emp_email, response);
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			String data = gson.toJson(result);
+			return data;
+		}
+	
 
 	// 회원 이메일 인증
 	@RequestMapping(value = "/approvalEmp", method = RequestMethod.POST)
-	public void approval_member(@ModelAttribute Employee emp, HttpServletResponse response) throws Exception {
+	public void approvalEmp(
+			@ModelAttribute Employee emp
+			, HttpServletResponse response) throws Exception {
 		service.approvalEmp(emp, response);
 	}
 

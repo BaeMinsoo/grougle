@@ -1,17 +1,5 @@
 @charset "UTF-8";
 
-.join_step{
-	
-	position: relative;
-    display: inline-block;
-    margin: 0 20px;
-    min-width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    box-sizing: border-box;
-	
-}
-
 ul {
 	heigt: 52;
     list-style:none;

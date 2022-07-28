@@ -12,6 +12,7 @@
 		<typeAlias type="kh.spring.grougle.employee.domain.Employee" alias="Emp"/>
 		<typeAlias type="kh.spring.grougle.board.domain.Board" alias="Board"/>
 		<typeAlias type="kh.spring.grougle.attendance.domain.Attendance" alias="Attendance"/>
+		<typeAlias type="kh.spring.grougle.board.domain.BoardComment" alias="BoardComment"/>
 	</typeAliases>
 	 
 	<mappers>
@@ -19,6 +20,7 @@
 		 <mapper resource="mappers/chat-mapper.xml"/> 
 		 <mapper resource="mappers/employee-mapper.xml"/>
 		 <mapper resource="mappers/attendance-mapper.xml"/>
+		 <mapper resource="mappers/board-mapper.xml"/>
 	</mappers>
 
 </configuration>

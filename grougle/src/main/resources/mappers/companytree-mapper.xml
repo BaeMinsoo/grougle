@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Companytree">
+  
+	<select id="selectCompanytreeList" resultType="Companytree">
+		select * from dept2
+	</select>
+  
+	 <select id="selectCompanytreeEmployeeList" resultType="CompanytreeEmployee">
+		select emp.emp_name, emp.emp_email, emp.emp_tel, dep.dept_name, pos.position_name from employee emp, dept dep, org_position pos 
+		where emp.dept_no=dep.dept_no and emp.position_no=pos.position_no and emp.emp_out_date is null 
+		order by pos.position_level asc, emp.emp_name asc
+	</select>
+	
+	<select id="selectCompanytreedeptEmployeeList" resultType="CompanytreeEmployee">
+		select emp.emp_name, emp.emp_email, emp.emp_tel, dep.dept_name, pos.position_name from employee emp, dept dep, org_position pos 
+		where emp.dept_no=dep.dept_no and emp.position_no=pos.position_no and emp.emp_out_date is null and dep.dept_name=#{dept_name}
+		order by pos.position_level asc, emp.emp_name asc
+	</select>
+	
+	<insert id="insertdept" parameterType="Companytree">
+		insert all 
+		into dept values((select nvl(max(dept_no),0)+1 from dept), #{upper_dept_no}, #{dept_name}) 
+		<choose>
+			<when test='upper_dept_no!=null and upper_dept_no!=""'>
+				 into dept2 values((select nvl(max(dept_no),0)+1 from dept), #{upper_dept_no}, #{dept_name}) 
+			</when>
+			<otherwise>
+				into dept2 values((select nvl(max(dept_no),0)+1 from dept), '#', #{dept_name})
+			</otherwise>
+		</choose>
+		select * from dual
+	</insert>
+	
+	<select id="selectdeptnamecheck" resultType="_int">
+		select COUNT(dept_name) from dept where dept_name=#{dept_name}
+	</select>
+	
+	<update id="updatedeptname" parameterType="Companytree2">
+		{call
+	        declare
+	        begin
+	            update dept set dept_name=#{dept_name_new} where dept_name=#{dept_name};
+	            update dept2 set dept_name=#{dept_name_new} where dept_name=#{dept_name};
+	        end
+    	}
+	</update>
+	
+	<update id="updatedeptplace" parameterType="Companytree">
+          <choose>
+			<when test='upper_dept_no!=null and upper_dept_no!=""'>
+				{call
+		        declare
+		        begin
+		            update dept set upper_dept_no=#{upper_dept_no} where dept_name=#{dept_name};
+		            update dept2 set upper_dept_no=#{upper_dept_no} where dept_name=#{dept_name};
+		        end
+	 			}
+			</when>
+			<otherwise>
+				{call
+		        declare
+		        begin
+		            update dept set upper_dept_no=#{upper_dept_no} where dept_name=#{dept_name};
+		            update dept2 set upper_dept_no='#' where dept_name=#{dept_name};
+		        end
+	 			}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<delete id="deletedept" parameterType="string">
+				{call
+		        declare
+		        begin
+		            delete from dept where dept_name=#{dept_name};
+		            delete from dept2 where dept_name=#{dept_name};
+		        end
+	 			}
+	</delete>
+	
+	<select id="selectdeptnamecheck2" resultType="_int">
+		select COUNT(dept_name) from dept where upper_dept_no=#{dept_no}
+	</select>
+	
+	<select id="selectdeptupdowncheck" resultType="_int">
+		select sum(cnt)
+		from(
+		    select count(*) cnt
+		    from(
+		        SELECT LEVEL, dept_name, dept_no, upper_dept_no 
+		        FROM dept 
+		        where dept_no=#{dept_no1}
+		        START WITH dept_no = #{dept_no2}
+		        CONNECT BY PRIOR upper_dept_no = dept_no
+		    )
+		    union all
+		    select count(*) cnt
+		    from(
+		        SELECT LEVEL, dept_name, dept_no, upper_dept_no 
+		        FROM dept 
+		        where dept_no=#{dept_no1}
+		        START WITH dept_no =#{dept_no2}
+		        CONNECT BY PRIOR dept_no = upper_dept_no
+		    )
+		)
+	</select>
+	
+	<select id="selectCompanytreeEmployeeAllList2" resultType="CompanytreeEmployee2">
+		select emp.emp_no, emp.emp_name, emp.emp_email, emp.emp_tel, dep.dept_name, pos.position_name, pos.position_level 
+		from employee emp, dept dep, org_position pos 
+		where emp.dept_no=dep.dept_no and emp.position_no=pos.position_no and emp.emp_out_date is null and dep.dept_name=#{dept_name}
+		order by pos.position_level asc, emp.emp_name asc
+	</select>
+	
+</mapper>

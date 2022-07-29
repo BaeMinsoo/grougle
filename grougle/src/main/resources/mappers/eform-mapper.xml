@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Eform">
+  
+  <select id="selectformsList" resultType="Eform">
+		select ef.forms_no, ef.forms_title, ef.creator, to_char(ef.create_date, 'YYYY-MM-DD') as create_date, f.category_name, e.emp_name 
+		from e_forms ef, forms_category f, employee e 
+		where ef.category_no=f.category_no and ef.creator=e.emp_no and ef.delete_yn='N'
+		order by ef.forms_title asc
+	</select>
+  
+  <select id="selectformtreeList" resultType="Eform">
+  		SELECT * FROM FORMS_CATEGORY 
+  		UNION
+  		SELECT to_char(TRUNC(DBMS_RANDOM.VALUE(500,999999999))) AS CATEGORY_NO, FORMS_TITLE AS CATEGORY_NAME, CATEGORY_NO AS UPPER_CATEGORY_NO FROM E_FORMS where delete_yn='N'
+  </select>
+  
+  <select id="selectdetailformList" resultType="Eform">
+		select ef.forms_no, ef.forms_title, ef.creator, to_char(ef.create_date, 'YYYY-MM-DD') as create_date, f.category_name, e.emp_name 
+		from e_forms ef, forms_category f, employee e 
+		where ef.category_no=f.category_no and ef.creator=e.emp_no and ef.delete_yn='N' and ef.category_no=#{category_no}
+		order by ef.forms_title asc
+	</select>
+	
+	<select id="selectdetailformList2" resultType="Eform">
+		select ef.forms_no, ef.forms_title, ef.creator, to_char(ef.create_date, 'YYYY-MM-DD') as create_date, f.category_name, e.emp_name 
+		from e_forms ef, forms_category f, employee e 
+		where ef.category_no=f.category_no and ef.creator=e.emp_no and ef.delete_yn='N' and ef.forms_title=#{category_name}
+		order by ef.forms_title asc
+	</select>
+	
+	<select id="selectdetailformList3" resultType="Eform">
+		select ef.forms_no, ef.forms_title, ef.creator, to_char(ef.create_date, 'YYYY-MM-DD') as create_date, f.category_name, e.emp_name 
+		from e_forms ef, forms_category f, employee e 
+		where ef.category_no=f.category_no and ef.creator=e.emp_no and ef.delete_yn='N' and f.category_no=#{parent}
+		order by ef.forms_title asc
+	</select>
+	
+	<select id="selectdetailformallList" resultType="Eform">
+		select ef.forms_no, ef.forms_title, ef.creator, to_char(ef.create_date, 'YYYY-MM-DD') as create_date, f.category_name, e.emp_name 
+		from e_forms ef, forms_category f, employee e 
+		where ef.category_no=f.category_no and ef.creator=e.emp_no and ef.delete_yn='N'
+		order by ef.forms_title asc
+	</select>
+	
+	<select id="selectcategorynamecheck" resultType="_int">
+		select count(category_name) from forms_category where category_name=#{category_name}
+	</select>
+	
+	<insert id="insertcategory" parameterType="Eform">
+		<choose>
+			<when test='upper_category_no!=null and upper_category_no!=""'>
+				{call
+			        declare
+			        begin
+			           	insert into forms_category values((select nvl(max(to_number(category_no)),0)+1 from forms_category), #{category_name}, #{upper_category_no});
+			            insert into e_forms values((select nvl(max(forms_no),0)+1 from e_forms), (select nvl(max(to_number(category_no)),0) from forms_category), '[리스트]', null, default, null, default);
+			        end
+		    	}
+			</when>
+			<otherwise>
+				insert into forms_category values((select nvl(max(to_number(category_no)),0)+1 from forms_category), #{category_name}, '#')
+			</otherwise>
+		</choose>
+	</insert>
+	
+	<select id="selectcategorynamecheck2" resultType="_int">
+		select count(category_name) from forms_category where category_name=#{category_name}
+	</select>
+	
+	<update id="updatecategoryname" parameterType="Map">
+		update forms_category set category_name=#{category_name_new} where category_no=#{category_no}
+	</update>
+	
+	<select id="categoryupdowncheck" resultType="_int">
+		select sum(cnt)
+		from(
+		    select count(*) cnt
+		    from(
+		        SELECT LEVEL, category_name, category_no, upper_category_no 
+		        FROM forms_category 
+		        where category_no=#{category_no1}
+		        START WITH category_no = #{category_no2}
+		        CONNECT BY PRIOR upper_category_no = category_no
+		    )
+		    union all
+		    select count(*) cnt
+		    from(
+		        SELECT LEVEL, category_name, category_no, upper_category_no 
+		        FROM forms_category 
+		        where category_no=#{category_no1}
+		        START WITH category_no =#{category_no2}
+		        CONNECT BY PRIOR category_no = upper_category_no
+		    )
+		)
+	</select>
+	
+	<update id="updateformplace" parameterType="Map">
+		update e_forms set category_no=#{new_upper_category_no} where forms_title=#{category_name}
+	</update>
+	
+	<update id="updatecategoryplace" parameterType="Map">
+		<choose>
+			<when test='upper_category_no!=null and upper_category_no!=""'>
+				update forms_category set upper_category_no=#{upper_category_no} where category_no=#{category_no}
+			</when>
+			<otherwise>
+				update forms_category set upper_category_no='#' where category_no=#{category_no}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<select id="selectdowncategorycheck" resultType="_int">
+		select COUNT(category_name) from forms_category where upper_category_no=#{category_no}
+	</select>
+	
+	<delete id="deletecategory" parameterType="Eform">
+		{call
+	        declare
+	        begin
+	           	delete from e_forms where category_no=#{category_no};
+	           	delete from forms_category where category_no=#{category_no};
+	        end
+    	}
+	</delete>
+	
+	<delete id="deleteform" parameterType="Eform">
+	   delete from e_forms where forms_title=#{forms_title} and category_no=#{category_no}
+	</delete>
+	
+	<select id="selectpreview" resultType="Eform">
+		select forms_title, forms_content 
+		from e_forms 
+		where forms_title=#{forms_title} 
+			and creator=(select emp_no from employee where emp_name=#{emp_name}) 
+			and category_no=(select category_no from forms_category where category_name=#{category_name})
+	</select>
+	
+	<insert id="makeform" parameterType="EformRe">
+	    insert into e_forms 
+	    values
+	    ((select nvl(max(forms_no),0)+1 from e_forms), #{category_no}, #{forms_title}, #{forms_content}, default, #{creator}, default)
+	</insert>
+	
+	<select id="selectformtoedit" resultType="Eform">
+		select f.forms_no, f.forms_title, f.forms_content , category_no, c.category_name
+		from e_forms f join forms_category c
+		using(category_no)
+		where forms_title=#{forms_title} 
+			and creator=(select emp_no from employee where emp_name=#{emp_name}) 
+			and category_no=(select category_no from forms_category where category_name=#{category_name})
+	</select>
+	
+	<update id="updateform" parameterType="EformRe2">
+		update e_forms set forms_title=#{forms_title}, forms_content=#{forms_content}, category_no=#{category_no} where forms_no=#{forms_no}
+	</update>
+  
+</mapper>

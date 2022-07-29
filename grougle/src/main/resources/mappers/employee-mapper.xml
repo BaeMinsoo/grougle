@@ -27,10 +27,12 @@
 	
 	<!-- 로그인 -->
 	<select id="empLogin" parameterType="string" resultType="Emp">
-		select *
-		from employee
+		select e.*, d.dept_name, p.position_name
+		from employee e, dept d, org_position p
 		where emp_id = #{emp_id}
 		and emp_pwd = #{emp_pwd}
+		and e.dept_no=d.dept_no
+        and e.position_no=p.position_no
 	</select>
 	
 	<!-- 이메일 인증 -->

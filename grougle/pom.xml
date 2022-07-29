@@ -162,6 +162,12 @@
 		    <artifactId>jackson-databind</artifactId>
 		    <version>2.13.2.2</version>
 		</dependency>
+		<!-- JSON MAPPER -->
+		<dependency> 
+		    <groupId>org.codehaus.jackson</groupId> 
+		    <artifactId>jackson-mapper-asl</artifactId> 
+		    <version>1.9.13</version> 
+		</dependency>
 		
 		<!-- DB 연동 -->
 		<!-- spring-jdbc, 필수 -->

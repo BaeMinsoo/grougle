@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Eapproval">
+  
+  <select id="selectformandmake" resultType="Eform">
+		select e.category_no, e.forms_title, e.forms_content, c.category_name
+		from e_forms e, forms_category c
+		where e.category_no=c.category_no and e.forms_title=#{forms_title} and c.category_name=#{category_name}
+	</select>
+	
+	<insert id="makeapproval" parameterType="Eapproval">
+		<choose>
+			<when test='final_approval==1'>
+				{call
+			        declare
+			        begin
+			           	insert into e_approval values ((select nvl(max(draft_no),0)+1 from e_approval), #{drafter_id}, default, #{draft_title}, #{draft_content}, 1, #{draft_first}, null, null, null, null, null, null, default, null, #{final_approval}, null, null, null, null, null);
+			           	insert into currnet_empno values ((select nvl(max(draft_no),0) from e_approval), #{draft_first});
+			        end
+		    	}	
+			</when>
+			<when test='final_approval==2'>
+				{call
+			        declare
+			        begin
+			           insert into e_approval values ((select nvl(max(draft_no),0)+1 from e_approval), #{drafter_id}, default, #{draft_title}, #{draft_content}, 1, #{draft_first}, #{draft_second}, null, null, null, null, null, default, null, #{final_approval}, null, null, null, null, null);
+			           insert into currnet_empno values ((select nvl(max(draft_no),0) from e_approval), #{draft_first});
+			        end
+		    	}			
+			</when>
+			<when test='final_approval==3'>
+				{call
+			        declare
+			        begin
+			           	insert into e_approval values ((select nvl(max(draft_no),0)+1 from e_approval), #{drafter_id}, default, #{draft_title}, #{draft_content}, 1, #{draft_first}, #{draft_second}, #{draft_third}, null, null, null, null, default, null, #{final_approval}, null, null, null, null, null);	
+			           	insert into currnet_empno values ((select nvl(max(draft_no),0) from e_approval), #{draft_first});
+			        end
+		    	}	
+			</when>
+			<when test='final_approval==4'>
+				{call
+			        declare
+			        begin
+			           	insert into e_approval values ((select nvl(max(draft_no),0)+1 from e_approval), #{drafter_id}, default, #{draft_title}, #{draft_content}, 1, #{draft_first}, #{draft_second}, #{draft_third}, #{draft_fourth}, null, null, null, default, null, #{final_approval}, null, null, null, null, null);
+			           	insert into currnet_empno values ((select nvl(max(draft_no),0) from e_approval), #{draft_first});
+			        end
+		    	}		
+			</when>
+			<when test='final_approval==5'>
+				{call
+			        declare
+			        begin
+			           	insert into e_approval values ((select nvl(max(draft_no),0)+1 from e_approval), #{drafter_id}, default, #{draft_title}, #{draft_content}, 1, #{draft_first}, #{draft_second}, #{draft_third}, #{draft_fourth}, #{draft_fifth}, null, null, default, null, #{final_approval}, null, null, null, null, null);	
+			           	insert into currnet_empno values ((select nvl(max(draft_no),0) from e_approval), #{draft_first});
+			        end
+		    	}	
+			</when>
+		</choose>
+	</insert>
+	
+	<select id="selectapproval" resultType="Eapproval">
+		select e.* from e_approval e, currnet_empno c where e.draft_no=c.draft_no and c.emp_no=#{emp_no} and e.draft_status='1'
+	</select>
+	
+	<select id="selectapproval2" resultType="Eapproval">
+		select * from e_approval where drafter_id=#{emp_no} and draft_status='1'
+	</select>
+	
+	<select id="selectapproval3" resultType="Eapproval">
+		select * from e_approval where drafter_id=#{emp_no} and draft_status='2'
+	</select>
+	
+	<select id="selectapproval4" resultType="Eapproval">
+		select e.*, r.reject_reason from e_approval e, e_approval_reject r where e.draft_no=r.draft_no and e.drafter_id=#{emp_no} and e.draft_status='3'
+	</select>
+	
+	<select id="selectapprovaldo" resultType="Eapproval">
+		select 
+		ap.draft_title, 
+		ap.draft_no, 
+		ap.drafter_id, 
+		(select d.dept_name from dept d, e_approval ap, employee e where ap.drafter_id=e.emp_no and e.dept_no=d.dept_no and ap.draft_no=#{draft_no}) as dept_name,
+		(select p.position_name from org_position p, e_approval ap, employee e where ap.drafter_id=e.emp_no and e.position_no=p.position_no and ap.draft_no=#{draft_no}) as position_name,
+		(select e.emp_name from e_approval ap, employee e where ap.drafter_id=e.emp_no and ap.draft_no=#{draft_no}) as drafter_name,
+		(select e.emp_name from e_approval ap, employee e where ap.draft_first=e.emp_no and ap.draft_no=#{draft_no}) as draft_first_name,
+		(select e.emp_name from e_approval ap, employee e where ap.draft_second=e.emp_no and ap.draft_no=#{draft_no}) as draft_second_name,
+		(select e.emp_name from e_approval ap, employee e where ap.draft_third=e.emp_no and ap.draft_no=#{draft_no}) as draft_third_name,
+		(select e.emp_name from e_approval ap, employee e where ap.draft_fourth=e.emp_no and ap.draft_no=#{draft_no}) as draft_fourth_name,
+		(select e.emp_name from e_approval ap, employee e where ap.draft_fifth=e.emp_no and ap.draft_no=#{draft_no}) as draft_fifth_name,
+		(select p.position_name from org_position p, e_approval ap, employee e where ap.draft_first=e.emp_no and e.position_no=p.position_no and ap.draft_no=#{draft_no}) as draft_first_position_name,
+		(select p.position_name from org_position p, e_approval ap, employee e where ap.draft_second=e.emp_no and e.position_no=p.position_no and ap.draft_no=#{draft_no}) as draft_second_position_name,
+		(select p.position_name from org_position p, e_approval ap, employee e where ap.draft_third=e.emp_no and e.position_no=p.position_no and ap.draft_no=#{draft_no}) as draft_third_position_name,
+		(select p.position_name from org_position p, e_approval ap, employee e where ap.draft_fourth=e.emp_no and e.position_no=p.position_no and ap.draft_no=#{draft_no}) as draft_fourth_position_name,
+		(select p.position_name from org_position p, e_approval ap, employee e where ap.draft_fifth=e.emp_no and e.position_no=p.position_no and ap.draft_no=#{draft_no}) as draft_fifth_position_name,
+		ap.draft_first,
+		ap.draft_second,
+		ap.draft_third,
+		ap.draft_fourth,
+		ap.draft_fifth,
+		ap.first_date,
+		ap.second_date,
+		ap.third_date,
+		ap.fourth_date,
+		ap.fifth_date,
+		ap.draft_content,
+		ap.approval_status,
+		ap.final_approval
+		from e_approval ap where draft_no=#{draft_no}
+	</select>
+	
+	<update id="updateapproval" parameterType="Eapproval">
+		<if test="approval_status !=null  and approval_status==0">
+			<choose>
+				<when test="final_approval==1">
+					{call
+				        declare
+				        begin
+				           update e_approval set approval_status=1, first_date=systimestamp, draft_status=2 where draft_no=#{draft_no};
+				        end
+			    	}	
+				</when>
+				<when test="final_approval gt 1">
+					{call
+				        declare
+				        begin
+				           update e_approval set approval_status=1, first_date=systimestamp where draft_no=#{draft_no};
+				           update currnet_empno set emp_no=#{draft_second};
+				        end
+			    	}	
+				</when>
+			</choose>
+		</if>
+		<if test="approval_status !=null  and approval_status==1">
+			<choose>
+				<when test="final_approval==2">
+					{call
+				        declare
+				        begin
+				           update e_approval set approval_status=2, second_date=systimestamp, draft_status=2 where draft_no=#{draft_no};
+				        end
+			    	}	
+				</when>
+				<when test="final_approval gt 2">
+					{call
+				        declare
+				        begin
+				           update e_approval set approval_status=2, second_date=systimestamp where draft_no=#{draft_no};
+				           update currnet_empno set emp_no=#{draft_third};
+				        end
+			    	}	
+				</when>
+			</choose> 
+		</if>
+		<if test="approval_status !=null  and approval_status==2">
+			<choose>
+				<when test="final_approval==3">
+					{call
+				        declare
+				        begin
+				           update e_approval set approval_status=3, third_date=systimestamp, draft_status=2 where draft_no=#{draft_no};
+				        end
+			    	}	
+				</when>
+				<when test="final_approval gt 3">
+					{call
+				        declare
+				        begin
+				           update e_approval set approval_status=3, third_date=systimestamp where draft_no=#{draft_no};
+				           update currnet_empno set emp_no=#{draft_fourth};
+				        end
+			    	}	 
+				</when>
+			</choose> 
+		</if>
+		<if test="approval_status !=null  and approval_status==3">
+			<choose>
+				<when test="final_approval==4">
+					{call
+				        declare
+				        begin
+				           update e_approval set approval_status=4, fourth_date=systimestamp, draft_status=2 where draft_no=#{draft_no};
+				        end
+			    	}	
+				</when>
+				<when test="final_approval gt 4">
+					{call
+				        declare
+				        begin
+				           update e_approval set approval_status=4, fourth_date=systimestamp where draft_no=#{draft_no};
+				           update currnet_empno set emp_no=#{draft_fifth};
+				        end
+			    	}	 
+				</when>
+			</choose> 
+		</if>
+		<if test="approval_status !=null  and approval_status==4">
+		    update e_approval set approval_status=5, fifth_date=systimestamp, draft_status=2 where draft_no=#{draft_no};
+		</if>
+		
+	</update>
+  
+  
+</mapper>

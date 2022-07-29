@@ -13,6 +13,15 @@
 		<typeAlias type="kh.spring.grougle.board.domain.Board" alias="Board"/>
 		<typeAlias type="kh.spring.grougle.attendance.domain.Attendance" alias="Attendance"/>
 		<typeAlias type="kh.spring.grougle.board.domain.BoardComment" alias="BoardComment"/>
+		<typeAlias type="kh.spring.grougle.companytree.domain.Companytree" alias="Companytree"/>
+		<typeAlias type="kh.spring.grougle.companytree.domain.Companytree2" alias="Companytree2"/>
+		<typeAlias type="kh.spring.grougle.companytree.domain.CompanytreeEmployee" alias="CompanytreeEmployee"/>
+		<typeAlias type="kh.spring.grougle.companytree.domain.CompanytreeEmployee2" alias="CompanytreeEmployee2"/>
+		<typeAlias type="kh.spring.grougle.eforml.domain.Eform" alias="Eform"/>
+		<typeAlias type="kh.spring.grougle.eforml.domain.Eform2" alias="Eform2"/>
+		<typeAlias type="kh.spring.grougle.eforml.domain.EformRe" alias="EformRe"/>
+		<typeAlias type="kh.spring.grougle.eforml.domain.EformRe2" alias="EformRe2"/>
+		<typeAlias type="kh.spring.grougle.eapproval.domain.Eapproval" alias="Eapproval"/>
 	</typeAliases>
 	 
 	<mappers>
@@ -21,6 +30,9 @@
 		 <mapper resource="mappers/employee-mapper.xml"/>
 		 <mapper resource="mappers/attendance-mapper.xml"/>
 		 <mapper resource="mappers/board-mapper.xml"/>
+		 <mapper resource="mappers/companytree-mapper.xml"/> 
+		 <mapper resource="mappers/eform-mapper.xml"/> 
+		 <mapper resource="mappers/eapproval-mapper.xml"/> 
 	</mappers>
 
 </configuration>

@@ -36,10 +36,10 @@ import com.google.gson.GsonBuilder;
 
 import kh.spring.grougle.board.domain.Board;
 import kh.spring.grougle.board.domain.BoardComment;
-import kh.spring.grougle.board.domain.BoardFile;
+
 import kh.spring.grougle.board.model.dao.BoardDao;
 import kh.spring.grougle.board.model.service.BoardService;
-import kh.spring.grougle.common.FileUpload;
+
 import kh.spring.grougle.employee.controller.EmployeeController;
 import kh.spring.grougle.employee.domain.Employee;
 
@@ -56,8 +56,7 @@ public class BoardController {
 	@Autowired
 	private BoardDao dao;
 
-	@Autowired
-	private FileUpload commonFile;
+	
 
 	// 게시글 작성
 	@GetMapping("/write")
@@ -76,7 +75,7 @@ public class BoardController {
 	@PostMapping("/write")
 	@ResponseBody
 	@Transactional
-	public ModelAndView insertBoard(ModelAndView mv, Board board, BoardFile boradfile,
+	public ModelAndView insertBoard(ModelAndView mv, Board board,
 			@RequestParam(name = "uploadfile", required = false) MultipartFile uploadfile, HttpSession session,
 			HttpServletRequest req) {
 		// 로그인 정보 확인하여 작성자
@@ -86,16 +85,6 @@ public class BoardController {
 			return mv;
 		}
 		board.setWb_writer(emp.getEmp_id());
-
-		// 첨부파일있다면 첨부파일 저장
-		if (uploadfile != null) {
-			String rename_filename = commonFile.saveFile(uploadfile, req);
-			if (rename_filename != null) {
-				// 파일저장에 성공하면 DB에 저장할 데이터를 채워줌
-				board.setWb_rename_filename(rename_filename);
-				board.setWb_original_filename(uploadfile.getOriginalFilename());
-			}
-		}
 
 		// DB글 insert
 		int result = service.insertBoard(board);
@@ -157,47 +146,25 @@ public class BoardController {
 
 	// 게시글 수정
 	@GetMapping("/update")
-	public ModelAndView pageupdateBoard(ModelAndView mv, @RequestParam("wb_no") String wb_no) {
+	public ModelAndView updateBoard(ModelAndView mv, @RequestParam("wb_no") String wb_no) {
 		mv.addObject("board", service.selectBoard(wb_no));
 		mv.setViewName("board/update");
 		return mv;
 	}
 
 	@PostMapping("/updateDo")
-	public ModelAndView updateBoard(ModelAndView mv, Board board,
-			@RequestParam(name = "uploadfile", required = false) MultipartFile uploadfile, HttpServletRequest req) {
-
-		String before_rename_filename = board.getWb_rename_filename();
-		String before_original_filename = board.getWb_original_filename();
-
-		// 변경할첨부파일 있다면 첨부파일 저장
-		if (uploadfile != null) {
-			String rename_filename = commonFile.saveFile(uploadfile, req);
-			if (rename_filename != null) {
-				// 파일저장에 성공하면 DB에 저장할 데이터를 채워줌
-				board.setWb_original_filename(uploadfile.getOriginalFilename());
-				board.setWb_rename_filename(rename_filename);
-
-				// 기존 파일 있다면 파일서버에서 삭제함
-				if (before_rename_filename != null && !before_rename_filename.equals("")) {
-					commonFile.removeFile(before_rename_filename, req);
-				}
-			}
-		}
-		// 변경할첨부파일 없고 기존첨부파일명도 삭제되어있다면 기존 파일 삭제하고 업데이트해야함.
-		else if (before_original_filename == null || before_original_filename.equals("")) {
-			board.setWb_original_filename(null);
-			board.setWb_rename_filename(null);
-			if (before_rename_filename != null && !before_rename_filename.equals("")) {
-				commonFile.removeFile(before_rename_filename, req);
-			}
-		}
-
+	public ModelAndView updateBoard(
+			ModelAndView mv
+			, Board board
+			,@RequestParam(name = "uploadfile", required = false) MultipartFile uploadfile
+			, HttpServletRequest req) {
 		// DB글 update
 		int result = service.updateBoard(board);
 		mv.setViewName("redirect:/board/list");
 		return mv;
 	}
+
+	
 
 	// 게시글 삭제
 	// ajax방식-@ResponseBody, 한글깨짐 produces ="text/plain;charset=UTF-8"추가

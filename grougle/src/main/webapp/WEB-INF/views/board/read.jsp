@@ -100,25 +100,8 @@
 					<label for="content" class="col-sm-2 control-label">내용</label>
 					<textarea id="wb_content" name="wb_content" class="form-control"
 						readonly="readonly">
-					<c:if test="${empty board.WB_ORIGINAL_FILENAME }">
-							<tr>
-							<th class="table-primary s_ac_th">업체사진</th>
-							<td class="table-light">
-								<img width="300px;" style="border-radius: 15px;" src="https://media.discordapp.net/attachments/965916528350478386/971797973627437076/-removebg-preview_1.png">
-							</td>
-							</tr>
-						</c:if>
-						<c:if test="${not empty board.WB_ORIGINAL_FILENAME }">
-							<tr>
-								<th class="table-primary s_ac_th"></th>
-								<td class="table-light">
-									<img width="300px;" height="200px;" style="border-radius: 15px;" src="${board.WB_ORIGINAL_FILENAME }">
-								</td>
-							</tr>
-						</c:if>	
-						
-						
-					<c:out value="${board.wb_content}" /></textarea>
+					<c:out value="${board.wb_content}" />						
+					</textarea>
 				</div>
 				<div class="form-group">
 					<label for="writer" class="col-sm-2 control-label">작성자</label> <input

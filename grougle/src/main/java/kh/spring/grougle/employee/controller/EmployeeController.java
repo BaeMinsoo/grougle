@@ -96,7 +96,7 @@ public class EmployeeController {
 	public String empLogin(
 			Employee emp
 			, @RequestParam("emp_id") String emp_id
-			, @RequestParam(name="emp_pwd") String emp_pwd
+			, @RequestParam("emp_pwd") String emp_pwd
 			, HttpServletRequest req
 			, HttpSession httpSession
 			, RedirectAttributes rttr
@@ -105,15 +105,15 @@ public class EmployeeController {
 		logger.info("loginSsInfo" + emp.getEmp_id());
 
 		HttpSession session = req.getSession();
-		Employee login = service.empLogin(emp, response);
+		Employee loginSsInfo = service.empLogin(emp, response);
 		logger.info("Pw" + emp);
-		if (login == null) {
+		if (loginSsInfo == null) {
 			session.setAttribute("loginSsInfo", null);
 			rttr.addFlashAttribute("msg", false);
 		} else {
-			session.setAttribute("loginSsInfo", login);
+			session.setAttribute("loginSsInfo", loginSsInfo);
 		}
-		rttr.addFlashAttribute("msg", login.getEmp_name()+"님 로그인되었습니다.");
+		rttr.addFlashAttribute("msg", loginSsInfo.getEmp_name()+"님 로그인되었습니다.");
 		return "redirect:/";
 	}
 
@@ -220,20 +220,27 @@ public class EmployeeController {
 
 	// empPage 수정
 	@RequestMapping(value = "/updateEmpPage", method = RequestMethod.POST)
-	public String update_mypage(@ModelAttribute Employee emp, HttpSession session, RedirectAttributes rttr)
+	public String update_mypage(
+			@ModelAttribute Employee emp
+			, HttpSession session
+			, RedirectAttributes rttr)
 			throws Exception {
-		session.setAttribute("member", service.updateEmpPage(emp));
-		rttr.addFlashAttribute("msg", "회원정보 수정 완료");
-		return "redirect:/employee/empPage";
+		session.setAttribute("Employee", service.updateEmpPage(emp));
+		rttr.addFlashAttribute("msg", "사원정보 수정 완료");
+		return "redirect:/employee/login";
 	}
 
 	// 비밀번호 변경
 	@RequestMapping(value = "/updatePwd", method = RequestMethod.POST)
-	public String update_pw(@ModelAttribute Employee emp, @RequestParam("old_pwd") String old_pwd, HttpSession session,
-			HttpServletResponse response, RedirectAttributes rttr) throws Exception {
-		session.setAttribute("member", service.updatePwd(emp, old_pwd, response));
-		rttr.addFlashAttribute("msg", "비밀번호 수정 완료");
-		return "redirect:/employee/empPage";
+	public String update_pw(
+			Employee emp
+			, @RequestParam("emp_pwd") String emp_pwd
+			, HttpSession session
+			, HttpServletResponse response
+			, RedirectAttributes rttr) throws Exception {
+		session.setAttribute("Employee", service.updatePwd(emp_pwd, emp, response));
+		rttr.addFlashAttribute("msg", "사원정보 수정 완료");
+		return "redirect:/employee/login";
 	}
 
 }

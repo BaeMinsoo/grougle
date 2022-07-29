@@ -56,18 +56,19 @@
 	<script src="<%=request.getContextPath() %>/resources/vendors/scripts/dashboard.js"></script>
 </head>
 <body>
-	<!-- 헤더&사이드바 -->
-	<%@ include file="../header/header.jsp"%>
-	<%@ include file="../sidebar/rightsidebar.jsp"%>
-	<%@ include file="../sidebar/leftsidebar.jsp"%>
 	
 	<div class="container">
 		<header>
 			<h1>게시판</h1>
 		</header>
+<div>
+<%@ include file="../sidebar/rightsidebar.jsp"%>
+<%@ include file="../sidebar/leftsidebar.jsp"%>
 
-		<div>
-			<%@ include file="../header/header.jsp"%>
+</div>
+
+
+		<div>			
 			<%@include file="nav.jsp"%>
 		</div>
 

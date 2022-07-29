@@ -6,9 +6,47 @@
 <head>
 <meta charset="UTF-8">
 <title>글수정</title>
+<!-- 헤더&사이드바 -->
+    <!-- Mobile Specific Metas -->
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css"
+		href="<%=request.getContextPath() %>/resources/vendors/styles/core.css">
+	<link rel="stylesheet" type="text/css"
+		href="<%=request.getContextPath() %>/resources/vendors/styles/icon-font.min.css">
+	<link rel="stylesheet" type="text/css"
+		href="<%=request.getContextPath() %>/resources/src/plugins/datatables/css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" type="text/css"
+		href="<%=request.getContextPath() %>/resources/src/plugins/datatables/css/responsive.bootstrap4.min.css">
+	<link rel="stylesheet" type="text/css"
+		href="<%=request.getContextPath() %>/resources/vendors/styles/style.css">
+	<link rel="stylesheet" type="text/css"
+		href="<%=request.getContextPath() %>/resources/css/chat/chat.css">
+	
+	<!-- js -->
+	<script src="<%=request.getContextPath() %>/resources/vendors/scripts/core.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/vendors/scripts/script.min.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/vendors/scripts/process.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/vendors/scripts/layout-settings.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/src/plugins/apexcharts/apexcharts.min.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/js/chat-sidebar.js"></script>
+	<script
+		src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/jquery.dataTables.min.js"></script>
+	<script
+		src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/dataTables.bootstrap4.min.js"></script>
+	<script
+		src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/dataTables.responsive.min.js"></script>
+	<script
+		src="<%=request.getContextPath() %>/resources/src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/vendors/scripts/dashboard.js"></script>
 </head>
 <body>
-<div><button type="button" onclick="location.href='<%=request.getContextPath() %>/'">홈</button></div>
+<div>
+	<%@ include file="../header/header.jsp"%>
+	<%@ include file="../sidebar/rightsidebar.jsp"%>
+	<%@include file="nav.jsp"%>
+</div>
 <c:choose>
 <c:when test="${empty board }">
 	<script>

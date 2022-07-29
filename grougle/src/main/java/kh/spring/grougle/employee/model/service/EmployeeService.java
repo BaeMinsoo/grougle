@@ -9,6 +9,7 @@ import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kh.spring.grougle.employee.domain.Employee;
 import kh.spring.grougle.employee.model.dao.EmployeeDao;
@@ -256,26 +257,28 @@ public class EmployeeService {
 		}
 		
 		// 회원정보 수정
-		public Employee updateEmpPage(Employee emp) throws Exception {
+		public Employee updateEmpPage(Employee emp) throws Exception {	
 			dao.updateEmpPage(emp);
 			return dao.empLogin(emp.getEmp_id());
 		}
 		
 		// 비밀번호 변경
-		public Employee updatePwd(Employee emp, String old_pwd, HttpServletResponse response) throws Exception {
+		public Employee updatePwd(
+				@RequestParam("emp_pwd") String emp_pwd
+				, Employee emp
+				, HttpServletResponse response) throws Exception {
 			response.setContentType("text/html;charset=utf-8");
 			PrintWriter out = response.getWriter();
-			if(!old_pwd.equals(dao.empLogin(emp.getEmp_id()).getEmp_pwd())) {
+			if(!emp_pwd.equals(dao.empLogin(emp.getEmp_id()).getEmp_pwd())) {
 				out.println("<script>");
-				out.println("alert('기존 비밀번호가 다릅니다.');");
+				out.println("alert('사원정보 변경완료.');");
 				out.println("history.go(-1);");
 				out.println("</script>");
 				out.close();
 				return null;
-			}else {
+			}else {			
 				dao.updatePwd(emp);
 				return dao.empLogin(emp.getEmp_id());
 			}
 		}
-
 }

@@ -31,7 +31,7 @@
 			<textarea class="form-control" id="exampleFormControlTextarea1"
 				name="wb_content" rows="10" placeholder="내용을 작성해주세요."></textarea>
 		</div>
-		<input type="submit" id="insert" class="btn btn-info">등록하기
+		<input type="submit" id="insert" class="btn btn-info">
 		<button type="button"
 			onclick="location.href='<%=request.getContextPath()%>/board/list'"
 			class="btn btn-secondary">목록으로</button>
